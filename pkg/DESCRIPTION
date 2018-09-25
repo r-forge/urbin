@@ -7,7 +7,7 @@ Maintainer: Arne Henningsen <arne.henningsen@gmail.com>
 Depends: R (>= 2.14.0)
 Suggests: Ecdat (>= 0.1-5)
 Description: This R package provides functions for unifying estimation results 
-  with binary dependent variables, 
+  with binary dependent variables (e.g., for meta-analyses), 
   particularly for the case if the estimation results are obtained 
   with different models/estimators 
   (e.g., linear probability model, logit, probit, ...) 
