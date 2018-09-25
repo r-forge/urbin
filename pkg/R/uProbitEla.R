@@ -24,7 +24,7 @@ uProbitEla <- function( allCoef, allXVal,
   xVal <- allXVal[ xPos[ 1 ] ]
   xBeta <- sum( allCoef * allXVal )
   checkXBeta( xBeta )
-  dfun <- pnorm( xBeta )
+  dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
   derivCoef <- c( dfun * xVal, 
     ifelse( length( xPos ) == 1, 0, dfun * 2 * xVal^2 ) )

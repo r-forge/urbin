@@ -57,7 +57,7 @@ Number of Fisher Scoring iterations: 4
 > # semi-elasticity of age without standard errors
 > uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
 semEla.age      stdEr 
--0.4655076         NA 
+-0.3199102         NA 
 > # semi-elasticity of age based on numerical derivation
 > 100 * ( predict( estProbitLin, 
 +   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ), 
@@ -71,7 +71,7 @@ semEla.age      stdEr
 > uProbitEla( coef( estProbitLin ), xMeanLin, 
 +   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
 semEla.age      stdEr 
--0.4655076  0.1696841 
+-0.3199102  0.1166118 
 > 
 > ### quadratic in age
 > estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -110,7 +110,7 @@ Number of Fisher Scoring iterations: 4
 > # semi-elasticity of age without standard errors
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 semEla.age      stdEr 
--0.5386381         NA 
+-0.3193114         NA 
 > # semi-elasticity of age based on numerical derivation
 > 100 * ( predict( estProbitQuad, 
 +   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ), 
@@ -124,8 +124,8 @@ semEla.age      stdEr
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 semEla.age      stdEr 
--0.5386381  2.5125812 
+-0.3193114  1.4894894 
 > 
 > proc.time()
    user  system elapsed 
-  0.131   0.012   0.136 
+  0.114   0.020   0.129 
