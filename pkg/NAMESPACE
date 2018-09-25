@@ -1,3 +1,4 @@
 export( "uProbitEla" )
 
+importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )
