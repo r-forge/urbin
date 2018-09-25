@@ -207,6 +207,64 @@ semEla.age      stdEr
      dF/dx  Std. Err. 
 -0.3332012  2.1983087 
 > 
+> ### age is interval-coded (age is in the range 30-60)
+> # create dummy variables for age intervals
+> Mroz87$age30.37 <- Mroz87$age >= 30 & Mroz87$age <= 37
+> Mroz87$age38.44 <- Mroz87$age >= 38 & Mroz87$age <= 44
+> Mroz87$age45.52 <- Mroz87$age >= 45 & Mroz87$age <= 52
+> Mroz87$age53.60 <- Mroz87$age >= 53 & Mroz87$age <= 60
+> all.equal( 
++   Mroz87$age30.37 + Mroz87$age38.44 + Mroz87$age45.52 + Mroz87$age53.60,
++   rep( 1, nrow( Mroz87 ) ) )
+[1] TRUE
+> # estimation
+> estProbitInt <- glm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
++   family = binomial(link = "probit"), 
++   data = Mroz87 )
+> summary( estProbitInt )
+
+Call:
+glm(formula = lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
+    family = binomial(link = "probit"), data = Mroz87)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.8969  -1.2146   0.8037   1.0693   1.7288  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -0.89156    0.27694  -3.219  0.00128 ** 
+kids         -0.37752    0.12668  -2.980  0.00288 ** 
+age30.37TRUE  0.13507    0.12702   1.063  0.28762    
+age38.44TRUE  0.12146    0.13604   0.893  0.37197    
+age53.60TRUE -0.51419    0.16304  -3.154  0.00161 ** 
+educ          0.10805    0.02135   5.060 4.19e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  986.78  on 747  degrees of freedom
+AIC: 998.78
+
+Number of Fisher Scoring iterations: 4
+
+> # mean values of the explanatory variables
+> xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
++   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
+> # semi-elasticity of age without standard errors
+> uProbitElaInt( coef( estProbitInt ), xMeanInt, 
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
+    semEla      stdEr 
+-0.4719856         NA 
+> # semi-elasticity of age with standard errors (only standard errors)
+> uProbitElaInt( coef( estProbitInt ), xMeanInt, 
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
++   sqrt( diag( vcov( estProbitInt ) ) ) )
+    semEla      stdEr 
+-0.4719856  0.1666258 
+> 
 > proc.time()
    user  system elapsed 
-  0.476   0.015   0.485 
+  0.456   0.031   0.481 

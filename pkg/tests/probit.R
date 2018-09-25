@@ -81,3 +81,28 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad,
 estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
 estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ] +
   2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanLin[ "age" ]^2
+
+### age is interval-coded (age is in the range 30-60)
+# create dummy variables for age intervals
+Mroz87$age30.37 <- Mroz87$age >= 30 & Mroz87$age <= 37
+Mroz87$age38.44 <- Mroz87$age >= 38 & Mroz87$age <= 44
+Mroz87$age45.52 <- Mroz87$age >= 45 & Mroz87$age <= 52
+Mroz87$age53.60 <- Mroz87$age >= 53 & Mroz87$age <= 60
+all.equal( 
+  Mroz87$age30.37 + Mroz87$age38.44 + Mroz87$age45.52 + Mroz87$age53.60,
+  rep( 1, nrow( Mroz87 ) ) )
+# estimation
+estProbitInt <- glm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
+  family = binomial(link = "probit"), 
+  data = Mroz87 )
+summary( estProbitInt )
+# mean values of the explanatory variables
+xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
+  mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
+# semi-elasticity of age without standard errors
+uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
+# semi-elasticity of age with standard errors (only standard errors)
+uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
+  sqrt( diag( vcov( estProbitInt ) ) ) )
