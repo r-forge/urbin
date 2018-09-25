@@ -23,9 +23,6 @@ uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
     predict( estProbitLin, 
       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ), 
       type = "response" ) )
-# semi-elasticity of age with standard errors
-uProbitEla( coef( estProbitLin ), xMeanLin, 
-  sqrt( diag( vcov( estProbitLin ) ) ), 3 )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -34,6 +31,14 @@ numericGradient( uProbitEla, t0 = coef( estProbitLin ),
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
   simplified = TRUE )
+# semi-elasticity of age with standard errors (full covariance matrix)
+uProbitEla( coef( estProbitLin ), xMeanLin, vcov( estProbitLin ), 3 )
+# semi-elasticity of age with standard errors (only standard errors)
+uProbitEla( coef( estProbitLin ), xMeanLin, 
+  sqrt( diag( vcov( estProbitLin ) ) ), 3, seSimplify = FALSE )
+# semi-elasticity of age with standard errors (only standard errors, simplified)
+uProbitEla( coef( estProbitLin ), xMeanLin, 
+  sqrt( diag( vcov( estProbitLin ) ) ), 3 )
 
 ### quadratic in age
 estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -51,9 +56,6 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
     predict( estProbitQuad, 
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ), 
       type = "response" ) )
-# semi-elasticity of age with standard errors
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
-  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -62,3 +64,11 @@ numericGradient( uProbitEla, t0 = coef( estProbitQuad ),
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
   simplified = TRUE )
+# semi-elasticity of age with standard errors (full covariance matrix)
+uProbitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), c( 3, 4 ) )
+# semi-elasticity of age with standard errors (only standard errors)
+uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
+# semi-elasticity of age with standard errors (only standard errors, simplified)
+uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )

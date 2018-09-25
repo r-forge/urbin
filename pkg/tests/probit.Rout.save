@@ -77,11 +77,6 @@ semEla.age      stdEr
 +       type = "response" ) )
          1 
 -0.3199094 
-> # semi-elasticity of age with standard errors
-> uProbitEla( coef( estProbitLin ), xMeanLin, 
-+   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
-semEla.age      stdEr 
--0.3199102  0.1166118 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
                    kids         age        educ 
@@ -96,6 +91,20 @@ stdEr               NA         NA       NA        NA
 > urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
 +   simplified = TRUE )
 [1]  0.00000  0.00000 16.69892  0.00000
+> # semi-elasticity of age with standard errors (full covariance matrix)
+> uProbitEla( coef( estProbitLin ), xMeanLin, vcov( estProbitLin ), 3 )
+semEla.age      stdEr 
+-0.3199102  0.1165911 
+> # semi-elasticity of age with standard errors (only standard errors)
+> uProbitEla( coef( estProbitLin ), xMeanLin, 
++   sqrt( diag( vcov( estProbitLin ) ) ), 3, seSimplify = FALSE )
+semEla.age      stdEr 
+-0.3199102  0.1370817 
+> # semi-elasticity of age with standard errors (only standard errors, simplified)
+> uProbitEla( coef( estProbitLin ), xMeanLin, 
++   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
+semEla.age      stdEr 
+-0.3199102  0.1166118 
 > 
 > ### quadratic in age
 > estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -144,11 +153,6 @@ semEla.age      stdEr
 +       type = "response" ) )
          1 
 -0.3193229 
-> # semi-elasticity of age with standard errors
-> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
-+   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
-semEla.age      stdEr 
--0.3193114  1.4894894 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
                      kids          age          age         educ 
@@ -163,7 +167,21 @@ stdEr               NA         NA       NA       NA       NA
 > urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
 +   simplified = TRUE )
 [1]    0.00000    0.00000   15.99772 1361.01753    0.00000
+> # semi-elasticity of age with standard errors (full covariance matrix)
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), c( 3, 4 ) )
+semEla.age      stdEr 
+-0.3193114  0.1120032 
+> # semi-elasticity of age with standard errors (only standard errors)
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
++   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
+semEla.age      stdEr 
+-0.3193114  1.8253970 
+> # semi-elasticity of age with standard errors (only standard errors, simplified)
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
++   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
+semEla.age      stdEr 
+-0.3193114  1.4894894 
 > 
 > proc.time()
    user  system elapsed 
-  0.186   0.004   0.183 
+  0.180   0.011   0.184 
