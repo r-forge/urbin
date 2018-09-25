@@ -1,0 +1,3 @@
+export( "uProbitEla" )
+
+importFrom( "stats", "pnorm" )
