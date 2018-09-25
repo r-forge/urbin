@@ -1,0 +1,131 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "urbin" )
+> data( "Mroz87", package = "sampleSelection" )
+> 
+> # create dummy variable for kids
+> Mroz87$kids <- as.numeric( Mroz87$kids5 > 0 | Mroz87$kids618 > 0 )
+> 
+> ### linear in age
+> estProbitLin <- glm( lfp ~ kids + age + educ, 
++   family = binomial(link = "probit"), 
++   data = Mroz87 )
+> summary( estProbitLin )
+
+Call:
+glm(formula = lfp ~ kids + age + educ, family = binomial(link = "probit"), 
+    data = Mroz87)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.8954  -1.2341   0.8022   1.0588   1.5892  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -0.071613   0.452493  -0.158  0.87425    
+kids        -0.315634   0.122234  -2.582  0.00982 ** 
+age         -0.019158   0.006983  -2.743  0.00608 ** 
+educ         0.104639   0.021236   4.927 8.33e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  993.43  on 749  degrees of freedom
+AIC: 1001.4
+
+Number of Fisher Scoring iterations: 4
+
+> # mean values of the explanatory variables
+> xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
+> # semi-elasticity of age without standard errors
+> uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
+semEla.age      stdEr 
+-0.4655076         NA 
+> # semi-elasticity of age based on numerical derivation
+> 100 * ( predict( estProbitLin, 
++   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ), 
++   type = "response" ) -
++     predict( estProbitLin, 
++       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ), 
++       type = "response" ) )
+         1 
+-0.3199094 
+> # semi-elasticity of age with standard errors
+> uProbitEla( coef( estProbitLin ), xMeanLin, 
++   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
+semEla.age      stdEr 
+-0.4655076  0.1696841 
+> 
+> ### quadratic in age
+> estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
++   family = binomial(link = "probit"), 
++   data = Mroz87 )
+> summary( estProbitQuad )
+
+Call:
+glm(formula = lfp ~ kids + age + I(age^2) + educ, family = binomial(link = "probit"), 
+    data = Mroz87)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.9267  -1.2306   0.7846   1.0526   1.6541  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -4.3289384  1.3943931  -3.105 0.001906 ** 
+kids        -0.4387599  0.1295276  -3.387 0.000706 ***
+age          0.1921645  0.0658800   2.917 0.003535 ** 
+I(age^2)    -0.0024934  0.0007733  -3.224 0.001263 ** 
+educ         0.1070407  0.0214110   4.999 5.75e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  982.88  on 748  degrees of freedom
+AIC: 992.88
+
+Number of Fisher Scoring iterations: 4
+
+> # mean values of the explanatory variables
+> xMeanQuad <- c( xMeanLin[ 1:3], xMeanLin[3]^2, xMeanLin[4] )
+> # semi-elasticity of age without standard errors
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
+semEla.age      stdEr 
+-0.5386381         NA 
+> # semi-elasticity of age based on numerical derivation
+> 100 * ( predict( estProbitQuad, 
++   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ), 
++   type = "response" ) -
++     predict( estProbitQuad, 
++       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ), 
++       type = "response" ) )
+         1 
+-0.3193229 
+> # semi-elasticity of age with standard errors
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
++   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
+semEla.age      stdEr 
+-0.5386381  2.5125812 
+> 
+> proc.time()
+   user  system elapsed 
+  0.131   0.012   0.136 
