@@ -1,5 +1,6 @@
 library( "urbin" )
 library( "maxLik" )
+library( "mfx" )
 
 # load data set
 data( "Mroz87", package = "sampleSelection" )
@@ -39,6 +40,9 @@ uProbitEla( coef( estProbitLin ), xMeanLin,
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 uProbitEla( coef( estProbitLin ), xMeanLin, 
   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
+# semi-elasticity of age based on partial derivative calculated by the mfx package
+estProbitLinMfx <- probitmfx( lfp ~ kids + age + educ, data = Mroz87 )
+estProbitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
 
 ### quadratic in age
 estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -72,3 +76,8 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad,
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 uProbitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
+# semi-elasticity of age based on partial derivatives calculated by the mfx package
+# (differs from the above, because mean(age)^2 is not the same as mean(age^2))
+estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
+estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ] +
+  2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanLin[ "age" ]^2
