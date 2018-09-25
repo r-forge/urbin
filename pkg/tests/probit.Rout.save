@@ -92,6 +92,10 @@ semEla.age      stdEr
            (Intercept)       kids      age      educ
 semEla.age  0.05742655 0.03996217 19.14172 0.7055915
 stdEr               NA         NA       NA        NA
+> # simplified partial derivatives of the semi-elasticity wrt the coefficients
+> urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
++   simplified = TRUE )
+[1]  0.00000  0.00000 16.69892  0.00000
 > 
 > ### quadratic in age
 > estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -155,7 +159,11 @@ semEla.age      stdEr
            (Intercept)       kids      age I(age^2)     educ
 semEla.age   0.1096957 0.07633536 20.66394 1559.508 1.347814
 stdEr               NA         NA       NA       NA       NA
+> # simplified partial derivatives of the semi-elasticity wrt the coefficients
+> urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
++   simplified = TRUE )
+[1]    0.00000    0.00000   15.99772 1361.01753    0.00000
 > 
 > proc.time()
    user  system elapsed 
-  0.169   0.020   0.182 
+  0.186   0.004   0.183 

@@ -31,6 +31,9 @@ urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( uProbitEla, t0 = coef( estProbitLin ), 
   allXVal = xMeanLin, xPos = 3 )
+# simplified partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
+  simplified = TRUE )
 
 ### quadratic in age
 estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -56,3 +59,6 @@ urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( uProbitEla, t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ) )
+# simplified partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
+  simplified = TRUE )
