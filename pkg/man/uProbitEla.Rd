@@ -9,7 +9,19 @@ uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
 }
 
 \description{
-  Calculate Semi-Elasticities Based on Results from Probit Models
+  This function calculates 
+  the semi-elasticity of a continuous explanatory variable
+  that is used as a linear and/or quadratic explanatory variable
+  in a probit model.
+  The calculated semi-elasticity indicates
+  by how many percentage points the probability
+  that the dependent variable has a value of one
+  increases
+  if the explanatory variable of interest
+  increases by one percent.
+  This function also applies the Delta-method
+  to calculate the approximate standard error 
+  of the calculated semi-elasticity.
 }
 
 \arguments{
