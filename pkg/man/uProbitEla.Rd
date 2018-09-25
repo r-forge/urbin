@@ -4,7 +4,8 @@
 \title{Semi-Elasticities from Probit Models}
 
 \usage{
-uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos )
+uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
+    seSimplify = !is.matrix( allCoefVcov ) )
 }
 
 \description{
@@ -31,6 +32,11 @@ uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos )
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.}
+  \item{seSimplify}{logical value indicating whether the standard errors
+    of the semi-elasticities should be calculated by a simplified equation
+    (i.e., assuming that \eqn{\phi( \beta' x )} does not depend on \eqn{\beta}),
+    which may be more appropriate 
+    if the off-diagonal elements of the variance-covariance matrix are unknown.}
 }
 
 \value{
@@ -55,7 +61,15 @@ summary( estProbitQuad )
 xMeanQuad <- c( 1, mean( Mroz87$kids ), mean( Mroz87$age ), 
   mean( Mroz87$age )^2, mean( Mroz87$educ ) )
 
-# semi-elasticity of age (including standard error)
+# semi-elasticity of age (full covariance matrix)
+uProbitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), 
+  c( 3, 4 ) )
+
+# semi-elasticity of age (standard errors only)
+uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
+
+# semi-elasticity of age (standard errors only, simplified equation)
 uProbitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 }

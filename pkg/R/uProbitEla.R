@@ -1,5 +1,10 @@
-uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos ){
+uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos,
+    seSimplify = !is.matrix( allCoefVcov ) ){
+
   nCoef <- length( allCoef )
+  if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
+    stop( "argument 'seSimplify' must be TRUE or FALSE" )
+  }
   if( length( allCoef ) != length( allXVal ) ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
@@ -37,7 +42,7 @@ uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos ){
   checkXBeta( xBeta )
   dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  derivCoef <- uProbitElaDeriv( allCoef, allXVal, xPos, simplified = TRUE )
+  derivCoef <- uProbitElaDeriv( allCoef, allXVal, xPos, seSimplify )
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
