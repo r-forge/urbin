@@ -1,11 +1,24 @@
-uProbitEla <- function( allCoef, allXVal, 
-  allCoefSE = rep( NA, length( allCoef )), xPos ){
+uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos ){
   nCoef <- length( allCoef )
-  if( nCoef != length( allCoefSE ) ) {
-    stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
-  }
   if( length( allCoef ) != length( allXVal ) ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+  }
+  errMsgVcov <- paste( "argument 'allCoefVcov' must be a vector of length",
+    nCoef, "or a symmetric matrix with dimension", nCoef )
+  if( is.null( allCoefVcov ) ) {
+    allCoefVcov <- matrix( NA, nrow = nCoef, ncol = nCoef )
+  } else if( is.matrix( allCoefVcov ) ) {
+    if( nrow( allCoefVcov ) != nCoef || ncol( allCoefVcov ) != nCoef ) {
+      stop( errMsgVcov )
+    }
+  } else if( is.vector( allCoefVcov ) ) {
+    if( length( allCoefVcov ) != nCoef ) {
+      stop( errMsgVcov )
+    } else {
+      allCoefVcov <- diag( allCoefVcov^2 )
+    }
+  } else {
+    stop( errMsgVcov )
   }
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   if( length( xPos ) == 2 ){
@@ -25,8 +38,7 @@ uProbitEla <- function( allCoef, allXVal,
   dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
   derivCoef <- uProbitElaDeriv( allCoef, allXVal, xPos, simplified = TRUE )
-  vcovCoef <- diag( allCoefSE^2 )
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
 } 

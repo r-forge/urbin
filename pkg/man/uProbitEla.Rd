@@ -4,8 +4,7 @@
 \title{Semi-Elasticities from Probit Models}
 
 \usage{
-uProbitEla( allCoef, allXVal, 
-  allCoefSE = rep( NA, length( allCoef )), xPos )
+uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos )
 }
 
 \description{
@@ -19,9 +18,10 @@ uProbitEla( allCoef, allXVal,
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
-  \item{allCoefSE}{an optional vector 
-    with the values of the standard errors of all estimated coefficients
-    (including intercept; the order of these standard errors must be the same
+  \item{allCoefVcov}{an optional argument
+    that can be the variance-covariance matrix of all estimated coefficients
+    OR the vector of the standard errors of all estimated coefficients
+    (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
   \item{xPos}{a posivite integer 
@@ -30,7 +30,7 @@ uProbitEla( allCoef, allXVal,
     indicating the positions of the linear term and the quadratic term
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
-    and eventually \code{allCoefSE}.}
+    and eventually \code{allCoefVcov}.}
 }
 
 \value{
