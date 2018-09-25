@@ -1,4 +1,7 @@
 library( "urbin" )
+library( "maxLik" )
+
+# load data set
 data( "Mroz87", package = "sampleSelection" )
 
 # create dummy variable for kids
@@ -23,6 +26,11 @@ uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
 # semi-elasticity of age with standard errors
 uProbitEla( coef( estProbitLin ), xMeanLin, 
   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
+# partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
+# numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+numericGradient( uProbitEla, t0 = coef( estProbitLin ), 
+  allXVal = xMeanLin, xPos = 3 )
 
 ### quadratic in age
 estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -43,3 +51,8 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # semi-elasticity of age with standard errors
 uProbitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
+# partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
+# numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+numericGradient( uProbitEla, t0 = coef( estProbitQuad ), 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ) )
