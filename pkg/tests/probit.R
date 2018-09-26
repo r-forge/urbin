@@ -79,8 +79,8 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad,
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
 # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
-estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ] +
-  2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanLin[ "age" ]^2
+estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanQuad[ "age" ] +
+  2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanQuad[ "age" ]^2
 
 ### age is interval-coded (age is in the range 30-60)
 # create dummy variables for age intervals
