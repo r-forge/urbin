@@ -104,6 +104,13 @@ vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <-
 uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
 uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
   seSimplify = TRUE )
+uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), 
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
+  seSimplify = FALSE )
+uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
 # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )

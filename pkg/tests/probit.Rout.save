@@ -235,6 +235,17 @@ semEla.age      stdEr
 +   seSimplify = TRUE )
 semEla.age      stdEr 
 -0.3193114  0.1352247 
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
++   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), 
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
++   seSimplify = FALSE )
+semEla.age      stdEr 
+-0.3193114  0.2747928 
+> uProbitEla( coef( estProbitQuad ), xMeanQuad, 
++   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+semEla.age      stdEr 
+-0.3193114  0.1352247 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 > estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
@@ -303,4 +314,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.463   0.043   0.500 
+  0.470   0.040   0.504 
