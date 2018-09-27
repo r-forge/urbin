@@ -43,24 +43,9 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   # calculation of the semi-elasticity
   semEla <- uLinElaInt( phiVec, shareVec, xBound )
   ### calculation of its standard error
-  # partial derivatives of each semi-elasticity around each boundary
-  # w.r.t. all estimated coefficients
-  gradM <- matrix( 0, nCoef, nInt - 1 )
-  gradPhiVec <- dnorm( xBeta )
-  for( m in 1:( nInt - 1 ) ) {
-    gradM[ -xPos, m ] <- 2 * ( gradPhiVec[m+1] - gradPhiVec[m] ) * 
-      allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
-    gradM[ xPos[m], m ] <- - 2 * gradPhiVec[m] * xBound[m+1] / 
-      ( xBound[m+2] - xBound[m] )
-    gradM[ xPos[m+1], m ] <- 2 * gradPhiVec[m+1] * xBound[m+1] / 
-      ( xBound[m+2] - xBound[m] )
-  }
   # partial derivative of the semi-elasticity 
   # w.r.t. all estimated coefficients
-  derivCoef <- rep( 0, nCoef )
-  for( m in 1:( nInt - 1 ) ){
-    derivCoef <- derivCoef + weights[m] * gradM[ , m ]
-  }
+  derivCoef <- uProbitElaIntDeriv( allCoef, allXVal, xPos, xBound, weights )
   # standard error of the (average) semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
