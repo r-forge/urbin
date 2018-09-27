@@ -26,20 +26,18 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
-  # vector of probabilities of y=1 for each interval and
-  # vector of shares of observations in each interval
-  xBeta <- shareVec <- rep( NA, nInt )
-  for( i in 1:nInt ){
-    allXValTemp <- replace( allXVal, xPos, 0 )
-    if( xPos[i] != 0 ) {
-      allXValTemp[ xPos[i] ] <- 1
-      shareVec[ i ] <- allXVal[ xPos[ i ] ] 
-    }
-    xBeta[ i ] <- sum( allCoef * allXValTemp )
-  }
-  shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )
+  # vector of probabilities of y=1 for each interval
+  xBeta <- calcXBetaInt( allCoef, allXVal, xPos )
   checkXBeta( xBeta )
   phiVec <- pnorm( xBeta )
+  # vector of shares of observations in each interval
+  shareVec <- rep( NA, nInt )
+  for( i in 1:nInt ){
+    if( xPos[i] != 0 ) {
+      shareVec[ i ] <- allXVal[ xPos[ i ] ] 
+    }
+  }
+  shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )
   # weights
   weights <- elaIntWeights( shareVec )
   # calculation of the semi-elasticity
