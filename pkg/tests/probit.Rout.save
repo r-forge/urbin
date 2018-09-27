@@ -305,6 +305,12 @@ Number of Fisher Scoring iterations: 4
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
     semEla      stdEr 
 -0.4719856         NA 
+> # semi-elasticity of age with standard errors (full covariance matrix)
+> uProbitElaInt( coef( estProbitInt ), xMeanInt, 
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
++   vcov( estProbitInt ) )
+    semEla      stdEr 
+-0.4719856  0.1375324 
 > # semi-elasticity of age with standard errors (only standard errors)
 > uProbitElaInt( coef( estProbitInt ), xMeanInt, 
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
@@ -314,4 +320,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.470   0.040   0.504 
+  0.461   0.048   0.504 
