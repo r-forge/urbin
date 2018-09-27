@@ -39,7 +39,7 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   ### calculation of its standard error
   # partial derivative of the semi-elasticity 
   # w.r.t. all estimated coefficients
-  derivCoef <- uProbitElaIntDeriv( allCoef, allXVal, xPos, xBound, weights )
+  derivCoef <- uProbitElaIntDeriv( allCoef, allXVal, xPos, xBound )
   # standard error of the (average) semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
