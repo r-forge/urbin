@@ -1,5 +1,5 @@
 uProbitElaInt <- function( allCoef, allXVal, xPos, xBound, 
-  allCoefSE = rep( NA, length( allCoef ) ) ){
+  allCoefVcov = NULL ){
   # number of coefficients
   nCoef <- length( allCoef )
   # number of intervals
@@ -7,9 +7,6 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   # checking arguments
   if( length( allXVal ) != nCoef ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
-  }
-  if( length( allCoefSE ) != nCoef ) {
-    stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
   }
   checkXPos( xPos, minLength = 2, maxLength = nCoef, 
     minVal = 0, maxVal = nCoef, requiredVal = 0 )
@@ -27,6 +24,8 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   }
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
   # vector of probabilities of y=1 for each interval and
   # vector of shares of observations in each interval
   xBeta <- shareVec <- rep( NA, nInt )
@@ -64,10 +63,8 @@ uProbitElaInt <- function( allCoef, allXVal, xPos, xBound,
   for( m in 1:( nInt - 1 ) ){
     derivCoef <- derivCoef + weights[m] * gradM[ , m ]
   }
-  # variance-covariance matrix of the coefficiencts
-  vcovCoef <- diag( allCoefSE^2 )
   # standard error of the (average) semi-elasticity
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
   result <- c( semEla[1], stdEr = semElaSE )
   return( result )

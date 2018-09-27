@@ -4,8 +4,7 @@
 \title{Semi-Elasticities of Interval-Coded Variables from Probit Models}
 
 \usage{
-uProbitElaInt( allCoef, allXVal, xPos, xBound, 
-  allCoefSE = rep( NA, length( allCoef ) ) )
+uProbitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
 }
 
 \description{
@@ -30,7 +29,7 @@ uProbitElaInt( allCoef, allXVal, xPos, xBound,
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
-  \item{allCoefSE}{an optional argument
+  \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
@@ -83,6 +82,11 @@ summary( estProbitInt )
 # mean values of the explanatory variables
 xMeanInt <- c( 1, colMeans( Mroz87[ , 
   c( "kids", "age30.37", "age38.44", "age53.60", "educ" ) ] ) )
+
+# semi-elasticity of age (full covariance matrix)
+uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
+  vcov( estProbitInt ) )
 
 # semi-elasticity of age with standard errors (only standard errors)
 uProbitElaInt( coef( estProbitInt ), xMeanInt, 
