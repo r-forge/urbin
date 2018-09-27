@@ -79,7 +79,7 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad,
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
 se <- sqrt( diag( vcov( estProbitQuad ) ) )
-X <- cbind( Mroz87$age, Mroz87$age^2 )
+X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
 XXinv <- solve( t(X) %*% X )
 sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
 vcovApp <- diag( se^2 )
@@ -94,7 +94,7 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
 se <- sqrt( diag( vcov( estProbitQuad ) ) )
 set.seed( 123 )
 x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-X <- cbind( x, x^2 )
+X <- cbind( x, x^2, 1 )
 XXinv <- solve( t(X) %*% X )
 sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
 vcovApp <- diag( se^2 )

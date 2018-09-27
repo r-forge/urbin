@@ -202,7 +202,7 @@ semEla.age      stdEr
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
 > se <- sqrt( diag( vcov( estProbitQuad ) ) )
-> X <- cbind( Mroz87$age, Mroz87$age^2 )
+> X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
 > XXinv <- solve( t(X) %*% X )
 > sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
 > vcovApp <- diag( se^2 )
@@ -211,17 +211,17 @@ semEla.age      stdEr
 +   sigmaSq * XXinv[1,2]
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
 semEla.age      stdEr 
--0.3193114  0.3104973 
+-0.3193114  0.2492290 
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
 +   seSimplify = TRUE )
-semEla.age      stdEr 
--0.3193114  0.1800141 
+ semEla.age       stdEr 
+-0.31931141  0.09609747 
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on simulated data
 > se <- sqrt( diag( vcov( estProbitQuad ) ) )
 > set.seed( 123 )
 > x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-> X <- cbind( x, x^2 )
+> X <- cbind( x, x^2, 1 )
 > XXinv <- solve( t(X) %*% X )
 > sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
 > vcovApp <- diag( se^2 )
@@ -230,11 +230,11 @@ semEla.age      stdEr
 +   sigmaSq * XXinv[1,2]
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
 semEla.age      stdEr 
--0.3193114  0.3094779 
+-0.3193114  0.2747928 
 > uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
 +   seSimplify = TRUE )
 semEla.age      stdEr 
--0.3193114  0.1788241 
+-0.3193114  0.1352247 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 > estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
@@ -303,4 +303,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.502   0.016   0.512 
+  0.463   0.043   0.500 
