@@ -1,7 +1,12 @@
 probitEffGroup <- function( allCoef, allXVal, xPos, xGroups, 
     allCoefVcov = NULL ){
   nCoef <- length( allCoef )
+  # check argument xPos
+  checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
+    maxVal = nCoef )
+  # shares in each category
   xShares <- allXVal[ xPos ]
+  # coefficients of the dummy variables for the categories
   xCoef <- allCoef[ xPos ]
   if( sum( xShares ) > 1 ){
     stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
