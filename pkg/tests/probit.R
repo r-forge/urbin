@@ -223,9 +223,17 @@ allCoefVcovGroup <- cbind(
 # (without standard errors)
 probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ) )
 # effects of age changing from the 30-44 category to the 53-60 category
+# (full covariance matrix)
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
+  allCoefVcovGroup )
+# effects of age changing from the 30-44 category to the 53-60 category
 # (with standard errors only)
 probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
   sqrt( diag( allCoefVcovGroup ) ) )
+# effects of age changing from the 53-60 category to the 37-52 category
+# (with full covariance matrix)
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
+  allCoefVcovGroup )
 # effects of age changing from the 53-60 category to the 37-52 category
 # (with standard errors only)
 probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
