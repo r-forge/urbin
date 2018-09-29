@@ -430,8 +430,8 @@ stdEr           NA          NA       NA       NA         NA
 > xMeanGroupAttr <- xMeanGroup
 > attr( xMeanGroupAttr, "derivOnly" ) <- 1 
 > probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( -1, -1, 0, 1 ) )
-[1] -0.004643643 -0.003231433 -0.242884428 -0.242884428 -0.242884428
-[6] -0.242884428 -0.057055754
+[1] -0.004643643 -0.003231433 -0.224000939 -0.157068388  0.000000000
+[6]  0.376425684 -0.057055754
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( probitEffGroup, t0 = allCoefGroup, 
 +   allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( -1, -1, 0, 1 ) )
@@ -445,12 +445,12 @@ stdEr           NA
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
 +   allCoefVcovGroup )
      effect       stdEr 
--0.25236736  0.07637368 
+-0.25236736  0.06537938 
 > # with standard errors only
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
 +   sqrt( diag( allCoefVcovGroup ) ) )
      effect       stdEr 
--0.25236736  0.06012563 
+-0.25236736  0.07096559 
 > ### effects of age changing from the 53-60 category to the 37-52 category
 > # without standard errors
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ) )
@@ -458,8 +458,8 @@ stdEr           NA
 0.2228361        NA 
 > # partial derivatives of the effect wrt the coefficients
 > probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( 0, 1, 1, -1 ) )
-[1] 0.012448894 0.008662976 0.214077841 0.214077841 0.214077841 0.214077841
-[7] 0.152957729
+[1]  0.012448894  0.008662976  0.000000000  0.168992409  0.219882169
+[6] -0.376425684  0.152957729
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( probitEffGroup, t0 = allCoefGroup, 
 +   allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( 0, 1, 1, -1 ) )
@@ -473,14 +473,14 @@ stdEr         NA
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
 +   allCoefVcovGroup )
    effect     stdEr 
-0.2228361 0.0667222 
+0.2228361 0.0607031 
 > # with standard errors only
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
 +   sqrt( diag( allCoefVcovGroup ) ) )
-    effect      stdEr 
-0.22283611 0.05319416 
+   effect     stdEr 
+0.2228361 0.0657191 
 > 
 > 
 > proc.time()
    user  system elapsed 
-   0.49    0.04    0.53 
+  0.498   0.036   0.528 
