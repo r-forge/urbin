@@ -219,11 +219,11 @@ allCoefVcovGroup <- rbind(
   allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
 allCoefVcovGroup <- cbind( 
   allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
-# effects of age changing from the 30-37.5 category to the 52-60 category
+# effects of age changing from the 30-44 category to the 52-60 category
 # (without standard errors)
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ) )
-# effects of age changing from the 30-37.5 category to the 52-60 category
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ) )
+# effects of age changing from the 30-44 category to the 52-60 category
 # (with standard errors only)
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ),
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
   sqrt( diag( allCoefVcovGroup ) ) )
 
