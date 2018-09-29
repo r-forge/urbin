@@ -4,6 +4,8 @@ probitEffCat <- function( allCoef, allXVal, xPos, xGroups,
   # check argument xPos
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
+  # number of categories
+  nCat <- length( xPos ) + 1
   # shares in each category
   xShares <- allXVal[ xPos ]
   if( any( xShares < 0 ) ){
@@ -14,13 +16,26 @@ probitEffCat <- function( allCoef, allXVal, xPos, xGroups,
     stop( "the shares of the observations in the individual categories",
       " (without the reference category) sum up to a value larger than 1" )
   }
-  # coefficients of the dummy variables for the categories
-  xCoef <- allCoef[ xPos ]
-  if( length( xCoef ) != length( xShares ) ){
-    stop( "arguments 'xCoef' and 'xShares' must have the same length" )
+  xShares <- c( xShares, 1 - sum( xShares ) )
+  if( length( xShares ) != nCat ) {
+    stop( "internal error: length of shares not equal to number of categories" )
   }
-  if( length( xCoef ) != length( xGroups ) ){
-    stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
+  if( xShares[ nCat ] < 0.05  ) {
+    warning( "there are only ", 100 * xShares[ length( xShares ) ],
+      "% of the observations in the reference category --",
+      " please check whether this is indeed the case" )
+  }
+  if( xShares[ nCat ] > 0.95  ) {
+    warning( "there are ", 100 * xShares[ length( xShares ) ],
+      "% of the observations in the reference category --",
+      " please check whether this is indeed the case" )
+  }
+  # coefficients of the dummy variables for the categories
+  xCoef <- c( allCoef[ xPos ], 0 )
+  # check argument xGroups
+  if( length( xGroups ) != ( length( xPos ) + 1 ) ){
+    stop( "the vector specified by argument 'xGroups' must have",
+      " one more element that the vector specified by argument 'xPos'" )
   }
   if( ! all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
@@ -43,7 +58,8 @@ probitEffCat <- function( allCoef, allXVal, xPos, xGroups,
   derivCoef <- rep( NA, nCoef )
   derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
     allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect - dnorm( XBetaRef ) * DRef
+  derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect[ -nCat ] - 
+    dnorm( XBetaRef ) * DRef[ -nCat ]
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {

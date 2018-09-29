@@ -34,15 +34,22 @@ probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
   \item{xPos}{a vector of posivite integers 
     indicating the positions of the coefficients of the categorical variable
     in argument \code{allCoef}
-    and, equally, the positions of the shares of the categories 
-    of the categorical variable in argument \code{allXVal}.}
+    and, equally, the positions of the shares of the non-reference categories 
+    in argument \code{allXVal};
+    this vector must have one element less than the number of categories,
+    because argument \code{allCoef} does not include a coefficient 
+    of the reference category.}
   \item{xGroups}{a vector consisting of \eqn{-1}s, \eqn{0}s, and \eqn{1}s, 
     where a \eqn{-1} indicates 
     that the category belongs to the new reference category, 
     a \eqn{1} indicates 
     that the category belongs to the new category of interest,
     and a zero indicates 
-    that the category belongs to neither.}
+    that the category belongs to neither;
+    the length of this vector must be equal to the number of categories;
+    the last element of this vector corresponds to the reference category,
+    while all other elements correspond to the categories 
+    as indicated by argument \code{xPos}.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -75,30 +82,19 @@ estProbitInt <- glm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ,
   data = Mroz87 )
 summary( estProbitInt )
 
-# mean values of the explanatory variables (including the reference category) 
-xMeanGroup <- c( 1, colMeans( Mroz87[ , 
-  c( "kids", "age30.37", "age38.44", "age45.52", "age53.60", "educ" ) ] ) )
+# mean values of the explanatory variables
+xMeanInt <- c( 1, colMeans( Mroz87[ , 
+  c( "kids", "age30.37", "age38.44", "age53.60", "educ" ) ] ) )
 
-# coefficients including the coefficient of the reference category
-allCoefGroup <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
+# effect of age changing from 38-52 years (2nd category + reference category) 
+# to 53-60 years (3rd category) (with full covariance matrix)
+probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
+  vcov( estProbitInt ) )
 
-# variance covariance matrix of the coefficients 
-# including the coefficient of the reference category
-allCoefVcovGroup <- vcov( estProbitInt )
-allCoefVcovGroup <- rbind( 
-  allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
-allCoefVcovGroup <- cbind( 
-  allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
-
-# effects of age changing from 30-44 years to 53-60 years
-# (with full covariance matrix)
-probitEffCat( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
-  allCoefVcovGroup )
-
-# effects of age changing from 30-44 years to 53-60 years
-# (with standard errors only)
-probitEffCat( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
-  sqrt( diag( allCoefVcovGroup ) ) )
+# effect of age changing from 38-52 years (2nd category + reference category) 
+# to 53-60 years (3rd category) (with standard errors only)
+probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
+  sqrt( diag( vcov( estProbitInt ) ) ) )
 }
 
 \keyword{models}

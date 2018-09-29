@@ -419,77 +419,61 @@ stdEr           NA          NA       NA       NA         NA
 -0.25282386  0.07121468 
 > 
 > ### grouping and re-basing categorical variables
-> # mean values for regrouping and re-basing 
-> xMeanCat <- c( xMeanInt[1:4], mean( Mroz87$age45.52 ), xMeanInt[5:6] )
-> # coefficients including the coefficient of the reference category
-> allCoefCat <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
-> # variance covariance matrix of the coefficients 
-> # including the coefficient of the reference category
-> allCoefVcovCat <- vcov( estProbitInt )
-> allCoefVcovCat <- rbind( 
-+   allCoefVcovCat[ 1:4, ], rep( 0, 6 ), allCoefVcovCat[ 5:6, ] )
-> allCoefVcovCat <- cbind( 
-+   allCoefVcovCat[ , 1:4 ], rep( 0, 7 ), allCoefVcovCat[ , 5:6 ] )
 > ### effects of age changing from the 30-44 category to the 53-60 category
 > # without standard errors
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ) )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
     effect      stdEr 
 -0.2523674         NA 
 > # partial derivatives of the effect wrt the coefficients
-> xMeanCatAttr <- xMeanCat
-> attr( xMeanCatAttr, "derivOnly" ) <- 1 
-> probitEffCat( allCoefCat, xMeanCatAttr, c( 3:6 ), c( -1, -1, 0, 1 ) )
-[1] -0.004643643 -0.003231433 -0.224000939 -0.157068388  0.000000000
-[6]  0.376425684 -0.057055754
+> probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+[1] -0.004643643 -0.003231433 -0.224000939 -0.157068388  0.376425684
+[6] -0.057055754
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( probitEffCat, t0 = allCoefCat, 
-+   allXVal = xMeanCat, xPos = c( 3:6 ), xGroups = c( -1, -1, 0, 1 ) )
-        (Intercept)         kids age30.37TRUE age38.44TRUE    age53.60TRUE
-effect -0.004643643 -0.003231433   -0.2240009   -0.1570684  0    0.3764257
-stdEr            NA           NA           NA           NA NA           NA
+> numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
++   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ) )
+        (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
+effect -0.004643643 -0.003231433   -0.2240009   -0.1570684    0.3764257
+stdEr            NA           NA           NA           NA           NA
               educ
 effect -0.05705575
 stdEr           NA
 > # with full covariance matrix
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ),
-+   allCoefVcovCat )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
++   vcov( estProbitInt ) )
      effect       stdEr 
 -0.25236736  0.06537938 
 > # with standard errors only
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ),
-+   sqrt( diag( allCoefVcovCat ) ) )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
++   sqrt( diag( vcov( estProbitInt ) ) ) )
      effect       stdEr 
 -0.25236736  0.07096559 
-> ### effects of age changing from the 53-60 category to the 37-52 category
+> ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ) )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
    effect     stdEr 
 0.2228361        NA 
 > # partial derivatives of the effect wrt the coefficients
-> probitEffCat( allCoefCat, xMeanCatAttr, c( 3:6 ), c( 0, 1, 1, -1 ) )
-[1]  0.012448894  0.008662976  0.000000000  0.168992409  0.219882169
-[6] -0.376425684  0.152957729
+> probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+[1]  0.012448894  0.008662976  0.000000000  0.168992409 -0.376425684
+[6]  0.152957729
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( probitEffCat, t0 = allCoefCat, 
-+   allXVal = xMeanCat, xPos = c( 3:6 ), xGroups = c( 0, 1, 1, -1 ) )
-       (Intercept)        kids age30.37TRUE age38.44TRUE           age53.60TRUE
-effect  0.01244889 0.008662976            0    0.1689924 0.2198822   -0.3764257
-stdEr           NA          NA           NA           NA        NA           NA
-            educ
-effect 0.1529577
-stdEr         NA
+> numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
++   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ) )
+       (Intercept)        kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
+effect  0.01244889 0.008662976            0    0.1689924   -0.3764257 0.1529577
+stdEr           NA          NA           NA           NA           NA        NA
 > # with full covariance matrix
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ),
-+   allCoefVcovCat )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
++   vcov( estProbitInt ) )
    effect     stdEr 
 0.2228361 0.0607031 
 > # with standard errors only
-> probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ),
-+   sqrt( diag( allCoefVcovCat ) ) )
+> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
++   sqrt( diag( vcov( estProbitInt ) ) ) )
    effect     stdEr 
 0.2228361 0.0657191 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.520   0.019   0.533 
+  0.519   0.032   0.545 
