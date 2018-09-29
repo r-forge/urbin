@@ -409,6 +409,31 @@ stdEr           NA          NA       NA       NA         NA
      effect       stdEr 
 -0.25282386  0.07121468 
 > 
+> ### grouping and re-basing categorical variables
+> # mean values for regrouping and re-basing 
+> xMeanGroup <- c( xMeanInt[1:4], mean( Mroz87$age45.52 ), xMeanInt[5:6] )
+> # coefficients including the coefficient of the reference category
+> allCoefGroup <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
+> # variance covariance matrix of the coefficients 
+> # including the coefficient of the reference category
+> allCoefVcovGroup <- vcov( estProbitInt )
+> allCoefVcovGroup <- rbind( 
++   allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
+> allCoefVcovGroup <- cbind( 
++   allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
+> # effects of age changing from the 30-37.5 category to the 52-60 category
+> # (without standard errors)
+> probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ) )
+   effect     stdEr 
+-0.254503        NA 
+> # effects of age changing from the 30-37.5 category to the 52-60 category
+> # (with standard errors only)
+> probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ),
++   sqrt( diag( allCoefVcovGroup ) ) )
+     effect       stdEr 
+-0.25450299  0.06062535 
+> 
+> 
 > proc.time()
    user  system elapsed 
-  0.481   0.043   0.517 
+  0.502   0.032   0.529 

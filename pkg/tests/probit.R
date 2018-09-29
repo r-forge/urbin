@@ -206,3 +206,24 @@ probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+
+### grouping and re-basing categorical variables
+# mean values for regrouping and re-basing 
+xMeanGroup <- c( xMeanInt[1:4], mean( Mroz87$age45.52 ), xMeanInt[5:6] )
+# coefficients including the coefficient of the reference category
+allCoefGroup <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
+# variance covariance matrix of the coefficients 
+# including the coefficient of the reference category
+allCoefVcovGroup <- vcov( estProbitInt )
+allCoefVcovGroup <- rbind( 
+  allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
+allCoefVcovGroup <- cbind( 
+  allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
+# effects of age changing from the 30-37.5 category to the 52-60 category
+# (without standard errors)
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ) )
+# effects of age changing from the 30-37.5 category to the 52-60 category
+# (with standard errors only)
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, 0, 0, 1 ),
+  sqrt( diag( allCoefVcovGroup ) ) )
+
