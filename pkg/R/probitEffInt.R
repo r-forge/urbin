@@ -18,27 +18,16 @@ probitEffInt <- function( allCoef, allXVal, xPos, refBound, intBound,
       " (set these values to 'NA' to avoid this warning)" )
   }
   
-  # calculate xBars
-  intX <- mean( intBound )
-  refX <- mean( refBound ) 
-  if( length( xPos ) == 2 ) {
-    intX <- c( intX, EXSquared( intBound[1], intBound[2] ) )
-    refX <- c( refX, EXSquared( refBound[1], refBound[2] ) )
-  }
-  if( length( intX ) != length( xPos ) || length( refX ) != length( xPos ) ) {
-    stop( "internal error: 'intX' or 'refX' does not have the expected length" )
-  }
-  # define X' * beta 
-  intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
-  refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
-  checkXBeta( c( intXbeta, refXbeta ) )
+  model <- prepareEffInt( allCoef, allXVal, xPos, refBound, intBound )
+
   # effect E_{k,ml}
-  eff <- pnorm( intXbeta ) - pnorm( refXbeta )
+  eff <- pnorm( model$intXbeta ) - pnorm( model$refXbeta )
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
   derivCoef <- rep( NA, nCoef )
-  derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
+  derivCoef[ -xPos ] = ( dnorm( model$intXbeta ) - dnorm( model$refXbeta ) ) * 
     allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( intXbeta ) * intX - dnorm( refXbeta ) * refX
+  derivCoef[ xPos ] = dnorm( model$intXbeta ) * model$intX - 
+    dnorm( model$refXbeta ) * model$refX
   # approximate standard error of the effect
   effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
