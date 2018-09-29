@@ -201,3 +201,8 @@ probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 # (only standard errors) 
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# (standard errors + mean value and standard deviation of age)
+probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )

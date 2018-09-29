@@ -401,7 +401,14 @@ stdEr           NA          NA       NA       NA         NA
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
     effect      stdEr 
 -0.2528239  0.7331598 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # (standard errors + mean value and standard deviation of age)
+> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+     effect       stdEr 
+-0.25282386  0.07121468 
 > 
 > proc.time()
    user  system elapsed 
-  0.488   0.043   0.525 
+  0.481   0.043   0.517 
