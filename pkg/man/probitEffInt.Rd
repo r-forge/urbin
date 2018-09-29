@@ -64,7 +64,7 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
 
 \value{
   A numeric vector with two elements: 
-  the semi-elasticity and its approximate standard error.
+  the effect and its approximate standard error.
 }
 
 \examples{
