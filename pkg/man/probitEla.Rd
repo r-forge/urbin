@@ -4,7 +4,7 @@
 \title{Semi-Elasticities from Probit Models}
 
 \usage{
-probitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
+probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
     seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 }
 
@@ -32,12 +32,6 @@ probitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
     (including intercept; the order of its elements must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
-  \item{allCoefVcov}{an optional argument
-    that can be the variance-covariance matrix of all estimated coefficients
-    OR the vector of the standard errors of all estimated coefficients
-    (including intercept; the order of these values must be the same
-    as the order of the corresponding coefficients in argument 
-    \code{allCoef}).}
   \item{xPos}{a posivite integer 
     indicating the position of the explanatory variable of interest
     or a vector of two positive integers 
@@ -45,6 +39,12 @@ probitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.}
+  \item{allCoefVcov}{an optional argument
+    that can be the variance-covariance matrix of all estimated coefficients
+    OR the vector of the standard errors of all estimated coefficients
+    (including intercept; the order of these values must be the same
+    as the order of the corresponding coefficients in argument 
+    \code{allCoef}).}
   \item{seSimplify}{logical value indicating whether the standard errors
     of the semi-elasticities should be calculated by a simplified equation
     (i.e., assuming that \eqn{\phi( \beta' x )} does not depend on \eqn{\beta}),
@@ -85,29 +85,29 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), mean( Mroz87$age ),
   mean( Mroz87$age )^2, mean( Mroz87$educ ) )
 
 # semi-elasticity of age (full covariance matrix of coefficients)
-probitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), 
-  c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
+  vcov( estProbitQuad ) )
 
 # semi-elasticity of age (only standard errors of coefficients)
-probitEla( coef( estProbitQuad ), xMeanQuad, 
-  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
+probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+  sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE )
 
 # semi-elasticity of age (only standard errors of coefficients, 
 # simplified equation for calculating standard error of the semi-elasticity)
-probitEla( coef( estProbitQuad ), xMeanQuad, 
-  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+  sqrt( diag( vcov( estProbitQuad ) ) ) )
 
 # semi-elasticity of age (standard errors of coefficients, 
 # mean and standard deviation of age provided)
-probitEla( coef( estProbitQuad ), xMeanQuad, 
-  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE,
+probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+  sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE,
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 # semi-elasticity of age (standard errors of coefficients,
 # mean and standard deviation of age provided, 
 # simplified equation for calculating standard error of the semi-elasticity)
-probitEla( coef( estProbitQuad ), xMeanQuad, 
-  sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
+probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+  sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }
 

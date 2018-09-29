@@ -1,4 +1,4 @@
-probitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos,
+probitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
     seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
 
   nCoef <- length( allCoef )
