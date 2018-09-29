@@ -22,14 +22,13 @@ probitEffInt <- function( allCoef, allXVal, xPos, refBound, intBound,
 
   # effect E_{k,ml}
   eff <- pnorm( model$intXbeta ) - pnorm( model$refXbeta )
+  
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
-  derivCoef <- rep( NA, nCoef )
-  derivCoef[ -xPos ] = ( dnorm( model$intXbeta ) - dnorm( model$refXbeta ) ) * 
-    allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( model$intXbeta ) * model$intX - 
-    dnorm( model$refXbeta ) * model$refX
+  derivCoef <- probitEffIntDeriv( allCoef, allXVal, xPos, refBound, intBound )
+  
   # approximate standard error of the effect
   effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  
   # object to be returned
   result <- c( effect = eff, stdEr = effSE )
   return( result )
