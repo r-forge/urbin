@@ -378,11 +378,11 @@ stdEr           NA         NA       NA        NA
 +   c( 30, 40 ), c( 50, 60 ) )
     effect      stdEr 
 -0.2528239         NA 
-> # partial derivatives of the semi-elasticity wrt the coefficients
+> # partial derivatives of the effect wrt the coefficients
 > urbin:::probitEffIntDeriv( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ), 
 +   c( 30, 40 ), c( 50, 60 ) )
 [1] 2.237943e-03 1.557347e-03 7.675244e+00 6.864825e+02 2.749727e-02
-> # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+> # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( probitEffInt, t0 = coef( estProbitQuad ), 
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
@@ -421,31 +421,60 @@ stdEr           NA          NA       NA       NA         NA
 +   allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
 > allCoefVcovGroup <- cbind( 
 +   allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
-> # effects of age changing from the 30-44 category to the 53-60 category
-> # (without standard errors)
+> ### effects of age changing from the 30-44 category to the 53-60 category
+> # without standard errors
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ) )
     effect      stdEr 
 -0.2523674         NA 
-> # effects of age changing from the 30-44 category to the 53-60 category
-> # (full covariance matrix)
+> # partial derivatives of the effect wrt the coefficients
+> xMeanGroupAttr <- xMeanGroup
+> attr( xMeanGroupAttr, "derivOnly" ) <- 1 
+> probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( -1, -1, 0, 1 ) )
+[1] -0.004643643 -0.003231433 -0.242884428 -0.242884428 -0.242884428
+[6] -0.242884428 -0.057055754
+> # numerically computed partial derivatives of the effect wrt the coefficients
+> numericGradient( probitEffGroup, t0 = allCoefGroup, 
++   allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( -1, -1, 0, 1 ) )
+        (Intercept)         kids age30.37TRUE age38.44TRUE    age53.60TRUE
+effect -0.004643643 -0.003231433   -0.2240009   -0.1570684  0    0.3764257
+stdEr            NA           NA           NA           NA NA           NA
+              educ
+effect -0.05705575
+stdEr           NA
+> # with full covariance matrix
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
 +   allCoefVcovGroup )
      effect       stdEr 
 -0.25236736  0.07637368 
-> # effects of age changing from the 30-44 category to the 53-60 category
-> # (with standard errors only)
+> # with standard errors only
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
 +   sqrt( diag( allCoefVcovGroup ) ) )
      effect       stdEr 
 -0.25236736  0.06012563 
-> # effects of age changing from the 53-60 category to the 37-52 category
-> # (with full covariance matrix)
+> ### effects of age changing from the 53-60 category to the 37-52 category
+> # without standard errors
+> probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ) )
+   effect     stdEr 
+0.2228361        NA 
+> # partial derivatives of the effect wrt the coefficients
+> probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( 0, 1, 1, -1 ) )
+[1] 0.012448894 0.008662976 0.214077841 0.214077841 0.214077841 0.214077841
+[7] 0.152957729
+> # numerically computed partial derivatives of the effect wrt the coefficients
+> numericGradient( probitEffGroup, t0 = allCoefGroup, 
++   allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( 0, 1, 1, -1 ) )
+       (Intercept)        kids age30.37TRUE age38.44TRUE           age53.60TRUE
+effect  0.01244889 0.008662976            0    0.1689924 0.2198822   -0.3764257
+stdEr           NA          NA           NA           NA        NA           NA
+            educ
+effect 0.1529577
+stdEr         NA
+> # with full covariance matrix
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
 +   allCoefVcovGroup )
    effect     stdEr 
 0.2228361 0.0667222 
-> # effects of age changing from the 53-60 category to the 37-52 category
-> # (with standard errors only)
+> # with standard errors only
 > probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
 +   sqrt( diag( allCoefVcovGroup ) ) )
     effect      stdEr 
@@ -454,4 +483,4 @@ stdEr           NA          NA       NA       NA         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.507   0.030   0.531 
+   0.49    0.04    0.53 
