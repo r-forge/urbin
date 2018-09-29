@@ -151,3 +151,31 @@ probitElaInt( coef( estProbitInt ), xMeanInt,
 probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   sqrt( diag( vcov( estProbitInt ) ) ) )
+
+
+### effect of age changing between discrete intervals 
+### if age is used as linear explanatory variable 
+# mean values of the 'other' explanatory variables
+xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# without standard errors
+probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ) )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# (only standard errors) 
+probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
+
+
+### effect of age changing between discrete intervals 
+### if age is used as linear and quadratic explanatory variable 
+# mean values of the 'other' explanatory variables
+xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# without standard errors
+probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ) )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# (only standard errors) 
+probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )

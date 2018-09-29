@@ -332,6 +332,42 @@ stdEr         NA
     semEla      stdEr 
 -0.4719856  0.1666258 
 > 
+> 
+> ### effect of age changing between discrete intervals 
+> ### if age is used as linear explanatory variable 
+> # mean values of the 'other' explanatory variables
+> xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # without standard errors
+> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ) )
+    effect      stdEr 
+-0.1506167         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # (only standard errors) 
+> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
+     effect       stdEr 
+-0.15061666  0.06132438 
+> 
+> 
+> ### effect of age changing between discrete intervals 
+> ### if age is used as linear and quadratic explanatory variable 
+> # mean values of the 'other' explanatory variables
+> xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # without standard errors
+> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ) )
+    effect      stdEr 
+-0.2528239         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # (only standard errors) 
+> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
+    effect      stdEr 
+-0.2528239  0.7331598 
+> 
 > proc.time()
    user  system elapsed 
-  0.495   0.020   0.509 
+  0.489   0.040   0.523 
