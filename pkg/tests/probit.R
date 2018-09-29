@@ -141,7 +141,9 @@ xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ),
 probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitElaIntDeriv( coef( estProbitInt ), xMeanInt, 
+xMeanIntAttr <- xMeanInt
+attr( xMeanIntAttr, "derivOnly" ) <- 1 
+probitElaInt( coef( estProbitInt ), xMeanIntAttr, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( probitElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 

@@ -309,7 +309,9 @@ Number of Fisher Scoring iterations: 4
     semEla      stdEr 
 -0.4719856         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> urbin:::probitElaIntDeriv( coef( estProbitInt ), xMeanInt, 
+> xMeanIntAttr <- xMeanInt
+> attr( xMeanIntAttr, "derivOnly" ) <- 1 
+> probitElaInt( coef( estProbitInt ), xMeanIntAttr, 
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 [1] -0.010309885 -0.007174475 -0.885844700  0.279991827  0.716229566
 [6] -0.126676033
@@ -486,4 +488,4 @@ stdEr         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.510   0.020   0.524 
+  0.493   0.044   0.531 

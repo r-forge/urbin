@@ -36,10 +36,29 @@ probitElaInt <- function( allCoef, allXVal, xPos, xBound,
   weights <- elaIntWeights( shareVec )
   # calculation of the semi-elasticity
   semEla <- lpmElaInt( phiVec, shareVec, xBound )
-  ### calculation of its standard error
+  # partial derivatives of each semi-elasticity around each boundary
+  # w.r.t. all estimated coefficients
+  gradM <- matrix( 0, nCoef, nInt - 1 )
+  gradPhiVec <- dnorm( xBeta )
+  for( m in 1:( nInt - 1 ) ) {
+    gradM[ -xPos, m ] <- 2 * ( gradPhiVec[m+1] - gradPhiVec[m] ) * 
+      allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
+    gradM[ xPos[m], m ] <- - 2 * gradPhiVec[m] * xBound[m+1] / 
+      ( xBound[m+2] - xBound[m] )
+    gradM[ xPos[m+1], m ] <- 2 * gradPhiVec[m+1] * xBound[m+1] / 
+      ( xBound[m+2] - xBound[m] )
+  }
   # partial derivative of the semi-elasticity 
   # w.r.t. all estimated coefficients
-  derivCoef <- probitElaIntDeriv( allCoef, allXVal, xPos, xBound )
+  derivCoef <- rep( 0, nCoef )
+  for( m in 1:( nInt - 1 ) ){
+    derivCoef <- derivCoef + weights[m] * gradM[ , m ]
+  }
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( derivCoef )
+  }
   # standard error of the (average) semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
