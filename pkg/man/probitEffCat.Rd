@@ -1,10 +1,10 @@
-\name{probitEffGroup}
-\alias{probitEffGroup}
+\name{probitEffCat}
+\alias{probitEffCat}
 
 \title{Probit Models: Grouping and Re-basing Categorical Variables}
 
 \usage{
-probitEffGroup( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
+probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
 }
 
 \description{
@@ -92,12 +92,12 @@ allCoefVcovGroup <- cbind(
 
 # effects of age changing from 30-44 years to 53-60 years
 # (with full covariance matrix)
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
+probitEffCat( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
   allCoefVcovGroup )
 
 # effects of age changing from 30-44 years to 53-60 years
 # (with standard errors only)
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
+probitEffCat( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
   sqrt( diag( allCoefVcovGroup ) ) )
 }
 

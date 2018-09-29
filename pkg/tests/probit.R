@@ -218,44 +218,44 @@ probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 
 ### grouping and re-basing categorical variables
 # mean values for regrouping and re-basing 
-xMeanGroup <- c( xMeanInt[1:4], mean( Mroz87$age45.52 ), xMeanInt[5:6] )
+xMeanCat <- c( xMeanInt[1:4], mean( Mroz87$age45.52 ), xMeanInt[5:6] )
 # coefficients including the coefficient of the reference category
-allCoefGroup <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
+allCoefCat <- c( coef( estProbitInt )[1:4], 0, coef( estProbitInt )[5:6] )
 # variance covariance matrix of the coefficients 
 # including the coefficient of the reference category
-allCoefVcovGroup <- vcov( estProbitInt )
-allCoefVcovGroup <- rbind( 
-  allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
-allCoefVcovGroup <- cbind( 
-  allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
+allCoefVcovCat <- vcov( estProbitInt )
+allCoefVcovCat <- rbind( 
+  allCoefVcovCat[ 1:4, ], rep( 0, 6 ), allCoefVcovCat[ 5:6, ] )
+allCoefVcovCat <- cbind( 
+  allCoefVcovCat[ , 1:4 ], rep( 0, 7 ), allCoefVcovCat[ , 5:6 ] )
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ) )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ) )
 # partial derivatives of the effect wrt the coefficients
-xMeanGroupAttr <- xMeanGroup
-attr( xMeanGroupAttr, "derivOnly" ) <- 1 
-probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( -1, -1, 0, 1 ) )
+xMeanCatAttr <- xMeanCat
+attr( xMeanCatAttr, "derivOnly" ) <- 1 
+probitEffCat( allCoefCat, xMeanCatAttr, c( 3:6 ), c( -1, -1, 0, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( probitEffGroup, t0 = allCoefGroup, 
-  allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( -1, -1, 0, 1 ) )
+numericGradient( probitEffCat, t0 = allCoefCat, 
+  allXVal = xMeanCat, xPos = c( 3:6 ), xGroups = c( -1, -1, 0, 1 ) )
 # with full covariance matrix
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
-  allCoefVcovGroup )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ),
+  allCoefVcovCat )
 # with standard errors only
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
-  sqrt( diag( allCoefVcovGroup ) ) )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( -1, -1, 0, 1 ),
+  sqrt( diag( allCoefVcovCat ) ) )
 ### effects of age changing from the 53-60 category to the 37-52 category
 # without standard errors
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ) )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ) )
 # partial derivatives of the effect wrt the coefficients
-probitEffGroup( allCoefGroup, xMeanGroupAttr, c( 3:6 ), c( 0, 1, 1, -1 ) )
+probitEffCat( allCoefCat, xMeanCatAttr, c( 3:6 ), c( 0, 1, 1, -1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( probitEffGroup, t0 = allCoefGroup, 
-  allXVal = xMeanGroup, xPos = c( 3:6 ), xGroups = c( 0, 1, 1, -1 ) )
+numericGradient( probitEffCat, t0 = allCoefCat, 
+  allXVal = xMeanCat, xPos = c( 3:6 ), xGroups = c( 0, 1, 1, -1 ) )
 # with full covariance matrix
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
-  allCoefVcovGroup )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ),
+  allCoefVcovCat )
 # with standard errors only
-probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( 0, 1, 1, -1 ),
-  sqrt( diag( allCoefVcovGroup ) ) )
+probitEffCat( allCoefCat, xMeanCat, c( 3:6 ), c( 0, 1, 1, -1 ),
+  sqrt( diag( allCoefVcovCat ) ) )
 

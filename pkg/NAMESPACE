@@ -1,4 +1,4 @@
-export( "probitEffGroup" )
+export( "probitEffCat" )
 export( "probitEffInt" )
 export( "probitEla" )
 export( "probitElaInt" )

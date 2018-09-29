@@ -1,4 +1,4 @@
-probitEffGroup <- function( allCoef, allXVal, xPos, xGroups, 
+probitEffCat <- function( allCoef, allXVal, xPos, xGroups, 
     allCoefVcov = NULL ){
   nCoef <- length( allCoef )
   # check argument xPos
