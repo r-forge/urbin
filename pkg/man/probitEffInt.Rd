@@ -17,7 +17,7 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
   that the dependent variable has a value of one
   increases
   if the explanatory variable of interest
-  changes from the the 'reference' interval 
+  changes from the 'reference' interval 
   to a selected interval of interest.
   This function also applies the Delta-method
   to calculate the approximate standard error 
@@ -37,7 +37,7 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
     indicating the positions of the linear term and the quadratic term
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
-    and eventually \code{allCoefSE}.}
+    and eventually \code{allCoefVcov}.}
   \item{refBound}{a numeric vector of two elements
     that indicate the lower boundary and the upper boundary
     of the 'reference' interval, respectively.}
