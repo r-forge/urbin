@@ -161,6 +161,13 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # without standard errors
 probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ) )
+# partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::probitEffIntDeriv( coef( estProbitLin ), xMeanLinInt, 3, 
+  c( 30, 40 ), c( 50, 60 ) )
+# numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+numericGradient( probitEffInt, t0 = coef( estProbitLin ), 
+  allXVal = xMeanLinInt, xPos = 3, 
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
@@ -179,6 +186,13 @@ xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # without standard errors
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ) )
+# partial derivatives of the semi-elasticity wrt the coefficients
+urbin:::probitEffIntDeriv( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ), 
+  c( 30, 40 ), c( 50, 60 ) )
+# numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+numericGradient( probitEffInt, t0 = coef( estProbitQuad ), 
+  allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
