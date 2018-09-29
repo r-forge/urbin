@@ -167,7 +167,9 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitEffIntDeriv( coef( estProbitLin ), xMeanLinInt, 3, 
+xMeanLinIntAttr <- xMeanLinInt
+attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
+probitEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( probitEffInt, t0 = coef( estProbitLin ), 
@@ -192,7 +194,9 @@ xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ) )
 # partial derivatives of the effect wrt the coefficients
-urbin:::probitEffIntDeriv( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ), 
+xMeanQuadIntAttr <- xMeanQuadInt
+attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
+probitEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( probitEffInt, t0 = coef( estProbitQuad ), 

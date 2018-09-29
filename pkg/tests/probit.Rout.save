@@ -349,7 +349,9 @@ stdEr         NA
     effect      stdEr 
 -0.1506167         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> urbin:::probitEffIntDeriv( coef( estProbitLin ), xMeanLinInt, 3, 
+> xMeanLinIntAttr <- xMeanLinInt
+> attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
+> probitEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
 +   c( 30, 40 ), c( 50, 60 ) )
 [1] 0.01968989 0.01370186 8.65400572 0.24192682
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -384,7 +386,9 @@ stdEr           NA         NA       NA        NA
     effect      stdEr 
 -0.2528239         NA 
 > # partial derivatives of the effect wrt the coefficients
-> urbin:::probitEffIntDeriv( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ), 
+> xMeanQuadIntAttr <- xMeanQuadInt
+> attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
+> probitEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
 +   c( 30, 40 ), c( 50, 60 ) )
 [1] 2.237943e-03 1.557347e-03 7.675244e+00 6.864825e+02 2.749727e-02
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -488,4 +492,4 @@ stdEr         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.493   0.044   0.531 
+  0.475   0.051   0.520 
