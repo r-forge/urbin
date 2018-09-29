@@ -6,11 +6,16 @@ probitEffCat <- function( allCoef, allXVal, xPos, xGroups,
     maxVal = nCoef )
   # shares in each category
   xShares <- allXVal[ xPos ]
+  if( any( xShares < 0 ) ){
+    stop( "the share of the observations in at least one category",
+      " is negative" )
+  }
+  if( sum( xShares ) > 1 ){
+    stop( "the shares of the observations in the individual categories",
+      " (without the reference category) sum up to a value larger than 1" )
+  }
   # coefficients of the dummy variables for the categories
   xCoef <- allCoef[ xPos ]
-  if( sum( xShares ) > 1 ){
-    stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
-  }
   if( length( xCoef ) != length( xShares ) ){
     stop( "arguments 'xCoef' and 'xShares' must have the same length" )
   }
