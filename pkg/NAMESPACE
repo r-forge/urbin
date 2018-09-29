@@ -1,6 +1,7 @@
+export( "probitEffGroup" )
+export( "probitEffInt" )
 export( "probitEla" )
 export( "probitElaInt" )
-export( "probitEffInt" )
 
 importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )
