@@ -1,4 +1,4 @@
-uProbitElaDeriv <- function( allCoef, allXVal, xPos, simplified = FALSE ){
+probitElaDeriv <- function( allCoef, allXVal, xPos, simplified = FALSE ){
   if( length( xPos ) == 2 ){
     xCoef <- allCoef[ xPos ]
   } else if( length( xPos ) == 1 ) {

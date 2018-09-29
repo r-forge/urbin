@@ -1,10 +1,10 @@
-\name{uProbitEla}
-\alias{uProbitEla}
+\name{probitEla}
+\alias{probitEla}
 
 \title{Semi-Elasticities from Probit Models}
 
 \usage{
-uProbitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
+probitEla( allCoef, allXVal, allCoefVcov = NULL, xPos,
     seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 }
 
@@ -85,25 +85,25 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), mean( Mroz87$age ),
   mean( Mroz87$age )^2, mean( Mroz87$educ ) )
 
 # semi-elasticity of age (full covariance matrix)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), 
+probitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), 
   c( 3, 4 ) )
 
 # semi-elasticity of age (standard errors only)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
 
 # semi-elasticity of age (standard errors only, simplified equation for stdEr)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 
 # semi-elasticity of age (standard errors plus mean and standard deviation of age)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE,
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 # semi-elasticity of age (standard errors only plus mean and standard deviation of age, 
 # simplified equation for stdEr)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }

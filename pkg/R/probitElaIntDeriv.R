@@ -1,4 +1,4 @@
-uProbitElaIntDeriv <- function( allCoef, allXVal, xPos, xBound ){
+probitElaIntDeriv <- function( allCoef, allXVal, xPos, xBound ){
   # number of coefficients
   nCoef <- length( allCoef )
   # number of intervals

@@ -1,4 +1,4 @@
-uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos,
+probitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos,
     seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
 
   nCoef <- length( allCoef )
@@ -28,7 +28,7 @@ uProbitEla <- function( allCoef, allXVal, allCoefVcov = NULL, xPos,
   checkXBeta( xBeta )
   dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  derivCoef <- uProbitElaDeriv( allCoef, allXVal, xPos, seSimplify )
+  derivCoef <- probitElaDeriv( allCoef, allXVal, xPos, seSimplify )
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )

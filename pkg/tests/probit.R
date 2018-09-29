@@ -16,7 +16,7 @@ summary( estProbitLin )
 # mean values of the explanatory variables
 xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 # semi-elasticity of age without standard errors
-uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
+probitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estProbitLin, 
   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ), 
@@ -25,20 +25,20 @@ uProbitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ), 
       type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
+urbin:::probitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3 )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( uProbitEla, t0 = coef( estProbitLin ), 
+numericGradient( probitEla, t0 = coef( estProbitLin ), 
   allXVal = xMeanLin, xPos = 3 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::uProbitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
+urbin:::probitElaDeriv( coef( estProbitLin ), xMeanLin, xPos = 3,
   simplified = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-uProbitEla( coef( estProbitLin ), xMeanLin, vcov( estProbitLin ), 3 )
+probitEla( coef( estProbitLin ), xMeanLin, vcov( estProbitLin ), 3 )
 # semi-elasticity of age with standard errors (only standard errors)
-uProbitEla( coef( estProbitLin ), xMeanLin, 
+probitEla( coef( estProbitLin ), xMeanLin, 
   sqrt( diag( vcov( estProbitLin ) ) ), 3, seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-uProbitEla( coef( estProbitLin ), xMeanLin, 
+probitEla( coef( estProbitLin ), xMeanLin, 
   sqrt( diag( vcov( estProbitLin ) ) ), 3 )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 estProbitLinMfx <- probitmfx( lfp ~ kids + age + educ, data = Mroz87 )
@@ -52,7 +52,7 @@ summary( estProbitQuad )
 # mean values of the explanatory variables
 xMeanQuad <- c( xMeanLin[ 1:3], xMeanLin[3]^2, xMeanLin[4] )
 # semi-elasticity of age without standard errors
-uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estProbitQuad, 
   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ), 
@@ -61,20 +61,20 @@ uProbitEla( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ), 
       type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
+urbin:::probitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( uProbitEla, t0 = coef( estProbitQuad ), 
+numericGradient( probitEla, t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ) )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::uProbitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
+urbin:::probitElaDeriv( coef( estProbitQuad ), xMeanQuad, xPos = c( 3, 4 ),
   simplified = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), c( 3, 4 ) )
 # semi-elasticity of age with standard errors (only standard errors)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
@@ -86,8 +86,8 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
+probitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
   seSimplify = TRUE )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
@@ -101,14 +101,14 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
-uProbitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
+probitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ) )
+probitEla( coef( estProbitQuad ), xMeanQuad, vcovApp, c( 3, 4 ),
   seSimplify = TRUE )
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), 
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE )
-uProbitEla( coef( estProbitQuad ), xMeanQuad, 
+probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
@@ -135,19 +135,19 @@ summary( estProbitInt )
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 # semi-elasticity of age without standard errors
-uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::uProbitElaIntDeriv( coef( estProbitInt ), xMeanInt, 
+urbin:::probitElaIntDeriv( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( uProbitElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
+numericGradient( probitElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   vcov( estProbitInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   sqrt( diag( vcov( estProbitInt ) ) ) )

@@ -1,4 +1,4 @@
-uLinElaInt <- function( xCoef, xShares, xBound, 
+lpmElaInt <- function( xCoef, xShares, xBound, 
   xCoefSE = rep( NA, length( xCoef ) ) ){
   nInt <- length( xCoef )
   if( nInt < 2 || !is.vector( xCoef ) ) {

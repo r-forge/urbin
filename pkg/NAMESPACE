@@ -1,5 +1,5 @@
-export( "uProbitEla" )
-export( "uProbitElaInt" )
+export( "probitEla" )
+export( "probitElaInt" )
 
 importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )

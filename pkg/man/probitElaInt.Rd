@@ -1,10 +1,10 @@
-\name{uProbitElaInt}
-\alias{uProbitElaInt}
+\name{probitElaInt}
+\alias{probitElaInt}
 
 \title{Semi-Elasticities of Interval-Coded Variables from Probit Models}
 
 \usage{
-uProbitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
+probitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
 }
 
 \description{
@@ -84,12 +84,12 @@ xMeanInt <- c( 1, colMeans( Mroz87[ ,
   c( "kids", "age30.37", "age38.44", "age53.60", "educ" ) ] ) )
 
 # semi-elasticity of age (full covariance matrix)
-uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   vcov( estProbitInt ) )
 
 # semi-elasticity of age with standard errors (only standard errors)
-uProbitElaInt( coef( estProbitInt ), xMeanInt, 
+probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   sqrt( diag( vcov( estProbitInt ) ) ) )
 }
