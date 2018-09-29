@@ -4,8 +4,7 @@
 \title{Probit Models: Grouping and Re-basing Categorical Variables}
 
 \usage{
-probitEffGroup( allCoef, allXVal, xPos, xGroups, 
-    allCoefSE = rep( NA, length( allCoef ) ) )
+probitEffGroup( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
 }
 
 \description{
@@ -44,7 +43,7 @@ probitEffGroup( allCoef, allXVal, xPos, xGroups,
     that the category belongs to the new category of interest,
     and a zero indicates 
     that the category belongs to neither.}
-  \item{allCoefSE}{an optional argument
+  \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
@@ -90,6 +89,11 @@ allCoefVcovGroup <- rbind(
   allCoefVcovGroup[ 1:4, ], rep( 0, 6 ), allCoefVcovGroup[ 5:6, ] )
 allCoefVcovGroup <- cbind( 
   allCoefVcovGroup[ , 1:4 ], rep( 0, 7 ), allCoefVcovGroup[ , 5:6 ] )
+
+# effects of age changing from 30-44 years to 53-60 years
+# (with full covariance matrix)
+probitEffGroup( allCoefGroup, xMeanGroup, c( 3:6 ), c( -1, -1, 0, 1 ),
+  allCoefVcovGroup )
 
 # effects of age changing from 30-44 years to 53-60 years
 # (with standard errors only)

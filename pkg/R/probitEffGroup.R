@@ -1,5 +1,5 @@
 probitEffGroup <- function( allCoef, allXVal, xPos, xGroups, 
-    allCoefSE = rep( NA, length( allCoef ) ) ){
+    allCoefVcov = NULL ){
   nCoef <- length( allCoef )
   xShares <- allXVal[ xPos ]
   xCoef <- allCoef[ xPos ]
@@ -15,6 +15,8 @@ probitEffGroup <- function( allCoef, allXVal, xPos, xGroups,
   if( ! all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   # D_mr
   DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
     sum( xShares[ xGroups == -1 ] )
@@ -30,10 +32,8 @@ probitEffGroup <- function( allCoef, allXVal, xPos, xGroups,
   derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
     allXVal[ -xPos ] 
   derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect - dnorm( XBetaRef ) * DRef
-  # variance covariance of the coefficients (covariances set to zero)
-  vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the effect
-  effeGSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
 }
