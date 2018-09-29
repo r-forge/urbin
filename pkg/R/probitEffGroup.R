@@ -32,6 +32,11 @@ probitEffGroup <- function( allCoef, allXVal, xPos, xGroups,
   derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
     allXVal[ -xPos ] 
   derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect - dnorm( XBetaRef ) * DRef
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( derivCoef )
+  }
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( effect = effeG, stdEr = effeGSE )
