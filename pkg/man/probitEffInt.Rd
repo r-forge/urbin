@@ -5,7 +5,7 @@
 
 \usage{
 probitEffInt( allCoef, allXVal, xPos, refBound, intBound, 
-  allCoefSE = rep( NA, length( allCoef ) ) )
+  allCoefVcov = NULL )
 }
 
 \description{
@@ -44,7 +44,7 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
   \item{intBound}{a numeric vector of two elements
     that indicate the lower boundary and the upper boundary
     of the interval of interest, respectively.}
-  \item{allCoefSE}{an optional argument
+  \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same

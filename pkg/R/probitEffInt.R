@@ -1,15 +1,15 @@
 probitEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, 
-  allCoefSE = rep( NA, length( allCoef ) ) ){
+  allCoefVcov = NULL ){
   # number of coefficients
   nCoef <- length( allCoef )
   # check arguments
   if( length( allXVal ) != nCoef ){
     stop( "argument 'allCoef' and 'allXVal' must have the same length" )
   }  
-  if( length( allCoefSE ) != nCoef ){
-    stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
-  }
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
+  # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
   if( any( !is.na( allXVal[ xPos ] ) ) ) {
@@ -39,10 +39,8 @@ probitEffInt <- function( allCoef, allXVal, xPos, refBound, intBound,
   derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
     allXVal[ -xPos ] 
   derivCoef[ xPos ] = dnorm( intXbeta ) * intX - dnorm( refXbeta ) * refX
-  # variance covariance of the coefficients (covariances set to zero)
-  vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the effect
-  effSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
   result <- c( effect = eff, stdEr = effSE )
   return( result )
