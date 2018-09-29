@@ -28,7 +28,23 @@ probitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   checkXBeta( xBeta )
   dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  derivCoef <- probitElaDeriv( allCoef, allXVal, xPos, seSimplify )
+  # partial derivative of the semi-elasticity w.r.t. all estimated coefficients
+  if( seSimplify ) {
+    derivCoef <- rep( 0, length( allCoef ) )
+  } else {
+    derivCoef <- ddnorm( xBeta ) * allXVal * 
+      ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal
+  }
+  derivCoef[ xPos[1] ] <- derivCoef[ xPos[1] ] + dnorm( xBeta ) * xVal
+  if( length( xPos ) == 2 ) {
+    derivCoef[ xPos[2] ] <- derivCoef[ xPos[2] ] + dnorm( xBeta ) * 2 * xVal^2
+  }
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( c( derivCoef ) )
+  }
+  # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )

@@ -25,13 +25,14 @@ probitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ), 
       type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitElaDeriv( coef( estProbitLin ), xMeanLin, 3 )
+xMeanLinAttr <- xMeanLin
+attr( xMeanLinAttr, "derivOnly" ) <- 1 
+probitEla( coef( estProbitLin ), xMeanLinAttr, 3, seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( probitEla, t0 = coef( estProbitLin ), 
   allXVal = xMeanLin, xPos = 3 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitElaDeriv( coef( estProbitLin ), xMeanLin, 3,
-  simplified = TRUE )
+probitEla( coef( estProbitLin ), xMeanLinAttr, 3, seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 probitEla( coef( estProbitLin ), xMeanLin, 3, vcov( estProbitLin ) )
 # semi-elasticity of age with standard errors (only standard errors)
@@ -61,13 +62,15 @@ probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ) )
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ), 
       type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitElaDeriv( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ) )
+xMeanQuadAttr <- xMeanQuad
+attr( xMeanQuadAttr, "derivOnly" ) <- 1 
+probitEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ),
+  seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( probitEla, t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ) )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbin:::probitElaDeriv( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
-  simplified = TRUE )
+probitEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcov( estProbitQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
