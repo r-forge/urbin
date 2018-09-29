@@ -83,12 +83,12 @@ summary( estProbitInt )
 xMeanInt <- c( 1, colMeans( Mroz87[ , 
   c( "kids", "age30.37", "age38.44", "age53.60", "educ" ) ] ) )
 
-# semi-elasticity of age (full covariance matrix)
+# semi-elasticity of age (full covariance matrix of coefficients)
 probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   vcov( estProbitInt ) )
 
-# semi-elasticity of age with standard errors (only standard errors)
+# semi-elasticity of age (only standard errors of coefficients)
 probitElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   sqrt( diag( vcov( estProbitInt ) ) ) )

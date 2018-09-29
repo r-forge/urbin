@@ -84,25 +84,28 @@ summary( estProbitQuad )
 xMeanQuad <- c( 1, mean( Mroz87$kids ), mean( Mroz87$age ), 
   mean( Mroz87$age )^2, mean( Mroz87$educ ) )
 
-# semi-elasticity of age (full covariance matrix)
+# semi-elasticity of age (full covariance matrix of coefficients)
 probitEla( coef( estProbitQuad ), xMeanQuad, vcov( estProbitQuad ), 
   c( 3, 4 ) )
 
-# semi-elasticity of age (standard errors only)
+# semi-elasticity of age (only standard errors of coefficients)
 probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE )
 
-# semi-elasticity of age (standard errors only, simplified equation for stdEr)
+# semi-elasticity of age (only standard errors of coefficients, 
+# simplified equation for calculating standard error of the semi-elasticity)
 probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ) )
 
-# semi-elasticity of age (standard errors plus mean and standard deviation of age)
+# semi-elasticity of age (standard errors of coefficients, 
+# mean and standard deviation of age provided)
 probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ), seSimplify = FALSE,
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
-# semi-elasticity of age (standard errors only plus mean and standard deviation of age, 
-# simplified equation for stdEr)
+# semi-elasticity of age (standard errors of coefficients,
+# mean and standard deviation of age provided, 
+# simplified equation for calculating standard error of the semi-elasticity)
 probitEla( coef( estProbitQuad ), xMeanQuad, 
   sqrt( diag( vcov( estProbitQuad ) ) ), c( 3, 4 ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
