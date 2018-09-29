@@ -344,6 +344,12 @@ stdEr         NA
     effect      stdEr 
 -0.1506167         NA 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
+> # (full covariance matrix) 
+> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), vcov( estProbitLin ) )
+    effect      stdEr 
+-0.1506167  0.0545738 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
@@ -362,6 +368,12 @@ stdEr         NA
     effect      stdEr 
 -0.2528239         NA 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
+> # (full covariance matrix) 
+> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), vcov( estProbitQuad ) )
+     effect       stdEr 
+-0.25282386  0.06147638 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
@@ -370,4 +382,4 @@ stdEr         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.489   0.040   0.523 
+  0.481   0.043   0.525 

@@ -162,6 +162,10 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
+# (full covariance matrix) 
+probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), vcov( estProbitLin ) )
+# effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
@@ -175,6 +179,10 @@ xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # without standard errors
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ) )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# (full covariance matrix) 
+probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), vcov( estProbitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
