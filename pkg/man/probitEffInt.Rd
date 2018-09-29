@@ -5,7 +5,7 @@
 
 \usage{
 probitEffInt( allCoef, allXVal, xPos, refBound, intBound, 
-  allCoefVcov = NULL )
+  allCoefVcov = NULL, xMeanSd = NULL )
 }
 
 \description{
@@ -50,6 +50,16 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+  \item{xMeanSd}{a vector with two elements: 
+    the mean value and the standard deviation of the explanatory variable 
+    of interest.
+    If argument \code{allCoefVcov} is a vector of standard errors
+    and the explanatory variables include a linear and a quadratic term
+    of the variable of interest,
+    the information provided in argument \code{xMeanSd} 
+    is used to approximate the covariance 
+    between the coefficient of the linear term 
+    and the coefficient of the quadratic term.}
 }
 
 \value{
@@ -77,6 +87,13 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), NA, NA, mean( Mroz87$educ ) )
 # (only standard errors of coefficients)
 probitEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
+  
+# effect of age changing from the 30-40 interval to the 50-60 interval
+# (with standard errors of coefficients as well as 
+# mean and standard deviation of age) 
+probitEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }
 
 \keyword{models}
