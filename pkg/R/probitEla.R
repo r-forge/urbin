@@ -1,14 +1,21 @@
 probitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
     seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
 
-  nCoef <- length( allCoef )
+  # check argument seSimplify
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
   }
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # Check x values
   if( length( allXVal ) != nCoef ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
-  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
+  # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
     xCoef <- allCoef[ xPos ]
     if( !isTRUE( all.equal( allXVal[ xPos[2] ], allXVal[ xPos[1] ]^2 ) ) ) {
@@ -20,15 +27,13 @@ probitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   } else {
     stop( "argument 'xPos' must be a scalar or a vector with two elements" )
   }
-  # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
   # prepare calculation of semi-elasticity 
   xVal <- allXVal[ xPos[ 1 ] ]
   xBeta <- sum( allCoef * allXVal )
   checkXBeta( xBeta )
   dfun <- dnorm( xBeta )
   semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  # partial derivative of the semi-elasticity w.r.t. all estimated coefficients
+  # partial derivatives of semi-elasticities wrt coefficients
   if( seSimplify ) {
     derivCoef <- rep( 0, length( allCoef ) )
   } else {

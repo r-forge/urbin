@@ -3,9 +3,11 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   lambda = NULL, method =  "binary", 
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
   
+  # check argument seSimplify
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
   }
+  # number(s) of coefficients
   if( method == "binary" || method == "CondL" ){
     nCoef <- length( allCoef )
     # Checking standard errors  
@@ -20,8 +22,6 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   } 
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
-  # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Check x values
   if( method == "binary" || method == "MNL" ){
     if( nCoef != length( allXVal ) ) {
@@ -49,6 +49,8 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
   } 
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
     if( method == "binary" ){
@@ -92,6 +94,7 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   } else {
     stop( "argument 'xPos' must be a scalar or a vector with two elements" )
   }
+  # prepare calculation of semi-elasticity 
   if( method == "binary" ){
     xVal <- allXVal[ xPos[1] ]
     xBeta <- sum( allCoef * allXVal )
