@@ -23,7 +23,7 @@ lpmEla( coef( estLpmLin )[ "age" ], xMeanLin[ "age" ] )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinAttr <- xMeanLin["age"]
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
-# lpmEla( coef( estLpmLin ), xMeanLinAttr, 3, seSimplify = FALSE )
+lpmEla( coef( estLpmLin )["age"], xMeanLinAttr )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmLin )["age"], 
   xVal = xMeanLin["age"] )
@@ -45,8 +45,7 @@ lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ] )
     predict( estLpmQuad, 
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-# lpmEla( coef( estLpmQuad ), xMeanQuadAttr, c( 3, 4 ),
-#   seSimplify = FALSE )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanLinAttr )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
   xVal = xMeanQuad[ "age" ] )
