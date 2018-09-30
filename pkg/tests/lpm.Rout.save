@@ -134,7 +134,10 @@ semEla.age      stdEr
 semEla.age 42.53785 3618.937
 stdEr            NA       NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcov( estLpmQuad ) )
+> lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
++   vcov( estLpmQuad )[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
+semEla.age      stdEr 
+-0.3122117  0.1107022 
 > # semi-elasticity of age with standard errors (only standard errors)
 > lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
 +   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ] )
@@ -150,7 +153,10 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+> lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
++   vcovApp )
+ semEla.age       stdEr 
+-0.31221166  0.09504131 
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on simulated data
 > se <- sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ]
@@ -163,7 +169,10 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+> lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
++   vcovApp )
+semEla.age      stdEr 
+-0.3122117  0.1337022 
 > # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), 
 > #   sqrt( diag( vcov( estLpmQuad ) ) ),
 > #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
@@ -321,4 +330,4 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 > 
 > proc.time()
    user  system elapsed 
-  0.164   0.027   0.183 
+  0.179   0.023   0.197 

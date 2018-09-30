@@ -51,7 +51,8 @@ lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ] )
 numericGradient( lpmEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
   xVal = xMeanQuad[ "age" ] )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcov( estLpmQuad ) )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  vcov( estLpmQuad )[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
 # semi-elasticity of age with standard errors (only standard errors)
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ] )
@@ -65,7 +66,8 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-# lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  vcovApp )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
 se <- sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ]
@@ -78,7 +80,8 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-# lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  vcovApp )
 # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), 
 #   sqrt( diag( vcov( estLpmQuad ) ) ),
 #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
