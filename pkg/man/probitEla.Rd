@@ -6,7 +6,7 @@
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
 \usage{
-lpmEla( xCoef, xVal, xCoefVcov = NULL )
+lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ), 

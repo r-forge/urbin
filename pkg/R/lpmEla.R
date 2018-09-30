@@ -1,11 +1,11 @@
-lpmEla <- function( xCoef, xVal, xCoefVcov = NULL ){
+lpmEla <- function( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL ){
   # number of coefficients
   nCoef<- length( xCoef )
   if( ! nCoef %in% c( 1, 2 ) ) {
     stop( "argument 'xCoef' must be a scalar or vector with 2 elements" )
   }
   # check and prepare allCoefVcov
-  xCoefVcov <- prepareVcov( xCoefVcov, nCoef, xPos = 1:nCoef, xMeanSd = NULL )
+  xCoefVcov <- prepareVcov( xCoefVcov, nCoef, xPos = 1:nCoef, xMeanSd )
   # check argument xVal
   if( length( xVal ) != 1 || !is.numeric( xVal ) ) {
     stop( "argument 'xVal' must be a single numeric value" )
