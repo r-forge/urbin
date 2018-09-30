@@ -6,7 +6,7 @@
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
 \usage{
-lpmEla( xCoef, xVal, xCoefSE = rep( NA, length( xCoef ) ) )
+lpmEla( xCoef, xVal, xCoefVcov = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ), 
@@ -40,7 +40,7 @@ logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ),
   \item{xVal}{a numeric scalar that indicates 
     the value of the explanatory variable of interest,
     at which the semi-elasticities should be calculated.}
-  \item{xCoefSE}{an optional argument
+  \item{xCoefVcov}{an optional argument
     that can be a numeric scalar equal to the standard error 
     of the coefficient of the explanatory variable of interest 
     (if there is only a linear term of the explanatory variable of interest)
