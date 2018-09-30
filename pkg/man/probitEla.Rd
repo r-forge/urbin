@@ -11,7 +11,8 @@ probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 logitEla( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, method =  "binary" )
+  lambda = NULL, method =  "binary",
+  seSimplify = !is.matrix( allCoefVcov ) )
 }
 
 \description{

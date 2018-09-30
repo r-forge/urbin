@@ -1,7 +1,11 @@
 logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, method =  "binary" ){
+  lambda = NULL, method =  "binary", 
+  seSimplify = !is.matrix( allCoefVcov ) ){
   
+  if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
+    stop( "argument 'seSimplify' must be TRUE or FALSE" )
+  }
   if( method == "binary" || method == "CondL" ){
     nCoef <- length( allCoef )
     # Checking standard errors  
@@ -139,19 +143,46 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
       ( pfunBra * ( pfun - pfun^2 ) * 1/lambda[ yCatBra ] +
           pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * IV[ yCatBra ] )
   } 
-  if( method == "binary" || method == "MNL" ){
+  # partial derivatives of semi-elasticities wrt coefficients
+  if( method == "binary" ){
+    if( seSimplify ) {
+      derivCoef <- rep( 0, length( allCoef ) )
+    } else {
+      derivCoef <- allXVal * semEla *
+        ( 1 - 2 * exp( xBeta ) / ( 1 + exp( xBeta ) ) )
+    }
+    derivCoef[ xPos[1] ] <- derivCoef[ xPos[1] ] + dfun * xVal
+    if( length( xPos ) == 2 ) {
+      derivCoef[ xPos[2] ] <- derivCoef[ xPos[2] ] + dfun * 2 * xVal^2
+    }
+  } else if( method == "MNL" ){
+    if( !seSimplify ) {
+      warning( "exact (non-simplified) calculation of derivatives of",
+        " semi-elasticities wrt coefficients has not yet been implemented",
+        " for MNL models" )
+    }
     derivCoef <- rep( 0, length( allCoef ) )
     derivCoef[ xPos[1] ] <- dfun * xVal
     if( length( xPos ) == 2 ) {
       derivCoef[ xPos[2] ] <- dfun * 2 * xVal^2
     }
   } else if( method == "CondL" ){
+    if( !seSimplify ) {
+      warning( "exact (non-simplified) calculation of derivatives of",
+        " semi-elasticities wrt coefficients has not yet been implemented",
+        " for CondL models" )
+    }
     derivCoef <- rep( 0, length( allCoef ) )
     derivCoef[ xPos[1] ] <- ( pfun - pfun^2 ) * xVal[ yCat ]
     if( length( xPos ) == 2 ) {
       derivCoef[ xPos[2] ] <- ( pfun - pfun^2 ) * 2 * xVal[ yCat ]^2
     }
   } else{
+    if( !seSimplify ) {
+      warning( "exact (non-simplified) calculation of derivatives of",
+        " semi-elasticities wrt coefficients has not yet been implemented",
+        " for NestL models" )
+    }
     derivCoef <- rep( 0, length( allCoef ) )
     derivCoef[ xPos[1] ] <- ( 
       pfunBra * ( pfun - pfun^2 ) / lambda[ yCatBra ] +
