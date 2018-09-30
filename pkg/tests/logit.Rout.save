@@ -238,13 +238,17 @@ semEla.age      stdEr
 +   seSimplify = TRUE )
 semEla.age      stdEr 
 -0.3171501  0.1359782 
-> # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
-> #   sqrt( diag( vcov( estLogitQuad ) ) ), 
-> #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
-> #   seSimplify = FALSE )
-> # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
-> #   sqrt( diag( vcov( estLogitQuad ) ) ),
-> #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+> logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ),
++   sqrt( diag( vcov( estLogitQuad ) ) ),
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
++   seSimplify = FALSE )
+semEla.age      stdEr 
+-0.3171501  0.3273720 
+> logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ),
++   sqrt( diag( vcov( estLogitQuad ) ) ),
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+semEla.age      stdEr 
+-0.3171501  0.1359782 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 > estLogitQuadMfx <- logitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
@@ -411,4 +415,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.489   0.044   0.528 
+  0.480   0.039   0.514 

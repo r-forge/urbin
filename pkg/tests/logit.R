@@ -107,13 +107,13 @@ vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <-
 logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
 logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp,
   seSimplify = TRUE )
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
-#   sqrt( diag( vcov( estLogitQuad ) ) ), 
-#   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
-#   seSimplify = FALSE )
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
-#   sqrt( diag( vcov( estLogitQuad ) ) ),
-#   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ),
+  sqrt( diag( vcov( estLogitQuad ) ) ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
+  seSimplify = FALSE )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ),
+  sqrt( diag( vcov( estLogitQuad ) ) ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
 # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 estLogitQuadMfx <- logitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
