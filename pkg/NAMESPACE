@@ -1,3 +1,4 @@
+export( "logitEla" )
 export( "probitEffCat" )
 export( "probitEffInt" )
 export( "probitEla" )

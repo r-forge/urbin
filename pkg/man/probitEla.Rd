@@ -1,18 +1,22 @@
 \name{probitEla}
 \alias{probitEla}
+\alias{logitEla}
 
-\title{Semi-Elasticities from Probit Models}
+\title{Probit and Logit Models: Semi-Elasticities}
 
 \usage{
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
-    seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
+  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
+logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ), 
+  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
+  lambda = NULL, method =  "binary" )
 }
 
 \description{
   This function calculates 
   the semi-elasticity of a continuous explanatory variable
   that is used as a linear and/or quadratic explanatory variable
-  in a probit model.
+  in a probit or logit model.
   The calculated semi-elasticity indicates
   by how many percentage points the probability
   that the dependent variable has a value of one
@@ -39,7 +43,7 @@ probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.}
-  \item{allCoefVcov}{an optional argument
+  \item{allCoefVcov,allCoefSE}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
@@ -60,6 +64,8 @@ probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
+  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda,method}{
+    will be documented later}
 }
 
 \value{
