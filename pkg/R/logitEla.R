@@ -1,33 +1,23 @@
-logitEla <- function( allCoef, allXVal, xPos, 
-  allCoefSE = rep( NA, length( allCoef ) ), 
+logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL, method =  "binary" ){
   
   if( method == "binary" || method == "CondL" ){
     nCoef <- length( allCoef )
     # Checking standard errors  
-    if( nCoef != length( allCoefSE ) ) {
-      stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
-    }  
   } else if( method == "MNL" ){
     NCoef <- length( allCoef )
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
     nCoef <- dim( mCoef )[1]
     pCoef <- dim( mCoef )[2]
-    # Checking standard errors
-    if( NCoef != length( allCoefSE ) ) {
-      stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
-    }
   } else{
     nCoef <- length( allCoef )
     NCoef <- length( allCoefBra )
-    # Checking standard errors
-    if( nCoef != length( allCoefSE ) ){
-      stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
-    }
   } 
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
   # Check x values
   if( method == "binary" || method == "MNL" ){
     if( nCoef != length( allXVal ) ) {
@@ -181,8 +171,8 @@ logitEla <- function( allCoef, allXVal, xPos,
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
     return( c( derivCoef ) )
   }
-  vcovCoef <- diag( allCoefSE^2 )
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  # approximate standard error of the semi-elasticity
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
 } 

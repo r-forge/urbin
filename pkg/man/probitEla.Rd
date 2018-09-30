@@ -9,7 +9,7 @@
 lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
-logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ), 
+logitEla( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL, method =  "binary" )
 }
@@ -65,7 +65,7 @@ logitEla( allCoef, allXVal, xPos, allCoefSE = rep( NA, length( allCoef ) ),
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.}
-  \item{allCoefVcov,allCoefSE}{an optional argument
+  \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
