@@ -101,7 +101,8 @@ semEla.age      stdEr
 semEla.age  0.04658311 0.0324164 12.39575 0.5723598
 stdEr               NA        NA       NA        NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> # logitEla( coef( estLogitLin ), xMeanLinAttr, 3, seSimplify = TRUE )
+> logitEla( coef( estLogitLin ), xMeanLinAttr, 3 ) #, seSimplify = TRUE )
+[1]  0.0000  0.0000 10.4142  0.0000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > # logitEla( coef( estLogitLin ), xMeanLin, 3, vcov( estLogitLin ) )
 > # semi-elasticity of age with standard errors (only standard errors)
@@ -177,7 +178,8 @@ semEla.age      stdEr
 semEla.age  0.08534662 0.05939127 13.4948 993.6476 1.048641
 stdEr               NA         NA      NA       NA       NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> # logitEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), seSimplify = TRUE )
+> logitEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ) ) #, seSimplify = TRUE )
+[1]   0.000000   0.000000   9.864342 839.215794   0.000000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcov( estLogitQuad ) )
 > # semi-elasticity of age with standard errors (only standard errors)
@@ -389,4 +391,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.488   0.017   0.499 
+  0.461   0.035   0.490 

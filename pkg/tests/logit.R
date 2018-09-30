@@ -32,7 +32,7 @@ attr( xMeanLinAttr, "derivOnly" ) <- 1
 numericGradient( logitEla, t0 = coef( estLogitLin ), 
   allXVal = xMeanLin, xPos = 3 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-# logitEla( coef( estLogitLin ), xMeanLinAttr, 3, seSimplify = TRUE )
+logitEla( coef( estLogitLin ), xMeanLinAttr, 3 ) #, seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 # logitEla( coef( estLogitLin ), xMeanLin, 3, vcov( estLogitLin ) )
 # semi-elasticity of age with standard errors (only standard errors)
@@ -70,7 +70,7 @@ attr( xMeanQuadAttr, "derivOnly" ) <- 1
 numericGradient( logitEla, t0 = coef( estLogitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ) )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-# logitEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), seSimplify = TRUE )
+logitEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ) ) #, seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcov( estLogitQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
