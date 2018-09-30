@@ -58,21 +58,18 @@ logitEla <- function( allCoef, allXVal, xPos,
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
     if( method == "binary" ){
-      xCoefSE <- allCoefSE[ xPos ]
       xCoef <- allCoef[ xPos ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           "to the squared value of 'allXVal[ xPos[1] ]' " )
       }
     } else if( method == "MNL" ){
-      xCoefSE <- allCoefSE[ xPos ]
       xCoef <- mCoef[ xPos, ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           "to the squared value of 'allXVal[ xPos[1] ]' " ) 
       }    
     } else if( method == "CondL" ){
-      xCoefSE <- allCoefSE[ xPos ]
       xCoef <- allCoef[ xPos ]
       for( p in 1:pXVal ){
         if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
@@ -81,7 +78,6 @@ logitEla <- function( allCoef, allXVal, xPos,
         }  
       }
     } else{
-      xCoefSE <- allCoefSE[ xPos ] 
       xCoef <- allCoef[ xPos ]
       for( p in 1:pXVal ){
         if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
@@ -92,14 +88,11 @@ logitEla <- function( allCoef, allXVal, xPos,
     }
   } else if( length( xPos ) == 1 ) {
     if( method == "binary" || method == "CondL" ){
-      xCoefSE <- c( allCoefSE[ xPos ], 0 )
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( method == "MNL" ){
-      xCoefSE <- c( allCoefSE[ xPos ], 0 )
       xCoef <- matrix( c( mCoef[ xPos, ], rep( 0, dim( mCoef )[ 2 ] ) ), 
         nrow = 2, byrow = TRUE  ) 
     } else{
-      xCoefSE <- c( allCoefSE[ xPos ], 0 ) 
       xCoef <- c( allCoef[ xPos ], 0 )
     }    
   } else {
@@ -157,24 +150,33 @@ logitEla <- function( allCoef, allXVal, xPos,
           pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * IV[ yCatBra ] )
   } 
   if( method == "binary" || method == "MNL" ){
-    derivCoef <- c( dfun * xVal, 
-      ifelse( length( xPos ) == 1, 0, dfun * 2 * xVal^2 ) )
+    derivCoef <- rep( 0, length( allCoef ) )
+    derivCoef[ xPos[1] ] <- dfun * xVal
+    if( length( xPos ) == 2 ) {
+      derivCoef[ xPos[2] ] <- dfun * 2 * xVal^2
+    }
   } else if( method == "CondL" ){
-    derivCoef <- c( ( pfun - pfun^2 ) * xVal[ yCat ], 
-      ifelse( length( xPos ) == 1, 0, 
-        ( pfun - pfun^2 ) * 2 * xVal[ yCat ]^2 ) )
+    derivCoef <- rep( 0, length( allCoef ) )
+    derivCoef[ xPos[1] ] <- ( pfun - pfun^2 ) * xVal[ yCat ]
+    if( length( xPos ) == 2 ) {
+      derivCoef[ xPos[2] ] <- ( pfun - pfun^2 ) * 2 * xVal[ yCat ]^2
+    }
   } else{
-    derivCoef <- c( ( pfunBra * ( pfun - pfun^2 ) * 1/lambda[ yCatBra ] + 
-        pfun^2 * ( pfunBra - pfunBra^2 ) * 
-        lambda[ yCatBra ] * IV[ yCatBra ] ) *
-        xVal[ yCat ], 
-      ifelse( length( xPos ) == 1, 0, 
-        ( pfunBra * ( pfun - pfun^2 ) * 1/lambda[ yCatBra ] + 
-            pfun^2 * ( pfunBra - pfunBra^2 ) * 
-            lambda[ yCatBra ] * IV[ yCatBra ] ) *
-          2 * xVal[ yCat ]^2 ) )
+    derivCoef <- rep( 0, length( allCoef ) )
+    derivCoef[ xPos[1] ] <- ( 
+      pfunBra * ( pfun - pfun^2 ) / lambda[ yCatBra ] +
+        pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * 
+        IV[ yCatBra ] ) *
+      xVal[ yCat ]
+    if( length( xPos ) == 2 ) {
+      derivCoef[ xPos[2] ] <- ( 
+        pfunBra * ( pfun - pfun^2 ) / lambda[ yCatBra ] + 
+          pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * 
+          IV[ yCatBra ] ) *
+        2 * xVal[ yCat ]^2
+    }
   }   
-  vcovCoef <- diag( xCoefSE^2 )
+  vcovCoef <- diag( allCoefSE^2 )
   semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
