@@ -34,13 +34,13 @@ numericGradient( logitEla, t0 = coef( estLogitLin ),
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 logitEla( coef( estLogitLin ), xMeanLinAttr, 3 ) #, seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# logitEla( coef( estLogitLin ), xMeanLin, 3, vcov( estLogitLin ) )
+logitEla( coef( estLogitLin ), xMeanLin, 3, vcov( estLogitLin ) )
 # semi-elasticity of age with standard errors (only standard errors)
 logitEla( coef( estLogitLin ), xMeanLin, 3,
   sqrt( diag( vcov( estLogitLin ) ) ) ) #, seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-# logitEla( coef( estLogitLin ), xMeanLin, 3, 
-#   sqrt( diag( vcov( estLogitLin ) ) ) )
+logitEla( coef( estLogitLin ), xMeanLin, 3, 
+ sqrt( diag( vcov( estLogitLin ) ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 estLogitLinMfx <- logitmfx( lfp ~ kids + age + educ, data = Mroz87 )
 estLogitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
@@ -72,13 +72,13 @@ numericGradient( logitEla, t0 = coef( estLogitQuad ),
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 logitEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ) ) #, seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcov( estLogitQuad ) )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcov( estLogitQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
 logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
   sqrt( diag( vcov( estLogitQuad ) ) ) ) #, seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
-#   sqrt( diag( vcov( estLogitQuad ) ) ) )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ),
+  sqrt( diag( vcov( estLogitQuad ) ) ) )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
 se <- sqrt( diag( vcov( estLogitQuad ) ) )
@@ -90,8 +90,8 @@ rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
 # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp,
-#   seSimplify = TRUE )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )#,
+  #seSimplify = TRUE )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
 se <- sqrt( diag( vcov( estLogitQuad ) ) )
@@ -105,8 +105,8 @@ rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
 # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
-# logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp,
-#   seSimplify = TRUE )
+logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), vcovApp ) #,
+#  seSimplify = TRUE )
 # logitEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), 
 #   sqrt( diag( vcov( estLogitQuad ) ) ), 
 #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
