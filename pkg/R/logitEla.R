@@ -1,7 +1,7 @@
 logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL, method =  "binary", 
-  seSimplify = !is.matrix( allCoefVcov ) ){
+  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
   
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
@@ -21,7 +21,7 @@ logitEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Check x values
   if( method == "binary" || method == "MNL" ){
     if( nCoef != length( allXVal ) ) {
