@@ -176,9 +176,11 @@ semEla.age      stdEr
 +   vcovApp )
 semEla.age      stdEr 
 -0.3122117  0.1337022 
-> # lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), 
-> #   sqrt( diag( vcov( estLpmQuad ) ) ),
-> #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+> lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"],
++   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ],
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+semEla.age      stdEr 
+-0.3122117  0.1337022 
 > 
 > ### age is interval-coded (age is in the range 30-60)
 > # create dummy variables for age intervals
@@ -333,4 +335,4 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 > 
 > proc.time()
    user  system elapsed 
-  0.182   0.039   0.214 
+  0.188   0.007   0.189 

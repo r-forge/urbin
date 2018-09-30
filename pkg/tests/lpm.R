@@ -81,9 +81,9 @@ vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <-
   sigmaSq * XXinv[1,2]
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
   vcovApp )
-# lpmEla( coef( estLpmQuad ), xMeanQuad, c( 3, 4 ), 
-#   sqrt( diag( vcov( estLpmQuad ) ) ),
-#   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"],
+  sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### age is interval-coded (age is in the range 30-60)
 # create dummy variables for age intervals
