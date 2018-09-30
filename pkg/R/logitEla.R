@@ -176,6 +176,11 @@ logitEla <- function( allCoef, allXVal, xPos,
         2 * xVal[ yCat ]^2
     }
   }   
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( c( derivCoef ) )
+  }
   vcovCoef <- diag( allCoefSE^2 )
   semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
