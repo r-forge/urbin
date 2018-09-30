@@ -15,7 +15,13 @@ lpmEla <- function( xCoef, xVal, xCoefVcov = NULL ){
     xCoefVcov <- matrix( c( xCoefVcov, 0, 0, 0 ), nrow = 2, ncol = 2 )
   }
   semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal ) * xVal
+  # derivative of the semi-elasticity wrt the coefficients
   derivCoef <- c( xVal, ifelse( xCoef[2] == 0, 0, 2 * xVal^2 ) )
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( xVal ) ) ) {
+    return( derivCoef )
+  }
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% xCoefVcov %*% derivCoef ) )
   result <- c( semEla = semEla, stdEr = semElaSE )
