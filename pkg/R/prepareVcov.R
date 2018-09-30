@@ -21,7 +21,11 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd ){
     if( length( allCoefVcov ) != nCoef ) {
       stop( errMsgVcov )
     } else {
-      allCoefVcov <- diag( allCoefVcov^2 )
+      if( nCoef == 1 ) {
+        allCoefVcov <- allCoefVcov^2
+      } else {
+        allCoefVcov <- diag( allCoefVcov^2 )
+      }
     }
     if( !is.null( xMeanSd ) ) {
       if( length( xPos ) != 2 ) {
