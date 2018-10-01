@@ -5,7 +5,7 @@
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
 \usage{
-lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
+lpmEla( allCoef, allXVal, allCoefVcov = NULL, xPos = NULL, xMeanSd = NULL )
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL,
@@ -30,25 +30,6 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
 }
 
 \arguments{
-  \item{xCoef}{a numeric scalar that indicates 
-    the estimated coefficient of the explanatory variable of interest
-    OR a numeric vector with two elements that indicates
-    the estimated coefficients of the linear term and the quadratic term
-    of the explanatory variable of interest.}
-  \item{xVal}{a numeric scalar that indicates 
-    the value of the explanatory variable of interest,
-    at which the semi-elasticities should be calculated.}
-  \item{xCoefVcov}{an optional argument
-    that can be a numeric scalar equal to the standard error 
-    of the coefficient of the explanatory variable of interest 
-    (if there is only a linear term of the explanatory variable of interest)
-    OR a numeric vector with two elements equal to the standard errors
-    of the coefficients of the linear and quadratic terms
-    of the explanatory variable of interest
-    OR a numeric 2x2 matrix with the elements of the variance covariance
-    matrix of the estimated coefficients
-    that correspond to the linear and quadratic terms
-    of the explanatory variable of interest.}
   \item{allCoef}{a vector with all estimated coefficients
     (including intercept).}
   \item{allXVal}{a vector with the values of the explanatory variables,

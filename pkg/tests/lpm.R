@@ -26,7 +26,7 @@ attr( xMeanLinAttr, "derivOnly" ) <- 1
 lpmEla( coef( estLpmLin )["age"], xMeanLinAttr )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmLin )["age"], 
-  xVal = xMeanLin["age"] )
+  allXVal = xMeanLin["age"] )
 # semi-elasticity of age with standard errors (only standard errors)
 lpmEla( coef( estLpmLin )["age"], xMeanLin["age"],
   sqrt( diag( vcov( estLpmLin ) ) )["age"] )
@@ -48,7 +48,7 @@ lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ] )
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanLinAttr )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
-  xVal = xMeanQuad[ "age" ] )
+  allXVal = xMeanQuad[ "age" ] )
 # semi-elasticity of age with standard errors (full covariance matrix)
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
   vcov( estLpmQuad )[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
