@@ -68,7 +68,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     and eventually \code{allCoefVcov}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
-    \code{"binary"} = binary logit model, 
+    \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,
     \code{"CondL"} = conditional logit model, or
     \code{"NestedL"} = nested logit model.}

@@ -8,7 +8,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
   }
   # number(s) of coefficients
-  if( model == "binary" || model == "CondL" ){
+  if( model == "logit" || model == "CondL" ){
     nCoef <- length( allCoef )
     # Checking standard errors  
   } else if( model == "MNL" ){
@@ -25,7 +25,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   # Check x values
-  if( model == "binary" || model == "MNL" ){
+  if( model == "logit" || model == "MNL" ){
     if( nCoef != length( allXVal ) ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
@@ -57,7 +57,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
-    if( model == "binary" ){
+    if( model == "logit" ){
       xCoef <- allCoef[ xPos ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
@@ -89,7 +89,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
       stop( "argument 'model' specifies an unknown type of model" )
     }
   } else if( length( xPos ) == 1 ) {
-    if( model == "binary" || model == "CondL" ){
+    if( model == "logit" || model == "CondL" ){
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( model == "MNL" ){
       xCoef <- matrix( c( mCoef[ xPos, ], rep( 0, dim( mCoef )[ 2 ] ) ), 
@@ -103,7 +103,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'xPos' must be a scalar or a vector with two elements" )
   }
   # prepare calculation of semi-elasticity 
-  if( model == "binary" ){
+  if( model == "logit" ){
     xVal <- allXVal[ xPos[1] ]
     xBeta <- sum( allCoef * allXVal )
     checkXBeta( xBeta )
@@ -157,7 +157,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'model' specifies an unknown type of model" )
   } 
   # partial derivatives of semi-elasticities wrt coefficients
-  if( model == "binary" ){
+  if( model == "logit" ){
     if( seSimplify ) {
       derivCoef <- rep( 0, length( allCoef ) )
     } else {

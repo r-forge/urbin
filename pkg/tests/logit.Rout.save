@@ -78,7 +78,7 @@ Number of Fisher Scoring iterations: 4
 > # mean values of the explanatory variables
 > xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 > # semi-elasticity of age without standard errors
-> urbinEla( coef( estLogitLin ), xMeanLin, xPos = 3, model = "binary" )
+> urbinEla( coef( estLogitLin ), xMeanLin, xPos = 3, model = "logit" )
 semEla.age      stdEr 
 -0.3236826         NA 
 > # semi-elasticity of age based on numerical derivation
@@ -94,31 +94,31 @@ semEla.age      stdEr
 > xMeanLinAttr <- xMeanLin
 > attr( xMeanLinAttr, "derivOnly" ) <- 1 
 > urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, seSimplify = FALSE, 
-+   model = "binary" )
++   model = "logit" )
                    kids         age        educ 
  0.04658311  0.03241640 12.39574832  0.57235977 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estLogitLin ), 
-+   allXVal = xMeanLin, xPos = 3, model = "binary" )
++   allXVal = xMeanLin, xPos = 3, model = "logit" )
            (Intercept)      kids      age      educ
 semEla.age  0.04658311 0.0324164 12.39575 0.5723598
 stdEr               NA        NA       NA        NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, model = "binary", 
+> urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, model = "logit", 
 +   seSimplify = TRUE )
 [1]  0.0000  0.0000 10.4142  0.0000
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary", 
+> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "logit", 
 +   vcov( estLogitLin ) )
 semEla.age      stdEr 
 -0.3236826  0.1183349 
 > # semi-elasticity of age with standard errors (only standard errors)
-> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary",
+> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "logit",
 +   sqrt( diag( vcov( estLogitLin ) ) ), seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3236826  0.1465392 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
-> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary", 
+> urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "logit", 
 +   sqrt( diag( vcov( estLogitLin ) ) ) )
 semEla.age      stdEr 
 -0.3236826  0.1183930 
@@ -163,7 +163,7 @@ Number of Fisher Scoring iterations: 4
 > # mean values of the explanatory variables
 > xMeanQuad <- c( xMeanLin[ 1:3 ], xMeanLin[3]^2, xMeanLin[4] )
 > # semi-elasticity of age without standard errors
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary" )
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit" )
 semEla.age      stdEr 
 -0.3171501         NA 
 > # semi-elasticity of age based on numerical derivation
@@ -178,32 +178,32 @@ semEla.age      stdEr
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanQuadAttr <- xMeanQuad
 > attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "binary",
+> urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "logit",
 +   seSimplify = FALSE )
                      kids          age          age         educ 
   0.08534662   0.05939127  13.49480379 993.64781746   1.04864132 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estLogitQuad ), 
-+   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "binary" )
++   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "logit" )
            (Intercept)       kids     age I(age^2)     educ
 semEla.age  0.08534662 0.05939127 13.4948 993.6476 1.048641
 stdEr               NA         NA      NA       NA       NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "binary",
+> urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "logit",
 +   seSimplify = TRUE )
 [1]   0.000000   0.000000   9.864342 839.215794   0.000000
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   vcov( estLogitQuad ) )
 semEla.age      stdEr 
 -0.3171501  0.1125322 
 > # semi-elasticity of age with standard errors (only standard errors)
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   sqrt( diag( vcov( estLogitQuad ) ) ), seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3171501  1.9264975 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
 +   sqrt( diag( vcov( estLogitQuad ) ) ) )
 semEla.age      stdEr 
 -0.3171501  1.4978695 
@@ -217,11 +217,11 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   vcovApp )
 semEla.age      stdEr 
 -0.3171501  0.3038854 
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   vcovApp, seSimplify = TRUE )
  semEla.age       stdEr 
 -0.31715014  0.09662784 
@@ -237,21 +237,21 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   vcovApp )
 semEla.age      stdEr 
 -0.3171501  0.3273720 
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
 +   vcovApp, seSimplify = TRUE )
 semEla.age      stdEr 
 -0.3171501  0.1359782 
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
 +   sqrt( diag( vcov( estLogitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3171501  0.3273720 
-> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
+> urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
 +   sqrt( diag( vcov( estLogitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 semEla.age      stdEr 
@@ -312,23 +312,23 @@ Number of Fisher Scoring iterations: 4
 +   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 > # semi-elasticity of age without standard errors
 > # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary" )
+> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
 > # urbinElaInt( coef( estLogitInt ), xMeanIntAttr, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary" )
+> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > # numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt, 
 > #   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ), 
-> #   model = "binary" )
+> #   model = "logit" )
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary", 
+> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit", 
 > #   vcov( estLogitInt ) )
 > # semi-elasticity of age with standard errors (only standard errors)
 > # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary", 
+> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit", 
 > #   sqrt( diag( vcov( estLogitInt ) ) ) )
 > 
 > 
@@ -423,4 +423,4 @@ Number of Fisher Scoring iterations: 4
 > 
 > proc.time()
    user  system elapsed 
-  0.444   0.051   0.489 
+  0.448   0.047   0.489 
