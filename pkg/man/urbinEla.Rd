@@ -15,7 +15,7 @@
   increases
   if the explanatory variable of interest
   increases by one percent.
-  This function also applies the Delta-method
+  This function applies the Delta-method
   to calculate the approximate standard error 
   of the calculated semi-elasticity.
 }
@@ -44,7 +44,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     and eventually \code{allCoefVcov}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
-    \code{"lpm"} = binary probit model, 
+    \code{"lpm"} = binary probit model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model, 
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,
@@ -73,6 +73,18 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     and the coefficient of the quadratic term.}
   \item{allCoefBra,allXValBra,yCat,yCatBra,lambda}{
     will be documented later}
+}
+
+\details{
+If \code{urbin} calculates the semi-elasticity 
+based on a linear probability model (\code{model = "lpm"}),
+argument \code{allCoef} can only include the coefficient(s)
+of the explanatory variable of interest.
+In this case, arguments \code{allXVal} and \code{allCoefVcov}
+must be adjusted accordingly,
+whereas argument \code{allXVal} can be a scalar 
+with the value of the variable of interest
+even if the model includes both a linear and a quadratic term.
 }
 
 \value{
