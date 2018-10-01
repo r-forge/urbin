@@ -5,8 +5,7 @@
 
 \description{
   This function calculates 
-  the semi-elasticity of an interval-coded explanatory variable
-  in a probit model.
+  the semi-elasticity of an interval-coded explanatory variable.
   The calculated semi-elasticity indicates
   by how many percentage points the probability
   that the dependent variable has a value of one
