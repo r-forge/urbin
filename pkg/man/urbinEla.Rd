@@ -1,14 +1,11 @@
 \name{urbinEla}
 \alias{lpmEla}
-\alias{probitEla}
 \alias{urbinEla}
 
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
 \usage{
 lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
-probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
-  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL,
@@ -68,6 +65,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     and eventually \code{allCoefVcov}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
+    \code{"probit"} = binary probit model, 
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,
     \code{"CondL"} = conditional logit model, or
@@ -120,28 +118,28 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), mean( Mroz87$age ),
   mean( Mroz87$age )^2, mean( Mroz87$educ ) )
 
 # semi-elasticity of age (full covariance matrix of coefficients)
-probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
+urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit",
   vcov( estProbitQuad ) )
 
 # semi-elasticity of age (only standard errors of coefficients)
-probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
   sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE )
 
 # semi-elasticity of age (only standard errors of coefficients, 
 # simplified equation for calculating standard error of the semi-elasticity)
-probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
   sqrt( diag( vcov( estProbitQuad ) ) ) )
 
 # semi-elasticity of age (standard errors of coefficients, 
 # mean and standard deviation of age provided)
-probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
   sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE,
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 # semi-elasticity of age (standard errors of coefficients,
 # mean and standard deviation of age provided, 
 # simplified equation for calculating standard error of the semi-elasticity)
-probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
   sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }

@@ -78,7 +78,7 @@ Number of Fisher Scoring iterations: 4
 > # mean values of the explanatory variables
 > xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 > # semi-elasticity of age without standard errors
-> probitEla( coef( estProbitLin ), xMeanLin, xPos = 3 )
+> urbinEla( coef( estProbitLin ), xMeanLin, xPos = 3, model = "probit" )
 semEla.age      stdEr 
 -0.3199102         NA 
 > # semi-elasticity of age based on numerical derivation
@@ -93,29 +93,32 @@ semEla.age      stdEr
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanLinAttr <- xMeanLin
 > attr( xMeanLinAttr, "derivOnly" ) <- 1 
-> probitEla( coef( estProbitLin ), xMeanLinAttr, 3, seSimplify = FALSE )
+> urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
++   seSimplify = FALSE )
                    kids         age        educ 
  0.05742655  0.03996217 19.14172240  0.70559152 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( probitEla, t0 = coef( estProbitLin ), 
-+   allXVal = xMeanLin, xPos = 3 )
+> numericGradient( urbinEla, t0 = coef( estProbitLin ), 
++   allXVal = xMeanLin, xPos = 3, model = "probit" )
            (Intercept)       kids      age      educ
 semEla.age  0.05742655 0.03996217 19.14172 0.7055915
 stdEr               NA         NA       NA        NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> probitEla( coef( estProbitLin ), xMeanLinAttr, 3, seSimplify = TRUE )
+> urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
++   seSimplify = TRUE )
 [1]  0.00000  0.00000 16.69892  0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> probitEla( coef( estProbitLin ), xMeanLin, 3, vcov( estProbitLin ) )
+> urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
++   vcov( estProbitLin ) )
 semEla.age      stdEr 
 -0.3199102  0.1165911 
 > # semi-elasticity of age with standard errors (only standard errors)
-> probitEla( coef( estProbitLin ), xMeanLin, 3,
+> urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit",
 +   sqrt( diag( vcov( estProbitLin ) ) ), seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3199102  0.1370817 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
-> probitEla( coef( estProbitLin ), xMeanLin, 3, 
+> urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
 +   sqrt( diag( vcov( estProbitLin ) ) ) )
 semEla.age      stdEr 
 -0.3199102  0.1166118 
@@ -160,7 +163,7 @@ Number of Fisher Scoring iterations: 4
 > # mean values of the explanatory variables
 > xMeanQuad <- c( xMeanLin[ 1:3], xMeanLin[3]^2, xMeanLin[4] )
 > # semi-elasticity of age without standard errors
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ) )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit" )
 semEla.age      stdEr 
 -0.3193114         NA 
 > # semi-elasticity of age based on numerical derivation
@@ -175,30 +178,32 @@ semEla.age      stdEr
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanQuadAttr <- xMeanQuad
 > attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> probitEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ),
+> urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit",
 +   seSimplify = FALSE )
                      kids          age          age         educ 
 1.096957e-01 7.633536e-02 2.066394e+01 1.559508e+03 1.347814e+00 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( probitEla, t0 = coef( estProbitQuad ), 
-+   allXVal = xMeanQuad, xPos = c( 3, 4 ) )
+> numericGradient( urbinEla, t0 = coef( estProbitQuad ), 
++   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "probit" )
            (Intercept)       kids      age I(age^2)     educ
 semEla.age   0.1096957 0.07633536 20.66394 1559.508 1.347814
 stdEr               NA         NA       NA       NA       NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> probitEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), seSimplify = TRUE )
+> urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit", 
++   seSimplify = TRUE )
 [1]    0.00000    0.00000   15.99772 1361.01753    0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcov( estProbitQuad ) )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   vcov( estProbitQuad ) )
 semEla.age      stdEr 
 -0.3193114  0.1120032 
 > # semi-elasticity of age with standard errors (only standard errors)
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3193114  1.8253970 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ) )
 semEla.age      stdEr 
 -0.3193114  1.4894894 
@@ -212,11 +217,12 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   vcovApp )
 semEla.age      stdEr 
 -0.3193114  0.2492290 
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcovApp,
-+   seSimplify = TRUE )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   vcovApp, seSimplify = TRUE )
  semEla.age       stdEr 
 -0.31931141  0.09609747 
 > # approximate covariance between the coefficient of the linear term and 
@@ -231,20 +237,21 @@ semEla.age      stdEr
 > rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 > vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
 +   sigmaSq * XXinv[1,2]
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcovApp )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   vcovApp )
 semEla.age      stdEr 
 -0.3193114  0.2747928 
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), vcovApp,
-+   seSimplify = TRUE )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   vcovApp, seSimplify = TRUE )
 semEla.age      stdEr 
 -0.3193114  0.1352247 
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), 
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3193114  0.2747928 
-> probitEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), 
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 semEla.age      stdEr 
@@ -476,4 +483,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.519   0.032   0.545 
+  0.510   0.028   0.532 
