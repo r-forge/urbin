@@ -1,5 +1,10 @@
-urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, 
+urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     allCoefVcov = NULL ){
+  
+  if( model != "probit" ) {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
+  
   nCoef <- length( allCoef )
   # check argument xPos
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 

@@ -230,30 +230,36 @@ urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
+  model = "probit" )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ), 
+  model = "probit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ) )
+  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ), 
+  model = "probit" )
 # with full covariance matrix
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-  vcov( estProbitInt ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
+  model = "probit", vcov( estProbitInt ) )
 # with standard errors only
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-  sqrt( diag( vcov( estProbitInt ) ) ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
+  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
+  model = "probit" )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ), 
+  model = "probit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ) )
+  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
+  model = "probit" )
 # with full covariance matrix
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-  vcov( estProbitInt ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
+  model = "probit", vcov( estProbitInt ) )
 # with standard errors only
-urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-  sqrt( diag( vcov( estProbitInt ) ) ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
+  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
 

@@ -21,7 +21,7 @@
 }
 
 \usage{
-urbinEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
+urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
 }
 
 \arguments{
@@ -50,6 +50,9 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
     the last element of this vector corresponds to the reference category,
     while all other elements correspond to the categories 
     as indicated by argument \code{xPos}.}
+  \item{model}{a character string that indicates the type of model 
+    that was estimated to obtain the parameter estimates:
+    \code{"probit"} = binary probit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -89,12 +92,12 @@ xMeanInt <- c( 1, colMeans( Mroz87[ ,
 # effect of age changing from 38-52 years (2nd category + reference category) 
 # to 53-60 years (3rd category) (with full covariance matrix)
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
-  vcov( estProbitInt ) )
+  model = "probit", vcov( estProbitInt ) )
 
 # effect of age changing from 38-52 years (2nd category + reference category) 
 # to 53-60 years (3rd category) (with standard errors only)
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
-  sqrt( diag( vcov( estProbitInt ) ) ) )
+  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
 }
 
 \keyword{models}
