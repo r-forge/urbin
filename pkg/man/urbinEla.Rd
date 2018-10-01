@@ -9,9 +9,9 @@
 lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
-urbinEla( allCoef, allXVal, xPos, allCoefVcov = NULL, 
+urbinEla( allCoef, allXVal, xPos, method, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, method =  "binary",
+  lambda = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 }
 

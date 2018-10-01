@@ -1,6 +1,6 @@
-urbinEla <- function( allCoef, allXVal, xPos, allCoefVcov = NULL, 
+urbinEla <- function( allCoef, allXVal, xPos, method, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, method =  "binary", 
+  lambda = NULL, 
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
   
   # check argument seSimplify

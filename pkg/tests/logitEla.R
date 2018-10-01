@@ -1,25 +1,25 @@
 library( "urbin" )
 
 ela6a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
-  allXVal = c( 1, 3.3, 4.5, 2.34, 0.1, 0.987 ), xPos = 2 )
+  allXVal = c( 1, 3.3, 4.5, 2.34, 0.1, 0.987 ), xPos = 2, method = "binary" )
 ela6a
 
 ela6b <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
   allXVal = c( 1, 3.3, 4.5, 2.24, 0.1, 0.987 ), 
   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ), 
-  xPos = 2 )
+  xPos = 2, method = "binary" )
 ela6b  
 
 # Example 
 ela7a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
   allXVal = c( 1, 3.3, 3.3^2, 2.34, 0.1, 0.987 ), 
-  xPos = c( 2, 3 ) )
+  xPos = c( 2, 3 ), method = "binary" )
 ela7a
 
 ela7b <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
   allXVal = c( 1, 3.3, 3.3^2, 2.34, 0.1, 0.987 ), 
   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ),
-  xPos = c( 2, 3 ) )
+  xPos = c( 2, 3 ), method = "binary" )
 ela7b
 
 # Example
