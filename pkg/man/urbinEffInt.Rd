@@ -20,7 +20,7 @@
 }
 
 \usage{
-urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, 
+urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, model,
   allCoefVcov = NULL, xMeanSd = NULL )
 }
 
@@ -44,6 +44,9 @@ urbinEffInt( allCoef, allXVal, xPos, refBound, intBound,
   \item{intBound}{a numeric vector of two elements
     that indicate the lower boundary and the upper boundary
     of the interval of interest, respectively.}
+  \item{model}{a character string that indicates the type of model 
+    that was estimated to obtain the parameter estimates:
+    \code{"probit"} = binary probit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -86,13 +89,15 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), NA, NA, mean( Mroz87$educ ) )
 # effect of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors of coefficients)
 urbinEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
+  c( 30, 40 ), c( 50, 60 ), model = "probit",
+  sqrt( diag( vcov( estProbitQuad ) ) ) )
   
 # effect of age changing from the 30-40 interval to the 50-60 interval
 # (with standard errors of coefficients as well as 
 # mean and standard deviation of age) 
 urbinEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
+  c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }
 

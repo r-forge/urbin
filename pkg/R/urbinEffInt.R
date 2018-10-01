@@ -1,5 +1,10 @@
-urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, 
+urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
   allCoefVcov = NULL, xMeanSd = NULL ){
+  
+  if( model != "probit" ) {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
+  
   # number of coefficients
   nCoef <- length( allCoef )
   # check arguments
