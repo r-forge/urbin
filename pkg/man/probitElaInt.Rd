@@ -3,10 +3,6 @@
 
 \title{Semi-Elasticities of Interval-Coded Variables from Probit Models}
 
-\usage{
-probitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
-}
-
 \description{
   This function calculates 
   the semi-elasticity of an interval-coded explanatory variable
@@ -20,6 +16,10 @@ probitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
   This function also applies the Delta-method
   to calculate the approximate standard error 
   of the calculated semi-elasticity.
+}
+
+\usage{
+probitElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
 }
 
 \arguments{

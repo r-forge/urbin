@@ -3,10 +3,6 @@
 
 \title{Probit Models: Grouping and Re-basing Categorical Variables}
 
-\usage{
-probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
-}
-
 \description{
   This function calculates 
   the effect of a categorical variable in a probit model,
@@ -22,6 +18,10 @@ probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
   This function also applies the Delta-method
   to calculate the approximate standard error 
   of the calculated effect.
+}
+
+\usage{
+probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
 }
 
 \arguments{

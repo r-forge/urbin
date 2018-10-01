@@ -3,11 +3,6 @@
 
 \title{Probit Models: Effects of Changes between Intervals}
 
-\usage{
-probitEffInt( allCoef, allXVal, xPos, refBound, intBound, 
-  allCoefVcov = NULL, xMeanSd = NULL )
-}
-
 \description{
   This function calculates 
   the effects of continuous variables in a probit model,
@@ -22,6 +17,11 @@ probitEffInt( allCoef, allXVal, xPos, refBound, intBound,
   This function also applies the Delta-method
   to calculate the approximate standard error 
   of the calculated effect.
+}
+
+\usage{
+probitEffInt( allCoef, allXVal, xPos, refBound, intBound, 
+  allCoefVcov = NULL, xMeanSd = NULL )
 }
 
 \arguments{

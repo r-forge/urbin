@@ -4,13 +4,6 @@
 
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
-\usage{
-urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
-  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL,
-  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
-}
-
 \description{
   This function calculates 
   the semi-elasticity of a continuous explanatory variable
@@ -26,6 +19,13 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   This function also applies the Delta-method
   to calculate the approximate standard error 
   of the calculated semi-elasticity.
+}
+
+\usage{
+urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
+  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
+  lambda = NULL,
+  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
 }
 
 \arguments{
