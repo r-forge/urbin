@@ -1,7 +1,7 @@
-\name{probitEla}
+\name{urbinEla}
 \alias{lpmEla}
 \alias{probitEla}
-\alias{logitEla}
+\alias{urbinEla}
 
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
@@ -9,7 +9,7 @@
 lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
-logitEla( allCoef, allXVal, xPos, allCoefVcov = NULL, 
+urbinEla( allCoef, allXVal, xPos, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL, method =  "binary",
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
