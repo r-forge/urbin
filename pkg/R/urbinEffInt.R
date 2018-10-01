@@ -1,4 +1,4 @@
-probitEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, 
+urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, 
   allCoefVcov = NULL, xMeanSd = NULL ){
   # number of coefficients
   nCoef <- length( allCoef )

@@ -1,11 +1,11 @@
-\name{probitEffInt}
-\alias{probitEffInt}
+\name{urbinEffInt}
+\alias{urbinEffInt}
 
-\title{Probit Models: Effects of Changes between Intervals}
+\title{Effects of Changes between Intervals}
 
 \description{
   This function calculates 
-  the effects of continuous variables in a probit model,
+  the effects of continuous variables,
   when these variables change between discrete intervals.
   The calculated effect indicates
   by how many percentage points the probability
@@ -20,7 +20,7 @@
 }
 
 \usage{
-probitEffInt( allCoef, allXVal, xPos, refBound, intBound, 
+urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, 
   allCoefVcov = NULL, xMeanSd = NULL )
 }
 
@@ -85,13 +85,13 @@ xMeanQuad <- c( 1, mean( Mroz87$kids ), NA, NA, mean( Mroz87$educ ) )
 
 # effect of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors of coefficients)
-probitEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
   
 # effect of age changing from the 30-40 interval to the 50-60 interval
 # (with standard errors of coefficients as well as 
 # mean and standard deviation of age) 
-probitEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 }

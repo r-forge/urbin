@@ -352,18 +352,18 @@ stdEr         NA
 > xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+> urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ) )
     effect      stdEr 
 -0.1506167         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanLinIntAttr <- xMeanLinInt
 > attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> probitEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
+> urbinEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
 +   c( 30, 40 ), c( 50, 60 ) )
 [1] 0.01968989 0.01370186 8.65400572 0.24192682
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( probitEffInt, t0 = coef( estProbitLin ), 
+> numericGradient( urbinEffInt, t0 = coef( estProbitLin ), 
 +   allXVal = xMeanLinInt, xPos = 3, 
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
        (Intercept)       kids      age      educ
@@ -371,13 +371,13 @@ effect  0.01968989 0.01370186 8.654006 0.2419268
 stdEr           NA         NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+> urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), vcov( estProbitLin ) )
     effect      stdEr 
 -0.1506167  0.0545738 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+> urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
      effect       stdEr 
 -0.15061666  0.06132438 
@@ -389,18 +389,18 @@ stdEr           NA         NA       NA        NA
 > xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ) )
     effect      stdEr 
 -0.2528239         NA 
 > # partial derivatives of the effect wrt the coefficients
 > xMeanQuadIntAttr <- xMeanQuadInt
 > attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> probitEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
 +   c( 30, 40 ), c( 50, 60 ) )
 [1] 2.237943e-03 1.557347e-03 7.675244e+00 6.864825e+02 2.749727e-02
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( probitEffInt, t0 = coef( estProbitQuad ), 
+> numericGradient( urbinEffInt, t0 = coef( estProbitQuad ), 
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
        (Intercept)        kids      age I(age^2)       educ
@@ -408,19 +408,19 @@ effect 0.002237943 0.001557347 7.675244 686.4822 0.02749727
 stdEr           NA          NA       NA       NA         NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), vcov( estProbitQuad ) )
      effect       stdEr 
 -0.25282386  0.06147638 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
     effect      stdEr 
 -0.2528239  0.7331598 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
-> probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
@@ -484,4 +484,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.560   0.060   0.615 
+  0.532   0.032   0.557 

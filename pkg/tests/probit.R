@@ -172,24 +172,24 @@ urbinElaInt( coef( estProbitInt ), xMeanInt,
 xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-probitEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
+urbinEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( probitEffInt, t0 = coef( estProbitLin ), 
+numericGradient( urbinEffInt, t0 = coef( estProbitLin ), 
   allXVal = xMeanLinInt, xPos = 3, 
   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), vcov( estProbitLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
+urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitLin ) ) ) )
 
 
@@ -199,28 +199,28 @@ probitEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ) )
 # partial derivatives of the effect wrt the coefficients
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-probitEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
+urbinEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( probitEffInt, t0 = coef( estProbitQuad ), 
+numericGradient( urbinEffInt, t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), vcov( estProbitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
-probitEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
+urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
