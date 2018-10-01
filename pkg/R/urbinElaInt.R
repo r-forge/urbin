@@ -1,5 +1,10 @@
-urbinElaInt <- function( allCoef, allXVal, xPos, xBound, 
+urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   allCoefVcov = NULL ){
+  
+  if( model != "probit" ) {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
+  
   # number of coefficients
   nCoef <- length( allCoef )
   # number of intervals

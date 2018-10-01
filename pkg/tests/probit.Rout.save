@@ -312,19 +312,20 @@ Number of Fisher Scoring iterations: 4
 +   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 > # semi-elasticity of age without standard errors
 > urbinElaInt( coef( estProbitInt ), xMeanInt, 
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
     semEla      stdEr 
 -0.4719856         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
 > urbinElaInt( coef( estProbitInt ), xMeanIntAttr, 
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
 [1] -0.010309885 -0.007174475 -0.885844700  0.279991827  0.716229566
 [6] -0.126676033
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
-+   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
++   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ), 
++   model = "probit" )
        (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
 semEla -0.01030988 -0.007174475   -0.8858447    0.2799918    0.7162296
 stdEr           NA           NA           NA           NA           NA
@@ -334,13 +335,13 @@ stdEr         NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( estProbitInt ), xMeanInt, 
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-+   vcov( estProbitInt ) )
++   model = "probit", vcov( estProbitInt ) )
     semEla      stdEr 
 -0.4719856  0.1375324 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinElaInt( coef( estProbitInt ), xMeanInt, 
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-+   sqrt( diag( vcov( estProbitInt ) ) ) )
++   model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
     semEla      stdEr 
 -0.4719856  0.1666258 
 > 
@@ -483,4 +484,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.494   0.036   0.523 
+  0.560   0.060   0.615 

@@ -19,7 +19,7 @@
 }
 
 \usage{
-urbinElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
+urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
 }
 
 \arguments{
@@ -53,6 +53,9 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, allCoefVcov = NULL )
     must be indicated by a zero.}
   \item{xBound}{a numeric vector
     indicating the boundaries of the intervals.}
+  \item{model}{a character string that indicates the type of model 
+    that was estimated to obtain the parameter estimates:
+    \code{"probit"} = binary probit model.}
 }
 
 \value{
@@ -86,12 +89,12 @@ xMeanInt <- c( 1, colMeans( Mroz87[ ,
 # semi-elasticity of age (full covariance matrix of coefficients)
 urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-  vcov( estProbitInt ) )
+  model = "probit", vcov( estProbitInt ) )
 
 # semi-elasticity of age (only standard errors of coefficients)
 urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-  sqrt( diag( vcov( estProbitInt ) ) ) )
+  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
 }
 
 \keyword{models}
