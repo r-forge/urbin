@@ -16,10 +16,12 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
     nCoef <- dim( mCoef )[1]
     pCoef <- dim( mCoef )[2]
-  } else{
+  } else if( model == "NestedL" ){
     nCoef <- length( allCoef )
     NCoef <- length( allCoefBra )
-  } 
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   # Check x values
@@ -34,7 +36,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     if( nCoef != dim( mXVal )[1] ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
-  } else{
+  } else if( model == "NestedL" ){
     mXValBra <- matrix( allXValBra, nrow = NCoef )
     nXValBra <- dim( mXValBra )[1]
     pXValBra <- dim( mXValBra )[2]
@@ -48,6 +50,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     if( nCoef != nXVal ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   } 
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
@@ -73,7 +77,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
             "to the squared value of 'allXVal[ xPos[1] ]' " ) 
         }  
       }
-    } else{
+    } else if( model == "NestedL" ){
       xCoef <- allCoef[ xPos ]
       for( p in 1:pXVal ){
         if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
@@ -81,6 +85,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
             "to the squared value of 'allXVal[ xPos[1] ]' " ) 
         }
       }
+    } else {
+      stop( "argument 'model' specifies an unknown type of model" )
     }
   } else if( length( xPos ) == 1 ) {
     if( model == "binary" || model == "CondL" ){
@@ -88,8 +94,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     } else if( model == "MNL" ){
       xCoef <- matrix( c( mCoef[ xPos, ], rep( 0, dim( mCoef )[ 2 ] ) ), 
         nrow = 2, byrow = TRUE  ) 
-    } else{
+    } else if( model == "NestedL" ){
       xCoef <- c( allCoef[ xPos ], 0 )
+    } else {
+      stop( "argument 'model' specifies an unknown type of model" )
     }    
   } else {
     stop( "argument 'xPos' must be a scalar or a vector with two elements" )
@@ -124,7 +132,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     pfun <- exp( xBeta[ yCat ] )/( sum( exp( xBeta ) ) )
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * 
       xVal[ yCat ] * ( pfun - pfun^2 )
-  } else{                            #checkXBeta missing
+  } else if( model == "NestedL" ){                            #checkXBeta missing
     xVal <- rep( NA, pXVal )
     for( p in 1:pXVal ){
       xVal[p] <- mXVal[ xPos[ 1 ], p ]
@@ -145,6 +153,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * xVal[ yCat ] * 
       ( pfunBra * ( pfun - pfun^2 ) * 1/lambda[ yCatBra ] +
           pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * IV[ yCatBra ] )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   } 
   # partial derivatives of semi-elasticities wrt coefficients
   if( model == "binary" ){
@@ -180,7 +190,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     if( length( xPos ) == 2 ) {
       derivCoef[ xPos[2] ] <- ( pfun - pfun^2 ) * 2 * xVal[ yCat ]^2
     }
-  } else{
+  } else if( model == "NestedL" ){
     if( !seSimplify ) {
       warning( "exact (non-simplified) calculation of derivatives of",
         " semi-elasticities wrt coefficients has not yet been implemented",
@@ -199,6 +209,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
           IV[ yCatBra ] ) *
         2 * xVal[ yCat ]^2
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }   
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
