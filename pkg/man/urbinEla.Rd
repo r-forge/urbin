@@ -1,5 +1,4 @@
 \name{urbinEla}
-\alias{lpmEla}
 \alias{urbinEla}
 
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
