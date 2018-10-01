@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 Loading required package: miscTools
 > 
 > ela6a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
-+   allXVal = c( 1, 3.3, 4.5, 2.34, 0.1, 0.987 ), xPos = 2, method = "binary" )
++   allXVal = c( 1, 3.3, 4.5, 2.34, 0.1, 0.987 ), xPos = 2, model = "binary" )
 > ela6a
     semEla      stdEr 
 0.02023896         NA 
@@ -27,7 +27,7 @@ Loading required package: miscTools
 > ela6b <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
 +   allXVal = c( 1, 3.3, 4.5, 2.24, 0.1, 0.987 ), 
 +   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ), 
-+   xPos = 2, method = "binary" )
++   xPos = 2, model = "binary" )
 > ela6b  
     semEla      stdEr 
 0.02029675 0.01353117 
@@ -35,7 +35,7 @@ Loading required package: miscTools
 > # Example 
 > ela7a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
 +   allXVal = c( 1, 3.3, 3.3^2, 2.34, 0.1, 0.987 ), 
-+   xPos = c( 2, 3 ), method = "binary" )
++   xPos = c( 2, 3 ), model = "binary" )
 > ela7a
     semEla      stdEr 
 0.02032691         NA 
@@ -43,7 +43,7 @@ Loading required package: miscTools
 > ela7b <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002, 0.067, 0.89, 0.124 ),
 +   allXVal = c( 1, 3.3, 3.3^2, 2.34, 0.1, 0.987 ), 
 +   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ),
-+   xPos = c( 2, 3 ), method = "binary" )
++   xPos = c( 2, 3 ), model = "binary" )
 > ela7b
     semEla      stdEr 
 0.02032691 0.01349191 
@@ -51,7 +51,7 @@ Loading required package: miscTools
 > # Example
 > ela8a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 8.4, 0.06 ), xPos = 3,
-+   method = "MNL", yCat = 2 )
++   model = "MNL", yCat = 2 )
 > ela8a
      semEla       stdEr 
 0.002792501          NA 
@@ -60,7 +60,7 @@ Loading required package: miscTools
 +   allXVal = c( 1, 8.4, 0.06 ), 
 +   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
 +   xPos = 3, 
-+   method = "MNL", yCat = 2 )
++   model = "MNL", yCat = 2 )
 > ela8b
       semEla        stdEr 
 2.792501e-03 1.150331e-05 
@@ -68,7 +68,7 @@ Loading required package: miscTools
 > # Example
 > ela9a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 0.04, 0.0016 ), xPos = c( 2, 3 ),
-+   method = "MNL", yCat = 2 )
++   model = "MNL", yCat = 2 )
 > ela9a
       semEla        stdEr 
 0.0002470181           NA 
@@ -77,7 +77,7 @@ Loading required package: miscTools
 +   allXVal = c( 1, 0.04, 0.0016 ), 
 +   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
 +   xPos = c( 2, 3 ), 
-+   method = "MNL", yCat = 2 )
++   model = "MNL", yCat = 2 )
 > ela9b
       semEla        stdEr 
 2.470181e-04 1.051034e-05 
@@ -86,7 +86,7 @@ Loading required package: miscTools
 > ela10a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002 ),
 +   allXVal = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ),
 +   xPos = 2, 
-+   method = "CondL", yCat = 2 )
++   model = "CondL", yCat = 2 )
 > ela10a
       semEla        stdEr 
 0.0007482721           NA 
@@ -94,7 +94,7 @@ Loading required package: miscTools
 > ela10b <- urbinEla( allCoef = c( 0.445, 0.03, -0.002 ),
 +   allXVal = c( 1, 0.3, 0.09, 1, 0.1, 0.01 ),
 +   xPos = c( 2, 3 ), 
-+   method = "CondL", yCat = 2 )
++   model = "CondL", yCat = 2 )
 > ela10b
       semEla        stdEr 
 0.0007399937           NA 
@@ -104,7 +104,7 @@ Loading required package: miscTools
 +   allXVal = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ),
 +   allCoefVcov = c( 0.002, 0.003, 0.004 ),
 +   xPos = 2, 
-+   method = "CondL", yCat = 2 )
++   model = "CondL", yCat = 2 )
 > ela11a
       semEla        stdEr 
 7.482721e-04 7.482721e-05 
@@ -113,7 +113,7 @@ Loading required package: miscTools
 +   allXVal = c( 1, 0.3, 0.09, 1, 0.1, 0.01 ),
 +   allCoefVcov = c( 0.002, 0.003, 0.004 ),
 +   xPos = c( 2, 3 ), 
-+   method = "CondL", yCat = 2 )
++   model = "CondL", yCat = 2 )
 > ela11b
       semEla        stdEr 
 7.399937e-04 7.762021e-05 
@@ -126,7 +126,7 @@ Loading required package: miscTools
 +   allXValBra = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ), 
 +   allXVal = list( matrix1, matrix2 ), 
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-+   method = "NestedL" )
++   model = "NestedL" )
 > ela12a
      semEla       stdEr 
 0.001321595          NA 
@@ -138,7 +138,7 @@ Loading required package: miscTools
 +   allXValBra = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ), 
 +   allXVal = list( matrix1, matrix2 ), 
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-+   method = "NestedL" )
++   model = "NestedL" )
 > ela12b
      semEla       stdEr 
 0.000448864          NA 
@@ -152,7 +152,7 @@ Loading required package: miscTools
 +   allXVal = list( matrix1, matrix2 ), 
 +   allCoefVcov = c( 0.001, 0.089, 0.0003, 0.12 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-+   method = "NestedL" )
++   model = "NestedL" )
 > ela13a
      semEla       stdEr 
 0.001321595 0.023524389 
@@ -165,11 +165,11 @@ Loading required package: miscTools
 +   allXVal = list( matrix1, matrix2 ), 
 +   allCoefVcov = c( 0.001, 0.089, 0.0003, 0.12 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-+   method = "NestedL" )
++   model = "NestedL" )
 > ela13b
      semEla       stdEr 
 0.000448864 0.007989780 
 > 
 > proc.time()
    user  system elapsed 
-  0.096   0.024   0.115 
+  0.102   0.011   0.107 

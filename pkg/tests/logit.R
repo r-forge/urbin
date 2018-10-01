@@ -16,7 +16,7 @@ summary( estLogitLin )
 # mean values of the explanatory variables
 xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 # semi-elasticity of age without standard errors
-urbinEla( coef( estLogitLin ), xMeanLin, xPos = 3, method = "binary" )
+urbinEla( coef( estLogitLin ), xMeanLin, xPos = 3, model = "binary" )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLogitLin, 
   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ), 
@@ -28,21 +28,21 @@ urbinEla( coef( estLogitLin ), xMeanLin, xPos = 3, method = "binary" )
 xMeanLinAttr <- xMeanLin
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
 urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, seSimplify = FALSE, 
-  method = "binary" )
+  model = "binary" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEla, t0 = coef( estLogitLin ), 
-  allXVal = xMeanLin, xPos = 3, method = "binary" )
+  allXVal = xMeanLin, xPos = 3, model = "binary" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, method = "binary", 
+urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, model = "binary", 
   seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-urbinEla( coef( estLogitLin ), xMeanLin, 3, method = "binary", 
+urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary", 
   vcov( estLogitLin ) )
 # semi-elasticity of age with standard errors (only standard errors)
-urbinEla( coef( estLogitLin ), xMeanLin, 3, method = "binary",
+urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary",
   sqrt( diag( vcov( estLogitLin ) ) ), seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-urbinEla( coef( estLogitLin ), xMeanLin, 3, method = "binary", 
+urbinEla( coef( estLogitLin ), xMeanLin, 3, model = "binary", 
   sqrt( diag( vcov( estLogitLin ) ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 estLogitLinMfx <- logitmfx( lfp ~ kids + age + educ, data = Mroz87 )
@@ -56,7 +56,7 @@ summary( estLogitQuad )
 # mean values of the explanatory variables
 xMeanQuad <- c( xMeanLin[ 1:3 ], xMeanLin[3]^2, xMeanLin[4] )
 # semi-elasticity of age without standard errors
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary" )
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary" )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLogitQuad, 
   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ), 
@@ -67,22 +67,22 @@ urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanQuadAttr <- xMeanQuad
 attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), method = "binary",
+urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "binary",
   seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEla, t0 = coef( estLogitQuad ), 
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), method = "binary" )
+  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "binary" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), method = "binary",
+urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "binary",
   seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   vcov( estLogitQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   sqrt( diag( vcov( estLogitQuad ) ) ), seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary",
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
   sqrt( diag( vcov( estLogitQuad ) ) ) )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
@@ -94,9 +94,9 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   vcovApp )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   vcovApp, seSimplify = TRUE )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
@@ -110,15 +110,15 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   vcovApp )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary", 
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary", 
   vcovApp, seSimplify = TRUE )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary",
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
   sqrt( diag( vcov( estLogitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), method = "binary",
+urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "binary",
   sqrt( diag( vcov( estLogitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
@@ -146,23 +146,23 @@ xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ),
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 # semi-elasticity of age without standard errors
 # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), method = "binary" )
+#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
 # urbinElaInt( coef( estLogitInt ), xMeanIntAttr, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), method = "binary" )
+#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 # numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt, 
 #   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ), 
-#   method = "binary" )
+#   model = "binary" )
 # semi-elasticity of age with standard errors (full covariance matrix)
 # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), method = "binary", 
+#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary", 
 #   vcov( estLogitInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
 # urbinElaInt( coef( estLogitInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), method = "binary", 
+#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "binary", 
 #   sqrt( diag( vcov( estLogitInt ) ) ) )
 
 

@@ -9,7 +9,7 @@
 lpmEla( xCoef, xVal, xCoefVcov = NULL, xMeanSd = NULL )
 probitEla( allCoef, allXVal, xPos, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
-urbinEla( allCoef, allXVal, xPos, method, allCoefVcov = NULL, 
+urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
@@ -66,6 +66,12 @@ urbinEla( allCoef, allXVal, xPos, method, allCoefVcov = NULL,
     of the explanatory variable of interest
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.}
+  \item{model}{a character string that indicates the type of model 
+    that was estimated to obtain the parameter estimates:
+    \code{"binary"} = binary logit model, 
+    \code{"MNL"} = multinomial logit model,
+    \code{"CondL"} = conditional logit model, or
+    \code{"NestedL"} = nested logit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -87,7 +93,7 @@ urbinEla( allCoef, allXVal, xPos, method, allCoefVcov = NULL,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
-  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda,method}{
+  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda}{
     will be documented later}
 }
 
