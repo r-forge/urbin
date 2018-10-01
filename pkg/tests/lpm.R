@@ -14,8 +14,9 @@ summary( estLpmLin )
 # mean values of the explanatory variables
 xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 # semi-elasticity of age without standard errors
-lpmEla( coef( estLpmLin )[ "age" ], xMeanLin[ "age" ] )
-lpmEla( coef( estLpmLin ), xMeanLin, xPos = 3 )
+urbinEla( coef( estLpmLin )[ "age" ], xMeanLin[ "age" ], xPos = 1,
+  model = "lpm" )
+urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm" )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLpmLin, 
   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ) ) -
@@ -24,19 +25,19 @@ lpmEla( coef( estLpmLin ), xMeanLin, xPos = 3 )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanAgeAttr <- xMeanLin["age"]
 attr( xMeanAgeAttr, "derivOnly" ) <- 1 
-lpmEla( coef( estLpmLin )["age"], xMeanAgeAttr )
+urbinEla( coef( estLpmLin )["age"], xMeanAgeAttr, xPos = 1, model = "lpm" )
 xMeanLinAttr <- xMeanLin
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
-lpmEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3 )
+urbinEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3, model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( lpmEla, t0 = coef( estLpmLin )["age"], 
-  allXVal = xMeanLin["age"] )
-numericGradient( lpmEla, t0 = coef( estLpmLin ), 
-  allXVal = xMeanLin, xPos = 3 )
+numericGradient( urbinEla, t0 = coef( estLpmLin )["age"], 
+  allXVal = xMeanLin["age"], xPos = 1, model = "lpm" )
+numericGradient( urbinEla, t0 = coef( estLpmLin ), 
+  allXVal = xMeanLin, xPos = 3, model = "lpm" )
 # semi-elasticity of age with standard errors (only standard errors)
-lpmEla( coef( estLpmLin )["age"], xMeanLin["age"],
+urbinEla( coef( estLpmLin )["age"], xMeanLin["age"], xPos = 1, model = "lpm",
   sqrt( diag( vcov( estLpmLin ) ) )["age"] )
-lpmEla( coef( estLpmLin ), xMeanLin, xPos = 3,
+urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm",
   sqrt( diag( vcov( estLpmLin ) ) ) )
 
 ### quadratic in age
@@ -46,32 +47,36 @@ summary( estLpmQuad )
 # mean values of the explanatory variables
 xMeanQuad <- c( xMeanLin[ 1:3 ], xMeanLin[3]^2, xMeanLin[4] )
 # semi-elasticity of age without standard errors
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ] )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ) )
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
+  xPos = c( 1, 2 ), model = "lpm" )
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLpmQuad, 
   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ) ) -
     predict( estLpmQuad, 
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanAgeAttr )
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanAgeAttr, 
+  xPos = c( 1, 2 ), model = "lpm" )
 xMeanQuadAttr <- xMeanQuad
 attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-lpmEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ) )
+urbinEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ), model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( lpmEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
-  allXVal = xMeanQuad[ "age" ] )
-numericGradient( lpmEla, t0 = coef( estLpmQuad ), 
-  allXVal = xMeanQuad, xPos = c( 3, 4 ) )
+numericGradient( urbinEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
+  allXVal = xMeanQuad[ "age" ], xPos = c( 1, 2 ), model = "lpm" )
+numericGradient( urbinEla, t0 = coef( estLpmQuad ), 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )
 # semi-elasticity of age with standard errors (full covariance matrix)
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  xPos = c( 1, 2 ), model = "lpm", 
   vcov( estLpmQuad )[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), 
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm", 
   vcov( estLpmQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
+  xPos = c( 1, 2 ), model = "lpm", 
   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ] )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ),
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm",
   sqrt( diag( vcov( estLpmQuad ) ) ) )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
@@ -83,9 +88,11 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  xPos = c( 1, 2 ), model = "lpm", 
   vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), vcovApp )
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm", 
+  vcovApp )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
 se <- sqrt( diag( vcov( estLpmQuad ) ) )
@@ -98,13 +105,16 @@ vcovApp <- diag( se^2 )
 rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  xPos = c( 1, 2 ), model = "lpm", 
   vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), vcovApp )
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"],
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm", 
+  vcovApp )
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
+  xPos = c( 1, 2 ), model = "lpm",
   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
-lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ),
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm",
   sqrt( diag( vcov( estLpmQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
@@ -125,22 +135,22 @@ summary( estLpmInt )
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 # semi-elasticity of age without standard errors
-# lpmElaInt( coef( estLpmInt ), xMeanInt, 
+# urbinElaInt( coef( estLpmInt ), xMeanInt, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
-# lpmElaInt( coef( estLpmInt ), xMeanIntAttr, 
+# urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-# numericGradient( lpmElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
+# numericGradient( urbinElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
 #   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# lpmElaInt( coef( estLpmInt ), xMeanInt, 
+# urbinElaInt( coef( estLpmInt ), xMeanInt, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
 #   vcov( estLpmInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-# lpmElaInt( coef( estLpmInt ), xMeanInt, 
+# urbinElaInt( coef( estLpmInt ), xMeanInt, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
 #   sqrt( diag( vcov( estLpmInt ) ) ) )
 

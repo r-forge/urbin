@@ -1,5 +1,4 @@
 export( "urbinEla" )
-export( "lpmEla" )
 export( "probitEffCat" )
 export( "probitEffInt" )
 export( "probitElaInt" )

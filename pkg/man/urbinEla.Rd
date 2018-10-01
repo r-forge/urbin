@@ -5,7 +5,6 @@
 \title{Semi-Elasticities of Linear and Quadratic Explanatory Variables}
 
 \usage{
-lpmEla( allCoef, allXVal, allCoefVcov = NULL, xPos = NULL, xMeanSd = NULL )
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL,
@@ -13,7 +12,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
 }
 
 \description{
-  These functions calculate 
+  This function calculates 
   the semi-elasticity of a continuous explanatory variable
   that is used as a linear explanatory variable
   or as a linear and quadratic explanatory variable
@@ -46,6 +45,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     and eventually \code{allCoefVcov}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
+    \code{"lpm"} = binary probit model, 
     \code{"probit"} = binary probit model, 
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,

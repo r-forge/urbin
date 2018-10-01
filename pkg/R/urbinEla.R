@@ -8,7 +8,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
   }
   # number(s) of coefficients
-  if( model %in% c( "probit", "logit", "CondL" ) ){
+  if( model %in% c( "lpm", "probit", "logit", "CondL" ) ){
     nCoef <- length( allCoef )
   } else if( model == "MNL" ){
     NCoef <- length( allCoef )
@@ -23,8 +23,16 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   }
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # LPM model: allXVal can be a scalar even if there is a quadratic term
+  if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
+    temp <- c( allXVal, allXVal^2 )
+    if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+      attr( temp, "derivOnly" ) <- 1
+    }
+    allXVal <- temp
+  }
   # Check x values
-  if( model %in% c( "probit", "logit", "MNL" ) ){
+  if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
     if( nCoef != length( allXVal ) ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
@@ -56,7 +64,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
-    if( model %in% c( "probit", "logit" ) ){
+    if( model %in% c( "lpm", "probit", "logit" ) ){
       xCoef <- allCoef[ xPos ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
@@ -80,7 +88,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
       stop( "argument 'model' specifies an unknown type of model" )
     }
   } else if( length( xPos ) == 1 ) {
-    if( model %in% c( "probit", "logit", "CondL", "NestedL" ) ){
+    if( model %in% c( "lpm", "probit", "logit", "CondL", "NestedL" ) ){
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( model == "MNL" ){
       xCoef <- matrix( c( mCoef[ xPos, ], rep( 0, dim( mCoef )[ 2 ] ) ), 
@@ -92,7 +100,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'xPos' must be a scalar or a vector with two elements" )
   }
   # prepare calculation of semi-elasticity 
-  if( model == "probit" ) {
+  if( model == "lpm" ) {
+    xVal <- allXVal[ xPos[ 1 ] ]
+    semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal ) * xVal
+  } else if( model == "probit" ) {
     xVal <- allXVal[ xPos[ 1 ] ]
     xBeta <- sum( allCoef * allXVal )
     checkXBeta( xBeta )
@@ -152,7 +163,13 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     stop( "argument 'model' specifies an unknown type of model" )
   } 
   # partial derivatives of semi-elasticities wrt coefficients
-  if( model == "probit" ){
+  if( model == "lpm" ){
+    derivCoef <- rep( 0, nCoef ) 
+    derivCoef[ xPos[1] ] <- xVal
+    if( length( xPos ) == 2 ) {
+      derivCoef[ xPos[2] ] <- 2 * xVal^2
+    }
+  } else if( model == "probit" ){
     if( seSimplify ) {
       derivCoef <- rep( 0, length( allCoef ) )
     } else {
