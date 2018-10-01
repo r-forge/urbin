@@ -15,21 +15,29 @@ summary( estLpmLin )
 xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 # semi-elasticity of age without standard errors
 lpmEla( coef( estLpmLin )[ "age" ], xMeanLin[ "age" ] )
+lpmEla( coef( estLpmLin ), xMeanLin, xPos = 3 )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLpmLin, 
   newdata = as.data.frame( t( xMeanLin * c( 1, 1, 1.005, 1 ) ) ) ) -
     predict( estLpmLin, 
       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanLinAttr <- xMeanLin["age"]
+xMeanAgeAttr <- xMeanLin["age"]
+attr( xMeanAgeAttr, "derivOnly" ) <- 1 
+lpmEla( coef( estLpmLin )["age"], xMeanAgeAttr )
+xMeanLinAttr <- xMeanLin
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
-lpmEla( coef( estLpmLin )["age"], xMeanLinAttr )
+lpmEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3 )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmLin )["age"], 
   allXVal = xMeanLin["age"] )
+numericGradient( lpmEla, t0 = coef( estLpmLin ), 
+  allXVal = xMeanLin, xPos = 3 )
 # semi-elasticity of age with standard errors (only standard errors)
 lpmEla( coef( estLpmLin )["age"], xMeanLin["age"],
   sqrt( diag( vcov( estLpmLin ) ) )["age"] )
+lpmEla( coef( estLpmLin ), xMeanLin, xPos = 3,
+  sqrt( diag( vcov( estLpmLin ) ) ) )
 
 ### quadratic in age
 estLpmQuad <- lm( lfp ~ kids + age + I(age^2) + educ, 
@@ -39,25 +47,35 @@ summary( estLpmQuad )
 xMeanQuad <- c( xMeanLin[ 1:3 ], xMeanLin[3]^2, xMeanLin[4] )
 # semi-elasticity of age without standard errors
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ] )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ) )
 # semi-elasticity of age based on numerical derivation
 100 * ( predict( estLpmQuad, 
   newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 1.005, 1.005^2, 1 ) ) ) ) -
     predict( estLpmQuad, 
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanLinAttr )
+lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanAgeAttr )
+xMeanQuadAttr <- xMeanQuad
+attr( xMeanQuadAttr, "derivOnly" ) <- 1 
+lpmEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
   allXVal = xMeanQuad[ "age" ] )
+numericGradient( lpmEla, t0 = coef( estLpmQuad ), 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
   vcov( estLpmQuad )[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), 
+  vcov( estLpmQuad ) )
 # semi-elasticity of age with standard errors (only standard errors)
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ] )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ),
+  sqrt( diag( vcov( estLpmQuad ) ) ) )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
-se <- sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ]
+se <- sqrt( diag( vcov( estLpmQuad ) ) )
 X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
 XXinv <- solve( t(X) %*% X )
 sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
@@ -66,10 +84,11 @@ rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
-  vcovApp )
+  vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), vcovApp )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on simulated data
-se <- sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ]
+se <- sqrt( diag( vcov( estLpmQuad ) ) )
 set.seed( 123 )
 x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
 X <- cbind( x, x^2, 1 )
@@ -80,9 +99,13 @@ rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
 vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
   sigmaSq * XXinv[1,2]
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
-  vcovApp )
+  vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), vcovApp )
 lpmEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"],
   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+lpmEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ),
+  sqrt( diag( vcov( estLpmQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### age is interval-coded (age is in the range 30-60)
