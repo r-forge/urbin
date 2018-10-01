@@ -28,12 +28,6 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
-  \item{allCoefVcov}{an optional argument
-    that can be the variance-covariance matrix of all estimated coefficients
-    OR the vector of the standard errors of all estimated coefficients
-    (including intercept; the order of these values must be the same
-    as the order of the corresponding coefficients in argument 
-    \code{allCoef}).}
   \item{xPos}{a vector of posivite integers
     with length equal to the number of intervals.
     Each element of this vector refers to one interval,
@@ -55,6 +49,12 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"probit"} = binary probit model.}
+  \item{allCoefVcov}{an optional argument
+    that can be the variance-covariance matrix of all estimated coefficients
+    OR the vector of the standard errors of all estimated coefficients
+    (including intercept; the order of these values must be the same
+    as the order of the corresponding coefficients in argument 
+    \code{allCoef}).}
 }
 
 \value{
