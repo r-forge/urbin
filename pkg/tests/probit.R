@@ -145,22 +145,22 @@ summary( estProbitInt )
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 # semi-elasticity of age without standard errors
-probitElaInt( coef( estProbitInt ), xMeanInt, 
+urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
-probitElaInt( coef( estProbitInt ), xMeanIntAttr, 
+urbinElaInt( coef( estProbitInt ), xMeanIntAttr, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( probitElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
+numericGradient( urbinElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-probitElaInt( coef( estProbitInt ), xMeanInt, 
+urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   vcov( estProbitInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-probitElaInt( coef( estProbitInt ), xMeanInt, 
+urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   sqrt( diag( vcov( estProbitInt ) ) ) )
 

@@ -1,7 +1,7 @@
 export( "urbinEla" )
+export( "urbinElaInt" )
 export( "probitEffCat" )
 export( "probitEffInt" )
-export( "probitElaInt" )
 
 importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )

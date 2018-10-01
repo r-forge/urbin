@@ -1,4 +1,4 @@
-probitElaInt <- function( allCoef, allXVal, xPos, xBound, 
+urbinElaInt <- function( allCoef, allXVal, xPos, xBound, 
   allCoefVcov = NULL ){
   # number of coefficients
   nCoef <- length( allCoef )
