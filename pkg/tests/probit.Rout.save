@@ -432,15 +432,15 @@ stdEr           NA          NA       NA       NA         NA
 > ### grouping and re-basing categorical variables
 > ### effects of age changing from the 30-44 category to the 53-60 category
 > # without standard errors
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
     effect      stdEr 
 -0.2523674         NA 
 > # partial derivatives of the effect wrt the coefficients
-> probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+> urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
 [1] -0.004643643 -0.003231433 -0.224000939 -0.157068388  0.376425684
 [6] -0.057055754
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
+> numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ) )
         (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
 effect -0.004643643 -0.003231433   -0.2240009   -0.1570684    0.3764257
@@ -449,37 +449,37 @@ stdEr            NA           NA           NA           NA           NA
 effect -0.05705575
 stdEr           NA
 > # with full covariance matrix
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 +   vcov( estProbitInt ) )
      effect       stdEr 
 -0.25236736  0.06537938 
 > # with standard errors only
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 +   sqrt( diag( vcov( estProbitInt ) ) ) )
      effect       stdEr 
 -0.25236736  0.07096559 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
    effect     stdEr 
 0.2228361        NA 
 > # partial derivatives of the effect wrt the coefficients
-> probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+> urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
 [1]  0.012448894  0.008662976  0.000000000  0.168992409 -0.376425684
 [6]  0.152957729
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
+> numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ) )
        (Intercept)        kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
 effect  0.01244889 0.008662976            0    0.1689924   -0.3764257 0.1529577
 stdEr           NA          NA           NA           NA           NA        NA
 > # with full covariance matrix
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 +   vcov( estProbitInt ) )
    effect     stdEr 
 0.2228361 0.0607031 
 > # with standard errors only
-> probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 +   sqrt( diag( vcov( estProbitInt ) ) ) )
    effect     stdEr 
 0.2228361 0.0657191 
@@ -487,4 +487,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.487   0.052   0.534 
+  0.506   0.029   0.529 

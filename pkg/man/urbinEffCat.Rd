@@ -1,11 +1,11 @@
-\name{probitEffCat}
-\alias{probitEffCat}
+\name{urbinEffCat}
+\alias{urbinEffCat}
 
-\title{Probit Models: Grouping and Re-basing Categorical Variables}
+\title{Grouping and Re-basing Categorical Variables}
 
 \description{
   This function calculates 
-  the effect of a categorical variable in a probit model,
+  the effect of a categorical variable,
   particularly if one wants to change the reference category and/or
   wants to group some of the categories together to a new category.
   The calculated effect indicates
@@ -21,7 +21,7 @@
 }
 
 \usage{
-probitEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
+urbinEffCat( allCoef, allXVal, xPos, xGroups, allCoefVcov = NULL )
 }
 
 \arguments{
@@ -88,12 +88,12 @@ xMeanInt <- c( 1, colMeans( Mroz87[ ,
 
 # effect of age changing from 38-52 years (2nd category + reference category) 
 # to 53-60 years (3rd category) (with full covariance matrix)
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
   vcov( estProbitInt ) )
 
 # effect of age changing from 38-52 years (2nd category + reference category) 
 # to 53-60 years (3rd category) (with standard errors only)
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, -1, 1, -1 ),
   sqrt( diag( vcov( estProbitInt ) ) ) )
 }
 

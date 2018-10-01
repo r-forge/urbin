@@ -230,30 +230,30 @@ urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ) )
 # partial derivatives of the effect wrt the coefficients
-probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
+numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ) )
 # with full covariance matrix
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   vcov( estProbitInt ) )
 # with standard errors only
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   sqrt( diag( vcov( estProbitInt ) ) ) )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ) )
 # partial derivatives of the effect wrt the coefficients
-probitEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( probitEffCat, t0 = coef( estProbitInt ), 
+numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ) )
 # with full covariance matrix
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
   vcov( estProbitInt ) )
 # with standard errors only
-probitEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
   sqrt( diag( vcov( estProbitInt ) ) ) )
 
