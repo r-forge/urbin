@@ -7,10 +7,6 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
-  # check arguments
-  if( length( allXVal ) != nCoef ){
-    stop( "argument 'allCoef' and 'allXVal' must have the same length" )
-  }  
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   # check and prepare allCoefVcov
@@ -18,6 +14,10 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
+  # Check x values
+  if( length( allXVal ) != nCoef ){
+    stop( "argument 'allCoef' and 'allXVal' must have the same length" )
+  }  
   if( any( !is.na( allXVal[ xPos ] ) ) ) {
     allXVal[ xPos ] <- NA
     warning( "values of argument 'allXVal[ xPos ]' are ignored",
