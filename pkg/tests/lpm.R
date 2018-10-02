@@ -187,10 +187,10 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 lpmEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1 )
 lpmEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3 )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanLinIntAttr <- xMeanLinInt
-attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-# lpmEffInt( coef( estLpmLin ), xMeanLinIntAttr, 3, 
-#   c( 30, 40 ), c( 50, 60 ) )
+naAttr <- NA
+attr( naAttr, "derivOnly" ) <- 1 
+lpmEffInt( coef( estLpmLin ), naAttr, xPos = 3,
+  c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEffInt, t0 = coef( estLpmLin )[3], allXVal = NA,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1 )
@@ -219,10 +219,8 @@ lpmEffInt( coef( estLpmQuad )[3:4], NA,
 lpmEffInt( coef( estLpmQuad ), NA,
   c( 30, 40 ), c( 50, 60 ), xPos = 3:4 )
 # partial derivatives of the effect wrt the coefficients
-xMeanQuadIntAttr <- xMeanQuadInt
-attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-# lpmEffInt( coef( estLpmQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
-#   c( 30, 40 ), c( 50, 60 ) )
+lpmEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffInt, t0 = coef( estLpmQuad )[3:4], allXVal = NA,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2 )
