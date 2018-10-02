@@ -131,28 +131,34 @@ all.equal(
 estLpmInt <- lm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
   data = Mroz87 )
 summary( estLpmInt )
+# coefficients of the 'intervals'
+coefLpmInt <- c( coef( estLpmInt )[3:4], 0, coef( estLpmInt )[5] )
 # mean values of the explanatory variables
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
+# mean shares of the 'intervals'
+xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 # semi-elasticity of age without standard errors
-# urbinElaInt( coef( estLpmInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
 # urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-# numericGradient( urbinElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
-#   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+numericGradient( lpmElaInt, t0 = coefLpmInt, xShares = xMeanIntShares, 
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
 # urbinElaInt( coef( estLpmInt ), xMeanInt, 
 #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
 #   vcov( estLpmInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-# urbinElaInt( coef( estLpmInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-#   sqrt( diag( vcov( estLpmInt ) ) ) )
+seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
+seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ),
+  seLpmInt )
 
 
 ### effect of age changing between discrete intervals 
