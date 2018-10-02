@@ -15,7 +15,13 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     warning( "argument allXVal is ignored for lpm models",
       " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
   }
-
+  temp <- rep( 0, nCoef )
+  temp[ xPos ] <- NA
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    attr( temp, "derivOnly" ) <-1
+  }
+  allXVal <- temp
+  
   # calculate xBars
   intX <- mean( intBound )
   refX <- mean( refBound ) 
@@ -28,9 +34,9 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     stop( "internal error: 'intX' or 'refX' does not have the expected length" )
   }
   # define X' * beta 
-  intXbeta <- sum( allCoef[ xPos ] * intX )
-  refXbeta <- sum( allCoef[ xPos ] * refX )
-
+  intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
+  refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
+  
   # effect E_{k,ml}
   eff <- intXbeta - refXbeta
   
