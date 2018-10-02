@@ -10,6 +10,11 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
+  # Check x values
+  if( any( !is.na( allXVal ) ) ) {
+    warning( "argument allXVal is ignored for lpm models",
+      " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
+  }
 
   # calculate xBars
   intX <- mean( intBound )
