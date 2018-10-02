@@ -7,14 +7,15 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
+  # Check position vector
+  checkXPos( xPos, minLength = 2, maxLength = nCoef, 
+    minVal = 0, maxVal = nCoef, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
-  # checking arguments
+  # Check x values
   if( length( allXVal ) != nCoef ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
-  checkXPos( xPos, minLength = 2, maxLength = nCoef, 
-    minVal = 0, maxVal = nCoef, requiredVal = 0 )
   if( any( allXVal[ xPos ] < 0 ) ) {
     stop( "all elements of argument 'allXVal'",
       " that are indicated by argument 'xPos'",
@@ -31,6 +32,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
+  # prepare calculation of semi-elasticity 
   # vector of probabilities of y=1 for each interval
   xBeta <- calcXBetaInt( allCoef, allXVal, xPos )
   checkXBeta( xBeta )
@@ -40,7 +42,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # weights
   weights <- elaIntWeights( shareVec )
   # calculation of the semi-elasticity
-  semEla <- lpmElaInt( phiVec, shareVec, xBound )
+  semEla <- lpmElaInt( phiVec, shareVec, xBound )[1]
   # partial derivatives of each semi-elasticity around each boundary
   # w.r.t. all estimated coefficients
   gradM <- matrix( 0, nCoef, nInt - 1 )
@@ -53,8 +55,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     gradM[ xPos[m+1], m ] <- 2 * gradPhiVec[m+1] * xBound[m+1] / 
       ( xBound[m+2] - xBound[m] )
   }
-  # partial derivative of the semi-elasticity 
-  # w.r.t. all estimated coefficients
+  # partial derivatives of semi-elasticities wrt coefficients
   derivCoef <- rep( 0, nCoef )
   for( m in 1:( nInt - 1 ) ){
     derivCoef <- derivCoef + weights[m] * gradM[ , m ]
@@ -64,9 +65,9 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
     return( derivCoef )
   }
-  # standard error of the (average) semi-elasticity
+  # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
-  # prepare object that will be returned
-  result <- c( semEla[1], stdEr = semElaSE )
+  # create object that will be returned
+  result <- c( semEla = unname( semEla ), stdEr = semElaSE )
   return( result )
 }

@@ -242,6 +242,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   }
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  # create object that will be returned
   result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
 } 
