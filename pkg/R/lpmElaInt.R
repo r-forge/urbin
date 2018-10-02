@@ -1,13 +1,15 @@
 lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   allCoefVcov = NULL ){
   
+  # number of coefficients
+  nCoef <- length( allCoef )
+  
   if( all( xPos != 0 ) ) {
     # Check position vector
     checkXPos( xPos, minLength = 2, maxLength = length( allCoef ), 
       minVal = 0, maxVal = length( allCoef ) )
     xCoef <- allCoef
     xShares <- allXVal
-    xCoefVcov <- allCoefVcov
   } else {
     # Check position vector
     checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
@@ -21,31 +23,6 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
     xShares <- calcSharesInt( allXVal, xPos )
     if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
       attr( xShares, "derivOnly" ) <- 1 
-    }
-    if( is.null( allCoefVcov ) ) {
-      xCoefVcov <- NULL
-    } else {
-      if( is.matrix( allCoefVcov ) ) {
-        temp <- matrix( 0, length( xPos ), ncol( allCoefVcov ) )
-        for( i in 1:length( xPos ) ) {
-          if( xPos[i] != 0 ) {
-            temp[i,] <- allCoefVcov[ xPos[i], ]
-          }
-        }
-        xCoefVcov <- matrix( 0, length( xPos ), length( xPos ) )
-        for( i in 1:length( xPos ) ) {
-          if( xPos[i] != 0 ) {
-            xCoefVcov[,i] <- temp[ , xPos[i] ]
-          }
-        }
-      } else {
-        xCoefVcov <- rep( 0, length( xPos ) )
-        for( i in 1:length( xPos ) ) {
-          if( xPos[i] != 0 ) {
-            xCoefVcov[i] <- allCoefVcov[ xPos[i] ]
-          }
-        }
-      }
     }
   }
   # number of intervals
@@ -65,7 +42,7 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
-  xCoefVcov <- prepareVcov( xCoefVcov, length( xCoef ), NA, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, NA, xMeanSd = NULL )
   # weights
   weights <- elaIntWeights( xShares )
   # semi-elasticities 'around' each inner boundary and their weights
@@ -77,14 +54,14 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   # (average) semi-elasticity
   semElaAvg <- sum( semElas * weights )
   # derivatives of the (average) semi-elasticity wrt the coefficients
-  derivCoef <- rep( NA, nInt )
-  derivCoef[1] <- 
+  derivCoef <- rep( 0, nCoef )
+  derivCoef[ xPos[1] ] <- 
     -2 * weights[1] * xBound[2] / ( xBound[3] - xBound[1] )
-  derivCoef[nInt] <- 
+  derivCoef[ xPos[nInt] ] <- 
     2 * weights[nInt-1] * xBound[nInt] / ( xBound[nInt+1] - xBound[nInt-1] ) 
   if( nInt > 2 ) {
     for( n in 2:( nInt-1 ) ) {
-      derivCoef[n] <- 
+      derivCoef[ xPos[n] ] <- 
         2 * weights[n-1] * xBound[n] / ( xBound[n+1] - xBound[n-1] ) -
         2 * weights[n]   * xBound[n+1] / ( xBound[n+2] - xBound[n] )
     }
@@ -95,7 +72,7 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
     return( derivCoef )
   }
   # standard error of the (average) semi-elasticity
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% xCoefVcov %*% derivCoef ) )
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
   result <- c( semEla = semElaAvg, stdEr = semElaSE )
   return( result )
