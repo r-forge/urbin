@@ -14,15 +14,19 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   if( length( xCoef ) == 1 ) {
     xCoef <- c( xCoef, 0 )
   }
+  
+  # calculate xBars
+  intX <- mean( intBound )
+  refX <- mean( refBound ) 
   # difference between the xBars of the two intervals
-  xDiff <- mean( intBound ) - mean( refBound )
+  xDiff <- intX - refX
   # difference between the xSquareBars of the two intervals
   xSquaredDiff <- 
     EXSquared( intBound[1], intBound[2] ) -
     EXSquared( refBound[1], refBound[2] )
   # effect E_{k,ml}
   eff <-  xCoef[1] * xDiff + xCoef[2] * xSquaredDiff
-  # partial derivative of E_{k,ml} w.r.t. the beta_k and beta_{k+1}
+  # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( 0, nCoef ) 
   derivCoef[ xPos[1] ] <- xDiff
   if( length( xPos ) == 2 ) {
