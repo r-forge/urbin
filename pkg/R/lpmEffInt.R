@@ -10,28 +10,28 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
-  xCoef <- allCoef[xPos]
-  if( length( xCoef ) == 1 ) {
-    xCoef <- c( xCoef, 0 )
-  }
-  
+
   # calculate xBars
   intX <- mean( intBound )
   refX <- mean( refBound ) 
-  # difference between the xBars of the two intervals
-  xDiff <- intX - refX
-  # difference between the xSquareBars of the two intervals
-  xSquaredDiff <- 
-    EXSquared( intBound[1], intBound[2] ) -
-    EXSquared( refBound[1], refBound[2] )
+  if( length( xPos ) == 2 ) {
+    intX <- c( intX, EXSquared( intBound[1], intBound[2] ) )
+    refX <- c( refX, EXSquared( refBound[1], refBound[2] ) )
+  }
+  if( length( intX ) != length( xPos ) || 
+      length( refX ) != length( xPos ) ) {
+    stop( "internal error: 'intX' or 'refX' does not have the expected length" )
+  }
+  # define X' * beta 
+  intXbeta <- sum( allCoef[ xPos ] * intX )
+  refXbeta <- sum( allCoef[ xPos ] * refX )
+
   # effect E_{k,ml}
-  eff <-  xCoef[1] * xDiff + xCoef[2] * xSquaredDiff
+  eff <- intXbeta - refXbeta
+  
   # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( 0, nCoef ) 
-  derivCoef[ xPos[1] ] <- xDiff
-  if( length( xPos ) == 2 ) {
-    derivCoef[ xPos[2] ] <- xSquaredDiff
-  }
+  derivCoef[ xPos ] <- intX - refX
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
