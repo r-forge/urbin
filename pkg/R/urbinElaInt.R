@@ -56,18 +56,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     # calculation of the semi-elasticity
     semEla <- urbinElaInt( phiVec, shareVec, xBound, xPos = 1:nInt,
       model = "lpm" )[1]
-    # partial derivatives of each semi-elasticity around each boundary
-    # w.r.t. all estimated coefficients
-    gradM <- matrix( 0, nCoef, nInt - 1 )
-    gradPhiVec <- dnorm( xBeta )
-    for( m in 1:( nInt - 1 ) ) {
-      gradM[ -xPos, m ] <- 2 * ( gradPhiVec[m+1] - gradPhiVec[m] ) * 
-        allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
-      gradM[ xPos[m], m ] <- - 2 * gradPhiVec[m] * xBound[m+1] / 
-        ( xBound[m+2] - xBound[m] )
-      gradM[ xPos[m+1], m ] <- 2 * gradPhiVec[m+1] * xBound[m+1] / 
-        ( xBound[m+2] - xBound[m] )
-    }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -86,6 +74,18 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       }
     }
   } else if( model == "probit" ) {
+    # partial derivatives of each semi-elasticity around each boundary
+    # w.r.t. all estimated coefficients
+    gradM <- matrix( 0, nCoef, nInt - 1 )
+    gradPhiVec <- dnorm( xBeta )
+    for( m in 1:( nInt - 1 ) ) {
+      gradM[ -xPos, m ] <- 2 * ( gradPhiVec[m+1] - gradPhiVec[m] ) * 
+        allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
+      gradM[ xPos[m], m ] <- - 2 * gradPhiVec[m] * xBound[m+1] / 
+        ( xBound[m+2] - xBound[m] )
+      gradM[ xPos[m+1], m ] <- 2 * gradPhiVec[m+1] * xBound[m+1] / 
+        ( xBound[m+2] - xBound[m] )
+    }
     derivCoef <- rep( 0, nCoef )
     for( m in 1:( nInt - 1 ) ){
       derivCoef <- derivCoef + weights[m] * gradM[ , m ]
