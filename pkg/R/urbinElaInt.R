@@ -4,15 +4,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # number of coefficients
   nCoef <- length( allCoef )
   # Check position vector
-  if( model == "lpm" ) {
-    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + any( xPos == 0 ), 
-      minVal = 0, maxVal = nCoef )
-  } else if( model == "probit" ) {
-    checkXPos( xPos, minLength = 2, maxLength = nCoef, 
-      minVal = 0, maxVal = nCoef, requiredVal = 0 )
-  } else {
-    stop( "argument 'model' specifies an unknown type of model" )
-  }
+  checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
+    minVal = 0, maxVal = nCoef, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
   # Check x values
