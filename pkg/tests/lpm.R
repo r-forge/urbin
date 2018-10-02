@@ -147,7 +147,7 @@ attr( xMeanIntSharesAttr, "derivOnly" ) <- 1
 lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
   c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( lpmElaInt, t0 = coefLpmInt, xShares = xMeanIntShares, 
+numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
 vcovLpmInt <- vcov( estLpmInt )
@@ -155,13 +155,13 @@ vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
 vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ),
-  vcovLpmInt )
+  allCoefVcov = vcovLpmInt )
 # semi-elasticity of age with standard errors (only standard errors)
 seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ),
-  seLpmInt )
+  allCoefVcov = seLpmInt )
 
 
 ### effect of age changing between discrete intervals 

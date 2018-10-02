@@ -294,7 +294,7 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 +   c( 30, 37.5, 44.5, 52.5, 60 ) )
 [1] -2.3286166  0.7329990 -0.3070942  1.9027117
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( lpmElaInt, t0 = coefLpmInt, xShares = xMeanIntShares, 
+> numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
        age30.37TRUE age38.44TRUE            age53.60TRUE
 semEla    -2.328617     0.732999 -0.3070942     1.902712
@@ -305,7 +305,7 @@ stdEr            NA           NA         NA           NA
 > vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
 > lpmElaInt( coefLpmInt, xMeanIntShares,
 +   c( 30, 37.5, 44.5, 52.5, 60 ),
-+   vcovLpmInt )
++   allCoefVcov = vcovLpmInt )
     semEla      stdEr 
 -0.4470029  0.1359064 
 > # semi-elasticity of age with standard errors (only standard errors)
@@ -313,7 +313,7 @@ stdEr            NA           NA         NA           NA
 > seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
 > lpmElaInt( coefLpmInt, xMeanIntShares,
 +   c( 30, 37.5, 44.5, 52.5, 60 ),
-+   seLpmInt )
++   allCoefVcov = seLpmInt )
     semEla      stdEr 
 -0.4470029  0.1651043 
 > 
@@ -409,4 +409,4 @@ stdEr            NA           NA         NA           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.206   0.016   0.215 
+  0.191   0.016   0.201 
