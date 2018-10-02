@@ -185,6 +185,7 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
 lpmEffInt( coef( estLpmLin )[3], c( 30, 40 ), c( 50, 60 ), xPos = 1 )
+lpmEffInt( coef( estLpmLin ), c( 30, 40 ), c( 50, 60 ), xPos = 3 )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
@@ -193,6 +194,8 @@ attr( xMeanLinIntAttr, "derivOnly" ) <- 1
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmEffInt, t0 = coef( estLpmLin )[3],
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1 )
+numericGradient( lpmEffInt, t0 = coef( estLpmLin ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 # lpmEffInt( coef( estLpmLin ), xMeanLinInt, 3,
@@ -201,6 +204,8 @@ numericGradient( lpmEffInt, t0 = coef( estLpmLin )[3],
 # (only standard errors) 
 lpmEffInt( coef( estLpmLin )[3],
   c( 30, 40 ), c( 50, 60 ), xPos = 1, sqrt( diag( vcov( estLpmLin ) ) )[3] )
+lpmEffInt( coef( estLpmLin ),
+  c( 30, 40 ), c( 50, 60 ), xPos = 3, sqrt( diag( vcov( estLpmLin ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
@@ -211,6 +216,8 @@ xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # without standard errors
 lpmEffInt( coef( estLpmQuad )[3:4],
   c( 30, 40 ), c( 50, 60 ), xPos = 1:2 )
+lpmEffInt( coef( estLpmQuad ),
+  c( 30, 40 ), c( 50, 60 ), xPos = 3:4 )
 # partial derivatives of the effect wrt the coefficients
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
@@ -219,6 +226,8 @@ attr( xMeanQuadIntAttr, "derivOnly" ) <- 1
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffInt, t0 = coef( estLpmQuad )[3:4],
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2 )
+numericGradient( lpmEffInt, t0 = coef( estLpmQuad ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3:4 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 # lpmEffInt( coef( estLpmQuad ), xMeanQuadInt, c( 3, 4 ),
@@ -227,6 +236,8 @@ numericGradient( lpmEffInt, t0 = coef( estLpmQuad )[3:4],
 # (only standard errors) 
 lpmEffInt( coef( estLpmQuad )[3:4], c( 30, 40 ), c( 50, 60 ), 
   xPos = 1:2, sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
+lpmEffInt( coef( estLpmQuad ), c( 30, 40 ), c( 50, 60 ), 
+  xPos = 3:4, sqrt( diag( vcov( estLpmQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 # lpmEffInt( coef( estLpmQuad ), xMeanQuadInt, c( 3, 4 ),
