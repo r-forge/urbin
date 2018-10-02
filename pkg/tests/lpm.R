@@ -141,14 +141,22 @@ xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 # semi-elasticity of age without standard errors
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ) )
+lpmElaInt( coef( estLpmInt ), xMeanInt,
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntSharesAttr <- xMeanIntShares
 attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
 lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
   c( 30, 37.5, 44.5, 52.5, 60 ) )
+xMeanIntAttr <- xMeanInt
+attr( xMeanIntAttr, "derivOnly" ) <- 1 
+lpmElaInt( coef( estLpmInt ), xMeanIntAttr, 
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+numericGradient( lpmElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
 vcovLpmInt <- vcov( estLpmInt )
 vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
@@ -156,12 +164,18 @@ vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ),
   allCoefVcov = vcovLpmInt )
+lpmElaInt( coef( estLpmInt ), xMeanInt,
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ),
+  allCoefVcov = vcov( estLpmInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
 seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ),
   allCoefVcov = seLpmInt )
+lpmElaInt( coef( estLpmInt ), xMeanInt,
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ),
+  allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
