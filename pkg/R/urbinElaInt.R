@@ -16,18 +16,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   if( length( allXVal ) != nCoef ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
-  if( any( allXVal[ xPos ] < 0 ) ) {
-    stop( "all elements of argument 'allXVal'",
-      " that are indicated by argument 'xPos'",
-      " (i.e., the shares of observations in each interval)",
-      " must be non-negative" )
-  }
-  if( sum( allXVal[ xPos ] > 1 ) ) {
-    stop( "the sum of the elements of argument 'allXVal'",
-      " that are indicated by argument 'xPos'",
-      " (i.e., the shares of observations in each interval)",
-      " must not be larger than one" )
-  }
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
