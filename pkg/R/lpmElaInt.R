@@ -16,7 +16,12 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos = NULL,
       }
     }
     xShares <- calcSharesInt( allXVal, xPos )
-    if( !is.null( allCoefVcov ) ) {
+    if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+      attr( xShares, "derivOnly" ) <- 1 
+    }
+    if( is.null( allCoefVcov ) ) {
+      xCoefVcov <- NULL
+    } else {
       if( is.matrix( allCoefVcov ) ) {
         temp <- matrix( 0, length( xPos ), ncol( allCoefVcov ) )
         for( i in 1:length( xPos ) ) {
