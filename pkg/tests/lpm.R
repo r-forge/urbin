@@ -150,9 +150,12 @@ attr( xMeanIntAttr, "derivOnly" ) <- 1
 numericGradient( lpmElaInt, t0 = coefLpmInt, xShares = xMeanIntShares, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# urbinElaInt( coef( estLpmInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-#   vcov( estLpmInt ) )
+vcovLpmInt <- vcov( estLpmInt )
+vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
+vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ),
+  vcovLpmInt )
 # semi-elasticity of age with standard errors (only standard errors)
 seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 

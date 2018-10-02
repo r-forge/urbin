@@ -299,9 +299,14 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 semEla    -2.328617     0.732999 -0.3070942     1.902712
 stdEr            NA           NA         NA           NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> # urbinElaInt( coef( estLpmInt ), xMeanInt, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
-> #   vcov( estLpmInt ) )
+> vcovLpmInt <- vcov( estLpmInt )
+> vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
+> vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
+> lpmElaInt( coefLpmInt, xMeanIntShares,
++   c( 30, 37.5, 44.5, 52.5, 60 ),
++   vcovLpmInt )
+    semEla      stdEr 
+-0.4470029  0.1359064 
 > # semi-elasticity of age with standard errors (only standard errors)
 > seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 > seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
@@ -403,4 +408,4 @@ stdEr            NA           NA         NA           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.178   0.046   0.219 
+  0.197   0.012   0.202 
