@@ -28,8 +28,15 @@ lpmEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   if( length( xPos ) == 2 ) {
     derivCoef[ xPos[2] ] <- xSquaredDiff
   }
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( derivCoef )
+  }
+  
   # approximate standard error of the effect
   effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  
   # object to be returned
   result <- c( effect = eff, stdEr = effSE )
   return( result )
