@@ -4,26 +4,19 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   # number of coefficients
   nCoef <- length( allCoef )
   
-  if( all( xPos != 0 ) ) {
-    # Check position vector
-    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ), 
-      minVal = 0, maxVal = length( allCoef ) )
-    xCoef <- allCoef
-    xShares <- allXVal
-  } else {
-    # Check position vector
-    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
-      minVal = 0, maxVal = length( allCoef ), requiredVal = 0 )
-    xCoef <- rep( 0, length( xPos ) )
-    for( i in 1:length( xPos ) ) {
-      if( xPos[i] != 0 ) {
-        xCoef[i] <- allCoef[ xPos[i] ]
-      }
+  # Check position vector
+  checkXPos( xPos, minLength = 2, 
+    maxLength = length( allCoef ) + any( xPos == 0 ), 
+    minVal = 0, maxVal = length( allCoef ) )
+  xCoef <- rep( 0, length( xPos ) )
+  for( i in 1:length( xPos ) ) {
+    if( xPos[i] != 0 ) {
+      xCoef[i] <- allCoef[ xPos[i] ]
     }
-    xShares <- calcSharesInt( allXVal, xPos )
-    if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-      attr( xShares, "derivOnly" ) <- 1 
-    }
+  }
+  xShares <- calcSharesInt( allXVal, xPos )
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    attr( xShares, "derivOnly" ) <- 1 
   }
   # number of intervals
   nInt <- length( xCoef )
