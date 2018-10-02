@@ -5,8 +5,11 @@
 
 \description{
   This function calculates 
-  the effects of continuous variables,
-  when these variables change between discrete intervals.
+  the effect of a continuous variable
+  that is used as a linear explanatory variable
+  or as a linear and quadratic explanatory variable
+  in a linear probability model or a probit model
+  if this variable changes between discrete intervals.
   The calculated effect indicates
   by how many percentage points the probability
   that the dependent variable has a value of one
@@ -14,23 +17,29 @@
   if the explanatory variable of interest
   changes from the 'reference' interval 
   to a selected interval of interest.
-  This function also applies the Delta-method
+  This function applies the Delta-method
   to calculate the approximate standard error 
   of the calculated effect.
 }
 
 \usage{
-urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, model,
+urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   allCoefVcov = NULL, xMeanSd = NULL )
 }
 
 \arguments{
-  \item{allCoef}{a vector with all estimated coefficients
+  \item{allCoef}{a vector of all estimated coefficients
     (including intercept).}
-  \item{allXVal}{a vector with the values of all explanatory variables
-    (including intercept; the order of these values must be the same
+  \item{allXVal}{a vector of the values of the explanatory variables,
+    at which the effect should be calculated
+    (including intercept; the order of its elements must be the same
     as the order of the corresponding coefficients in argument 
-    \code{allCoef}).}
+    \code{allCoef}).
+    In case of linear probability models,
+    this argument is ignored.
+    In case of all other types of models, 
+    the element(s) that correspond to the variable of interest
+    is (are) ignored and should be set to \code{NA}.}
   \item{xPos}{a posivite integer 
     indicating the position of the explanatory variable of interest
     or a vector of two positive integers 
@@ -46,6 +55,7 @@ urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, model,
     of the interval of interest, respectively.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
+    \code{"lpm"} = binary probit model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
@@ -63,6 +73,15 @@ urbinEffInt( allCoef, allXVal, xPos, refBound, intBound, model,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
+}
+
+\details{
+If \code{urbinEffInt()} calculates the effect of the variable of interest 
+based on a linear probability model (\code{model = "lpm"}),
+argument \code{allCoef} can only include the coefficient(s)
+of the explanatory variable of interest.
+In this case, argument \code{allCoefVcov}
+must be adjusted accordingly.
 }
 
 \value{

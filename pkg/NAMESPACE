@@ -2,7 +2,6 @@ export( "urbinEffCat" )
 export( "urbinEffInt" )
 export( "urbinEla" )
 export( "urbinElaInt" )
-export( "lpmEffInt" )
 
 importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )

@@ -348,43 +348,45 @@ stdEr           NA   NA           NA           NA           NA   NA
 > xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> lpmEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1 )
+> urbinEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1,
++   model = "lpm" )
     effect      stdEr 
 -0.1431039         NA 
-> lpmEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3 )
+> urbinEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3,
++   model = "lpm" )
     effect      stdEr 
 -0.1431039         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > naAttr <- NA
 > attr( naAttr, "derivOnly" ) <- 1 
-> lpmEffInt( coef( estLpmLin ), naAttr, xPos = 3,
-+   c( 30, 40 ), c( 50, 60 ) )
+> urbinEffInt( coef( estLpmLin ), naAttr, xPos = 3,
++   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
 [1]  0  0 20  0
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( lpmEffInt, t0 = coef( estLpmLin )[3], allXVal = NA,
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1 )
+> numericGradient( urbinEffInt, t0 = coef( estLpmLin )[3], allXVal = NA,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1, model = "lpm" )
        age
 effect  20
 stdEr   NA
-> numericGradient( lpmEffInt, t0 = coef( estLpmLin ), allXVal = NA,
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3 )
+> numericGradient( urbinEffInt, t0 = coef( estLpmLin ), allXVal = NA,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3, model = "lpm" )
        (Intercept) kids age educ
 effect           0    0  20    0
 stdEr           NA   NA  NA   NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> lpmEffInt( coef( estLpmLin ), NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 3, vcov( estLpmLin ) )
+> urbinEffInt( coef( estLpmLin ), NA,
++   c( 30, 40 ), c( 50, 60 ), xPos = 3, model = "lpm", vcov( estLpmLin ) )
      effect       stdEr 
 -0.14310391  0.05235734 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> lpmEffInt( coef( estLpmLin )[3], NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 1, sqrt( diag( vcov( estLpmLin ) ) )[3] )
+> urbinEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1, 
++   model = "lpm", sqrt( diag( vcov( estLpmLin ) ) )[3] )
      effect       stdEr 
 -0.14310391  0.05235734 
-> lpmEffInt( coef( estLpmLin ), NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 3, sqrt( diag( vcov( estLpmLin ) ) ) )
+> urbinEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3, 
++   model = "lpm", sqrt( diag( vcov( estLpmLin ) ) ) )
      effect       stdEr 
 -0.14310391  0.05235734 
 > 
@@ -395,53 +397,53 @@ stdEr           NA   NA  NA   NA
 > xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> lpmEffInt( coef( estLpmQuad )[3:4], NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 1:2 )
+> urbinEffInt( coef( estLpmQuad )[3:4], NA,
++   c( 30, 40 ), c( 50, 60 ), xPos = 1:2, model = "lpm" )
     effect      stdEr 
 -0.2374667         NA 
-> lpmEffInt( coef( estLpmQuad ), NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 3:4 )
+> urbinEffInt( coef( estLpmQuad ), NA,
++   c( 30, 40 ), c( 50, 60 ), xPos = 3:4, model = "lpm" )
     effect      stdEr 
 -0.2374667         NA 
 > # partial derivatives of the effect wrt the coefficients
-> lpmEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
-+   c( 30, 40 ), c( 50, 60 ) )
+> urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
 [1]    0    0   20 1800    0
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( lpmEffInt, t0 = coef( estLpmQuad )[3:4], allXVal = NA,
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2 )
+> numericGradient( urbinEffInt, t0 = coef( estLpmQuad )[3:4], allXVal = NA,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2, model = "lpm" )
        age I(age^2)
 effect  20     1800
 stdEr   NA       NA
-> numericGradient( lpmEffInt, t0 = coef( estLpmQuad ),
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3:4 )
+> numericGradient( urbinEffInt, t0 = coef( estLpmQuad ),
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3:4, model = "lpm" )
        (Intercept) kids age I(age^2) educ
 effect           0    0  20     1800    0
 stdEr           NA   NA  NA       NA   NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> lpmEffInt( coef( estLpmQuad )[3:4], NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 1:2, vcov( estLpmQuad )[3:4,3:4] )
+> urbinEffInt( coef( estLpmQuad )[3:4], NA, c( 30, 40 ), c( 50, 60 ), 
++   xPos = 1:2, model = "lpm", vcov( estLpmQuad )[3:4,3:4] )
      effect       stdEr 
 -0.23746667  0.05978481 
-> lpmEffInt( coef( estLpmQuad ), NA,
-+   c( 30, 40 ), c( 50, 60 ), xPos = 3:4, vcov( estLpmQuad ) )
+> urbinEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
++   xPos = 3:4, model = "lpm", vcov( estLpmQuad ) )
      effect       stdEr 
 -0.23746667  0.05978481 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> lpmEffInt( coef( estLpmQuad )[3:4], NA, c( 30, 40 ), c( 50, 60 ), 
-+   xPos = 1:2, sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
+> urbinEffInt( coef( estLpmQuad )[3:4], NA, c( 30, 40 ), c( 50, 60 ), 
++   xPos = 1:2, model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
     effect      stdEr 
 -0.2374667  0.7124862 
-> lpmEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
-+   xPos = 3:4, sqrt( diag( vcov( estLpmQuad ) ) ) )
+> urbinEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
++   xPos = 3:4, model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) ) )
     effect      stdEr 
 -0.2374667  0.7124862 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
-> lpmEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
-+   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLpmQuad ) ) ),
+> urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
 -0.23746667  0.06991987 
@@ -479,4 +481,4 @@ stdEr           NA   NA  NA       NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.216   0.021   0.231 
+  0.220   0.016   0.231 

@@ -1,9 +1,5 @@
-urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
+urbinEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   allCoefVcov = NULL, xMeanSd = NULL ){
-  
-  if( model != "probit" ) {
-    stop( "argument 'model' specifies an unknown type of model" )
-  }
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -15,6 +11,18 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
   # Check x values
+  if( model == "lpm" ) {
+    if( any( !is.na( allXVal ) ) ) {
+      warning( "argument allXVal is ignored for lpm models",
+        " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
+    }
+    temp <- rep( 0, nCoef )
+    temp[ xPos ] <- NA
+    if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+      attr( temp, "derivOnly" ) <-1
+    }
+    allXVal <- temp
+  }
   if( length( allXVal ) != nCoef ){
     stop( "argument 'allCoef' and 'allXVal' must have the same length" )
   }  
@@ -23,7 +31,7 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
     warning( "values of argument 'allXVal[ xPos ]' are ignored",
       " (set these values to 'NA' to avoid this warning)" )
   }
-  
+
   # calculate xBars
   intX <- mean( intBound )
   refX <- mean( refBound ) 
@@ -38,17 +46,28 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
   # define X' * beta 
   intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
   refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
-  checkXBeta( c( intXbeta, refXbeta ) )
-  
-  # effect E_{k,ml}
-  eff <- pnorm( intXbeta ) - pnorm( refXbeta )
-  
+
+  # calculate the effect
+  if( model == "lpm" ) {
+    eff <- intXbeta - refXbeta
+  } else if( model == "probit" ) {
+    checkXBeta( c( intXbeta, refXbeta ) )
+    eff <- pnorm( intXbeta ) - pnorm( refXbeta )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
+
   # partial derivative of the effect w.r.t. all estimated coefficients
-  derivCoef <- rep( NA, nCoef )
-  derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
-    allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( intXbeta ) * intX - 
-    dnorm( refXbeta ) * refX
+  if( model == "lpm" ) {
+    derivCoef <- rep( 0, nCoef ) 
+    derivCoef[ xPos ] <- intX - refX
+  } else if( model == "probit" ) {
+    derivCoef <- rep( NA, nCoef )
+    derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
+      allXVal[ -xPos ] 
+    derivCoef[ xPos ] = dnorm( intXbeta ) * intX - 
+      dnorm( refXbeta ) * refX
+  }
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
