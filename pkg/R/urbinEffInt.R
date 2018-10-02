@@ -24,17 +24,31 @@ urbinEffInt <- function( allCoef, allXVal, xPos, refBound, intBound, model,
       " (set these values to 'NA' to avoid this warning)" )
   }
   
-  model <- prepareEffInt( allCoef, allXVal, xPos, refBound, intBound )
-
+  # calculate xBars
+  intX <- mean( intBound )
+  refX <- mean( refBound ) 
+  if( length( xPos ) == 2 ) {
+    intX <- c( intX, EXSquared( intBound[1], intBound[2] ) )
+    refX <- c( refX, EXSquared( refBound[1], refBound[2] ) )
+  }
+  if( length( intX ) != length( xPos ) || 
+      length( refX ) != length( xPos ) ) {
+    stop( "internal error: 'intX' or 'refX' does not have the expected length" )
+  }
+  # define X' * beta 
+  intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
+  refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
+  checkXBeta( c( intXbeta, refXbeta ) )
+  
   # effect E_{k,ml}
-  eff <- pnorm( model$intXbeta ) - pnorm( model$refXbeta )
+  eff <- pnorm( intXbeta ) - pnorm( refXbeta )
   
   # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( NA, nCoef )
-  derivCoef[ -xPos ] = ( dnorm( model$intXbeta ) - dnorm( model$refXbeta ) ) * 
+  derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
     allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( model$intXbeta ) * model$intX - 
-    dnorm( model$refXbeta ) * model$refX
+  derivCoef[ xPos ] = dnorm( intXbeta ) * intX - 
+    dnorm( refXbeta ) * refX
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
