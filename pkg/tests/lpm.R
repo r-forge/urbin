@@ -142,10 +142,10 @@ xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 lpmElaInt( coefLpmInt, xMeanIntShares,
   c( 30, 37.5, 44.5, 52.5, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanIntAttr <- xMeanInt
-attr( xMeanIntAttr, "derivOnly" ) <- 1 
-# urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) )
+xMeanIntSharesAttr <- xMeanIntShares
+attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
+lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
+  c( 30, 37.5, 44.5, 52.5, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmElaInt, t0 = coefLpmInt, xShares = xMeanIntShares, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
