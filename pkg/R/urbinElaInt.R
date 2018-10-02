@@ -23,6 +23,10 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
+  # vector of shares of observations in each interval
+  shareVec <- calcSharesInt( allXVal, xPos )
+  # weights
+  weights <- elaIntWeights( shareVec )
   # prepare calculation of semi-elasticity 
   if( model == "lpm" ) {
     xCoef <- rep( 0, length( xPos ) )
@@ -39,10 +43,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # vector of shares of observations in each interval
-  shareVec <- calcSharesInt( allXVal, xPos )
-  # weights
-  weights <- elaIntWeights( shareVec )
   if( model == "lpm" ) {
     # semi-elasticities 'around' each inner boundary and their weights
     semElaBound <- rep( NA, nInt - 1 )
