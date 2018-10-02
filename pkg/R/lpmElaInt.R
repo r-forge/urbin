@@ -1,11 +1,8 @@
 lpmElaInt <- function( xCoef, xShares, xBound, 
-  xCoefSE = rep( NA, length( xCoef ) ) ){
+  allCoefVcov = NULL ){
   nInt <- length( xCoef )
   if( nInt < 2 || !is.vector( xCoef ) ) {
     stop( "argument 'xCoef' must be a vector with at least two elements" )
-  }
-  if( length( xCoefSE ) != nInt ) {
-    stop( "arguments 'xCoef' and 'xCoefSE' must be vectors of the same length" )
   }
   if( length( xShares ) != nInt ) {
     stop( "arguments 'xCoef' and 'xShares' must be vectors of the same length" )
@@ -18,6 +15,8 @@ lpmElaInt <- function( xCoef, xShares, xBound,
   }
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, length( xCoef ), NA, xMeanSd = NULL )
   # weights
   weights <- elaIntWeights( xShares )
   # semi-elasticities 'around' each inner boundary and their weights
@@ -41,10 +40,8 @@ lpmElaInt <- function( xCoef, xShares, xBound,
         2 * weights[n]   * xBound[n+1] / ( xBound[n+2] - xBound[n] )
     }
   }
-  # variance-covariance matrix of the coefficiencts
-  vcovCoef <- diag( xCoefSE^2 )
   # standard error of the (average) semi-elasticity
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
   result <- c( semEla = semElaAvg, stdEr = semElaSE )
   return( result )
