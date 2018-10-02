@@ -12,10 +12,8 @@ lpmEffInt <- function( allCoef, refBound, intBound, xPos,
     stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
   }
   xCoef <- allCoef[xPos]
-  xCoefSE <- allCoefSE[xPos]
   if( length( xCoef ) == 1 ) {
     xCoef <- c( xCoef, 0 )
-    xCoefSE <- c( xCoefSE, 0 )
   }
   # difference between the xBars of the two intervals
   xDiff <- mean( intBound ) - mean( refBound )
@@ -26,9 +24,17 @@ lpmEffInt <- function( allCoef, refBound, intBound, xPos,
   # effect E_{k,ml}
   eff <-  xCoef[1] * xDiff + xCoef[2] * xSquaredDiff
   # partial derivative of E_{k,ml} w.r.t. the beta_k and beta_{k+1}
-  derivCoef <- c( xDiff, ifelse( xCoef[2] == 0, 0, xSquaredDiff ) )
+  derivCoef <- rep( 0, nCoef ) 
+  derivCoef[ xPos[1] ] <- xDiff
+  if( length( xPos ) == 2 ) {
+    derivCoef[ xPos[2] ] <- xSquaredDiff
+  }
   # variance covariance of the coefficients (covariances set to zero)
-  vcovCoef <- diag( xCoefSE^2 )
+  if( length( allCoefSE ) > 1 ) {
+    vcovCoef <- diag( allCoefSE^2 )
+  } else {
+    vcovCoef <- allCoefSE^2
+  }
   # approximate standard error of the effect
   effSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
   # object to be returned
