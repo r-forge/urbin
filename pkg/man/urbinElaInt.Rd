@@ -1,11 +1,12 @@
 \name{urbinElaInt}
 \alias{urbinElaInt}
 
-\title{Semi-Elasticities of Interval-Coded Variables}
+\title{Semi-Elasticities of Interval-Coded Explanatory Variables}
 
 \description{
   This function calculates 
-  the semi-elasticity of an interval-coded explanatory variable
+  the semi-elasticity of an interval-coded variable
+  that is used as an explanatory variable
   in a linear probability model or a probit model.
   The calculated semi-elasticity indicates
   by how many percentage points the probability
@@ -13,7 +14,7 @@
   increases
   if the explanatory variable of interest
   increases by one percent.
-  This function also applies the Delta-method
+  This function applies the Delta-method
   to calculate the approximate standard error 
   of the calculated semi-elasticity.
 }
@@ -23,23 +24,26 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
 }
 
 \arguments{
-  \item{allCoef}{a vector with all estimated coefficients
+  \item{allCoef}{a vector of all estimated coefficients
     (including intercept).}
-  \item{allXVal}{a vector with the values of all explanatory variables
+  \item{allXVal}{a vector of the values of all explanatory variables
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
-    \code{allCoef}).}
-  \item{xPos}{a vector of posivite integers
+    \code{allCoef}),
+    whereas the values that correspond to the intervals 
+    of the explanatory variable of interested must indicate 
+    the shares of these intervals in the sample of interest.}
+  \item{xPos}{a vector of positive integers
     with length equal to the number of intervals.
-    Each element of this vector refers to one interval,
-    whereas these intervals need to be in ascending order.
-    Each element indicates 
+    Each element of this vector must refer to one interval,
+    whereas these intervals must be in ascending order.
+    Each element of this vector indicates 
     the position of the coefficient of the respective dummy variable 
     (i.e., the dummy variable that indicates 
     whether the values of the explanatory variable of interest lie
     in the corresponding interval or not)
     in arguments \code{allCoef} 
-    and the position of the mean value (=share) of this dummy variable 
+    and the position of the value (=share) of this dummy variable 
     in argument \code{allXVal}.
     The position of the reference interval
     (i.e., the interval without a corresponding dummy variable
@@ -57,6 +61,15 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+}
+
+\details{
+If \code{urbinElaInt()} calculates the semi-elasticity 
+based on a linear probability model (\code{model = "lpm"}),
+argument \code{allCoef} can only include the coefficient(s)
+of the explanatory variable of interest.
+In this case, arguments \code{allXVal} and \code{allCoefVcov}
+must be adjusted accordingly.
 }
 
 \value{

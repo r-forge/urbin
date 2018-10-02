@@ -5,7 +5,7 @@
 
 \description{
   This function calculates 
-  the semi-elasticity of a continuous explanatory variable
+  the semi-elasticity of a continuous variable
   that is used as a linear explanatory variable
   or as a linear and quadratic explanatory variable
   in a linear probability model, a probit model, or a logit model.
@@ -28,9 +28,9 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
 }
 
 \arguments{
-  \item{allCoef}{a vector with all estimated coefficients
+  \item{allCoef}{a vector of all estimated coefficients
     (including intercept).}
-  \item{allXVal}{a vector with the values of the explanatory variables,
+  \item{allXVal}{a vector of the values of the explanatory variables,
     at which the semi-elasticity should be calculated
     (including intercept; the order of its elements must be the same
     as the order of the corresponding coefficients in argument 
@@ -76,7 +76,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
 }
 
 \details{
-If \code{urbin} calculates the semi-elasticity 
+If \code{urbinEla()} calculates the semi-elasticity 
 based on a linear probability model (\code{model = "lpm"}),
 argument \code{allCoef} can only include the coefficient(s)
 of the explanatory variable of interest.
