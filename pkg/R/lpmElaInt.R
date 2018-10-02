@@ -40,6 +40,11 @@ lpmElaInt <- function( xCoef, xShares, xBound,
         2 * weights[n]   * xBound[n+1] / ( xBound[n+2] - xBound[n] )
     }
   }
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( xShares ) ) ) {
+    return( derivCoef )
+  }
   # standard error of the (average) semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # prepare object that will be returned
