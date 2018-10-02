@@ -198,8 +198,8 @@ numericGradient( lpmEffInt, t0 = coef( estLpmLin ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# lpmEffInt( coef( estLpmLin ), xMeanLinInt, 3,
-#   c( 30, 40 ), c( 50, 60 ), vcov( estLpmLin ) )
+lpmEffInt( coef( estLpmLin ),
+  c( 30, 40 ), c( 50, 60 ), xPos = 3, vcov( estLpmLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 lpmEffInt( coef( estLpmLin )[3],
@@ -230,8 +230,10 @@ numericGradient( lpmEffInt, t0 = coef( estLpmQuad ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3:4 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# lpmEffInt( coef( estLpmQuad ), xMeanQuadInt, c( 3, 4 ),
-#   c( 30, 40 ), c( 50, 60 ), vcov( estLpmQuad ) )
+lpmEffInt( coef( estLpmQuad )[3:4],
+  c( 30, 40 ), c( 50, 60 ), xPos = 1:2, vcov( estLpmQuad )[3:4,3:4] )
+lpmEffInt( coef( estLpmQuad ),
+  c( 30, 40 ), c( 50, 60 ), xPos = 3:4, vcov( estLpmQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 lpmEffInt( coef( estLpmQuad )[3:4], c( 30, 40 ), c( 50, 60 ), 

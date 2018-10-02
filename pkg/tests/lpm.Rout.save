@@ -372,8 +372,10 @@ effect.age           0    0  20    0
 stdEr               NA   NA  NA   NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # lpmEffInt( coef( estLpmLin ), xMeanLinInt, 3,
-> #   c( 30, 40 ), c( 50, 60 ), vcov( estLpmLin ) )
+> lpmEffInt( coef( estLpmLin ),
++   c( 30, 40 ), c( 50, 60 ), xPos = 3, vcov( estLpmLin ) )
+ effect.age       stdEr 
+-0.14310391  0.05235734 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > lpmEffInt( coef( estLpmLin )[3],
@@ -418,8 +420,14 @@ effect.age           0    0  20     1800    0
 stdEr               NA   NA  NA       NA   NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # lpmEffInt( coef( estLpmQuad ), xMeanQuadInt, c( 3, 4 ),
-> #   c( 30, 40 ), c( 50, 60 ), vcov( estLpmQuad ) )
+> lpmEffInt( coef( estLpmQuad )[3:4],
++   c( 30, 40 ), c( 50, 60 ), xPos = 1:2, vcov( estLpmQuad )[3:4,3:4] )
+ effect.age       stdEr 
+-0.23746667  0.05978481 
+> lpmEffInt( coef( estLpmQuad ),
++   c( 30, 40 ), c( 50, 60 ), xPos = 3:4, vcov( estLpmQuad ) )
+ effect.age       stdEr 
+-0.23746667  0.05978481 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > lpmEffInt( coef( estLpmQuad )[3:4], c( 30, 40 ), c( 50, 60 ), 
@@ -469,4 +477,4 @@ effect.age      stdEr
 > 
 > proc.time()
    user  system elapsed 
-  0.219   0.007   0.220 
+  0.220   0.020   0.235 
