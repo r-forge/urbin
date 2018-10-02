@@ -348,7 +348,7 @@ stdEr           NA   NA           NA           NA           NA   NA
 > xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> lpmEffInt( coef( estLpmLin )[3], c( 30, 40 ), c( 50, 60 ) )
+> lpmEffInt( coef( estLpmLin )[3], c( 30, 40 ), c( 50, 60 ), xPos = 1 )
 effect.age      stdEr 
 -0.1431039         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
@@ -358,7 +358,7 @@ effect.age      stdEr
 > #   c( 30, 40 ), c( 50, 60 ) )
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( lpmEffInt, t0 = coef( estLpmLin )[3],
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1 )
            age
 effect.age  20
 stdEr       NA
@@ -369,7 +369,7 @@ stdEr       NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > lpmEffInt( coef( estLpmLin )[3],
-+   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLpmLin ) ) )[3] )
++   c( 30, 40 ), c( 50, 60 ), xPos = 1, sqrt( diag( vcov( estLpmLin ) ) )[3] )
  effect.age       stdEr 
 -0.14310391  0.05235734 
 > 
@@ -381,7 +381,7 @@ stdEr       NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
 > lpmEffInt( coef( estLpmQuad )[3:4],
-+   c( 30, 40 ), c( 50, 60 ) )
++   c( 30, 40 ), c( 50, 60 ), xPos = 1:2 )
 effect.age      stdEr 
 -0.2374667         NA 
 > # partial derivatives of the effect wrt the coefficients
@@ -391,7 +391,7 @@ effect.age      stdEr
 > #   c( 30, 40 ), c( 50, 60 ) )
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffInt, t0 = coef( estLpmQuad )[3:4],
-+   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2 )
            age I(age^2)
 effect.age  20     1800
 stdEr       NA       NA
@@ -401,8 +401,8 @@ stdEr       NA       NA
 > #   c( 30, 40 ), c( 50, 60 ), vcov( estLpmQuad ) )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> lpmEffInt( coef( estLpmQuad )[3:4],
-+   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
+> lpmEffInt( coef( estLpmQuad )[3:4], c( 30, 40 ), c( 50, 60 ), 
++   xPos = 1:2, sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
 effect.age      stdEr 
 -0.2374667  0.7124862 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -444,4 +444,4 @@ effect.age      stdEr
 > 
 > proc.time()
    user  system elapsed 
-  0.207   0.016   0.216 
+  0.221   0.008   0.223 

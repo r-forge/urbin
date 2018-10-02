@@ -1,13 +1,18 @@
-lpmEffInt <- function( xCoef, refBound, intBound, 
-  xCoefSE = rep( NA, length( xCoef ) ) ){
-  if( ! length( xCoef ) %in% c( 1, 2 ) ) {
-    stop( "argument 'xCoef' must be a scalar or vector with 2 elements" )
-  }
+lpmEffInt <- function( allCoef, refBound, intBound, xPos,
+  allCoefSE = rep( NA, length( allCoef ) ) ){
+
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
-  if( length( xCoef ) != length( xCoefSE ) ) {
-    stop( "arguments 'xCoef' and 'xCoefSE' must have the same length" )
+  if( length( allCoef ) != length( allCoefSE ) ) {
+    stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
   }
+  xCoef <- allCoef[xPos]
+  xCoefSE <- allCoefSE[xPos]
   if( length( xCoef ) == 1 ) {
     xCoef <- c( xCoef, 0 )
     xCoefSE <- c( xCoefSE, 0 )
