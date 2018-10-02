@@ -42,7 +42,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # weights
   weights <- elaIntWeights( shareVec )
   # calculation of the semi-elasticity
-  semEla <- lpmElaInt( phiVec, shareVec, xBound )[1]
+  semEla <- lpmElaInt( phiVec, shareVec, xBound, xPos = 1:nInt )[1]
   # partial derivatives of each semi-elasticity around each boundary
   # w.r.t. all estimated coefficients
   gradM <- matrix( 0, nCoef, nInt - 1 )

@@ -1,7 +1,10 @@
-lpmElaInt <- function( allCoef, allXVal, xBound, xPos = NULL,
+lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   allCoefVcov = NULL ){
   
-  if( is.null( xPos ) ) {
+  if( all( xPos != 0 ) ) {
+    # Check position vector
+    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ), 
+      minVal = 0, maxVal = length( allCoef ) )
     xCoef <- allCoef
     xShares <- allXVal
     xCoefVcov <- allCoefVcov

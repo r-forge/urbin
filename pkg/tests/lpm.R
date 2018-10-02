@@ -140,7 +140,7 @@ xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ),
 xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 # semi-elasticity of age without standard errors
 lpmElaInt( coefLpmInt, xMeanIntShares,
-  c( 30, 37.5, 44.5, 52.5, 60 ) )
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
 lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
 lpmElaInt( coef( estLpmInt ), xMeanInt,
@@ -149,7 +149,7 @@ lpmElaInt( coef( estLpmInt ), xMeanInt,
 xMeanIntSharesAttr <- xMeanIntShares
 attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
 lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
-  c( 30, 37.5, 44.5, 52.5, 60 ) )
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
 xMeanIntShares3Attr <- xMeanInt[3:5]
 attr( xMeanIntShares3Attr, "derivOnly" ) <- 1 
 lpmElaInt( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 
@@ -160,7 +160,7 @@ lpmElaInt( coef( estLpmInt ), xMeanIntAttr,
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
 numericGradient( lpmElaInt, t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
 numericGradient( lpmElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
@@ -170,7 +170,7 @@ vcovLpmInt <- vcov( estLpmInt )
 vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
 vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
 lpmElaInt( coefLpmInt, xMeanIntShares,
-  c( 30, 37.5, 44.5, 52.5, 60 ),
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4,
   allCoefVcov = vcovLpmInt )
 lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),
@@ -182,7 +182,7 @@ lpmElaInt( coef( estLpmInt ), xMeanInt,
 seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
 lpmElaInt( coefLpmInt, xMeanIntShares,
-  c( 30, 37.5, 44.5, 52.5, 60 ),
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4,
   allCoefVcov = seLpmInt )
 lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),

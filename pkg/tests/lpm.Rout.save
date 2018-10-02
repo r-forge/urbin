@@ -284,7 +284,7 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 > xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 > # semi-elasticity of age without standard errors
 > lpmElaInt( coefLpmInt, xMeanIntShares,
-+   c( 30, 37.5, 44.5, 52.5, 60 ) )
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
     semEla      stdEr 
 -0.4470029         NA 
 > lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
@@ -299,7 +299,7 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 > xMeanIntSharesAttr <- xMeanIntShares
 > attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
 > lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
-+   c( 30, 37.5, 44.5, 52.5, 60 ) )
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
 [1] -2.3286166  0.7329990 -0.3070942  1.9027117
 > xMeanIntShares3Attr <- xMeanInt[3:5]
 > attr( xMeanIntShares3Attr, "derivOnly" ) <- 1 
@@ -313,7 +313,7 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 [1] -2.3286166  0.7329990 -0.3070942  1.9027117
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
-+   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
++   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4 )
        age30.37TRUE age38.44TRUE            age53.60TRUE
 semEla    -2.328617     0.732999 -0.3070942     1.902712
 stdEr            NA           NA         NA           NA
@@ -332,7 +332,7 @@ stdEr           NA   NA           NA           NA           NA   NA
 > vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
 > vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
 > lpmElaInt( coefLpmInt, xMeanIntShares,
-+   c( 30, 37.5, 44.5, 52.5, 60 ),
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4,
 +   allCoefVcov = vcovLpmInt )
     semEla      stdEr 
 -0.4470029  0.1359064 
@@ -350,7 +350,7 @@ stdEr           NA   NA           NA           NA           NA   NA
 > seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
 > seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
 > lpmElaInt( coefLpmInt, xMeanIntShares,
-+   c( 30, 37.5, 44.5, 52.5, 60 ),
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = 1:4,
 +   allCoefVcov = seLpmInt )
     semEla      stdEr 
 -0.4470029  0.1651043 
@@ -457,4 +457,4 @@ stdEr           NA   NA           NA           NA           NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.211   0.028   0.233 
+  0.211   0.020   0.226 
