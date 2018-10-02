@@ -90,7 +90,7 @@ Mroz87$age38.44 <- Mroz87$age >= 38 & Mroz87$age <= 44
 Mroz87$age45.52 <- Mroz87$age >= 45 & Mroz87$age <= 52
 Mroz87$age53.60 <- Mroz87$age >= 53 & Mroz87$age <= 60
 
-# estimation
+# probit estimation
 estProbitInt <- glm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
   family = binomial(link = "probit"), 
   data = Mroz87 )
