@@ -242,9 +242,9 @@ lpmEffInt( coef( estLpmQuad ), c( 30, 40 ), c( 50, 60 ),
   xPos = 3:4, sqrt( diag( vcov( estLpmQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
-# lpmEffInt( coef( estLpmQuad ), xMeanQuadInt, c( 3, 4 ),
-#   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLpmQuad ) ) ),
-#   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+lpmEffInt( coef( estLpmQuad ), xPos = c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLpmQuad ) ) ),
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
