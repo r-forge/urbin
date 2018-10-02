@@ -131,39 +131,48 @@ all.equal(
 estLpmInt <- lm( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
   data = Mroz87 )
 summary( estLpmInt )
+# coefficients of the 'intervals'
+coefLpmInt <- c( coef( estLpmInt )[3:4], 0, coef( estLpmInt )[5] )
 # mean values of the explanatory variables
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
+# mean shares of the 'intervals'
+xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 # semi-elasticity of age without standard errors
-lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ) )
 lpmElaInt( coef( estLpmInt ), xMeanInt,
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanIntSharesAttr <- xMeanInt[3:5]
+xMeanIntSharesAttr <- xMeanIntShares
 attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
-lpmElaInt( coef( estLpmInt )[3:5], xMeanIntSharesAttr, 
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
+lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
+  c( 30, 37.5, 44.5, 52.5, 60 ) )
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
 lpmElaInt( coef( estLpmInt ), xMeanIntAttr, 
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( lpmElaInt, t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
+numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 numericGradient( lpmElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),
-  allCoefVcov = vcov( estLpmInt )[ 3:5, 3:5 ] )
+vcovLpmInt <- vcov( estLpmInt )
+vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
+vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ),
+  allCoefVcov = vcovLpmInt )
 lpmElaInt( coef( estLpmInt ), xMeanInt,
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ),
   allCoefVcov = vcov( estLpmInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),
-  allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
+seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
+seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
+lpmElaInt( coefLpmInt, xMeanIntShares,
+  c( 30, 37.5, 44.5, 52.5, 60 ),
+  allCoefVcov = seLpmInt )
 lpmElaInt( coef( estLpmInt ), xMeanInt,
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ),
   allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) ) )

@@ -275,12 +275,16 @@ Residual standard error: 0.4835 on 747 degrees of freedom
 Multiple R-squared:  0.05473,	Adjusted R-squared:  0.04841 
 F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 
+> # coefficients of the 'intervals'
+> coefLpmInt <- c( coef( estLpmInt )[3:4], 0, coef( estLpmInt )[5] )
 > # mean values of the explanatory variables
 > xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
 +   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
+> # mean shares of the 'intervals'
+> xMeanIntShares <- c( xMeanInt[3:4], 1 - sum( xMeanInt[3:5] ), xMeanInt[5] )
 > # semi-elasticity of age without standard errors
-> lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
+> lpmElaInt( coefLpmInt, xMeanIntShares,
++   c( 30, 37.5, 44.5, 52.5, 60 ) )
     semEla      stdEr 
 -0.4470029         NA 
 > lpmElaInt( coef( estLpmInt ), xMeanInt,
@@ -288,10 +292,10 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
     semEla      stdEr 
 -0.4470029         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanIntSharesAttr <- xMeanInt[3:5]
+> xMeanIntSharesAttr <- xMeanIntShares
 > attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
-> lpmElaInt( coef( estLpmInt )[3:5], xMeanIntSharesAttr, 
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
+> lpmElaInt( coefLpmInt, xMeanIntSharesAttr, 
++   c( 30, 37.5, 44.5, 52.5, 60 ) )
 [1] -2.3286166  0.7329990 -0.3070942  1.9027117
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
@@ -299,20 +303,23 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 +   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
 [1] -2.3286166  0.7329990 -0.3070942  1.9027117
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( lpmElaInt, t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
-+   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ) )
-       age30.37TRUE age38.44TRUE age53.60TRUE
-semEla    -2.328617     0.732999     1.902712
-stdEr            NA           NA           NA
+> numericGradient( lpmElaInt, t0 = coefLpmInt, allXVal = xMeanIntShares, 
++   xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+       age30.37TRUE age38.44TRUE            age53.60TRUE
+semEla    -2.328617     0.732999 -0.3070942     1.902712
+stdEr            NA           NA         NA           NA
 > numericGradient( lpmElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ) )
        (Intercept) kids age30.37TRUE age38.44TRUE age53.60TRUE educ
 semEla           0    0    -2.328617     0.732999     1.902712    0
 stdEr           NA   NA           NA           NA           NA   NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),
-+   allCoefVcov = vcov( estLpmInt )[ 3:5, 3:5 ] )
+> vcovLpmInt <- vcov( estLpmInt )
+> vcovLpmInt <- rbind( vcovLpmInt[ 3:4, ], 0, vcovLpmInt[ 5, ] )
+> vcovLpmInt <- cbind( vcovLpmInt[ , 3:4 ], 0, vcovLpmInt[ , 5 ] )
+> lpmElaInt( coefLpmInt, xMeanIntShares,
++   c( 30, 37.5, 44.5, 52.5, 60 ),
++   allCoefVcov = vcovLpmInt )
     semEla      stdEr 
 -0.4470029  0.1359064 
 > lpmElaInt( coef( estLpmInt ), xMeanInt,
@@ -321,9 +328,11 @@ stdEr           NA   NA           NA           NA           NA   NA
     semEla      stdEr 
 -0.4470029  0.1359064 
 > # semi-elasticity of age with standard errors (only standard errors)
-> lpmElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ),
-+   allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
+> seLpmInt <- sqrt( diag( vcov( estLpmInt ) ) )
+> seLpmInt <- c( seLpmInt[3:4], 0, seLpmInt[5] ) 
+> lpmElaInt( coefLpmInt, xMeanIntShares,
++   c( 30, 37.5, 44.5, 52.5, 60 ),
++   allCoefVcov = seLpmInt )
     semEla      stdEr 
 -0.4470029  0.1651043 
 > lpmElaInt( coef( estLpmInt ), xMeanInt,
@@ -424,4 +433,4 @@ stdEr           NA   NA           NA           NA           NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.172   0.036   0.203 
+  0.208   0.008   0.210 
