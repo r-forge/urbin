@@ -7,7 +7,7 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos = NULL,
     xCoefVcov <- allCoefVcov
   } else {
     # Check position vector
-    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ), 
+    checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
       minVal = 0, maxVal = length( allCoef ), requiredVal = 0 )
     xCoef <- rep( 0, length( xPos ) )
     for( i in 1:length( xPos ) ) {
