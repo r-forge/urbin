@@ -19,18 +19,10 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
     attr( xShares, "derivOnly" ) <- 1 
   }
   # number of intervals
-  nInt <- length( xCoef )
-  if( nInt < 2 || !is.vector( xCoef ) ) {
-    stop( "argument 'xCoef' must be a vector with at least two elements" )
-  }
-  if( length( xShares ) != nInt ) {
-    stop( "arguments 'xCoef' and 'xShares' must be vectors of the same length" )
-  }
-  if( any( xShares < 0 ) ) {
-    stop( "all shares in argument 'xShares' must be non-negative" )
-  }
-  if( abs( sum( xShares ) - 1 ) > 0.015 ) {
-    stop( "the shares in argument 'xShares' must sum to one" )
+  nInt <- length( xPos ) 
+  # Check x values
+  if( length( allXVal ) != nCoef ) {
+    stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
