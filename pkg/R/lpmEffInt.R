@@ -1,4 +1,4 @@
-lpmEffInt <- function( allCoef, refBound, intBound, xPos,
+lpmEffInt <- function( allCoef, xPos, refBound, intBound,
   allCoefVcov = NULL ){
 
   # number of coefficients
