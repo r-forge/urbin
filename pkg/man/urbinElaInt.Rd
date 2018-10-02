@@ -26,8 +26,9 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
 \arguments{
   \item{allCoef}{a vector of all estimated coefficients
     (including intercept).}
-  \item{allXVal}{a vector of the values of all explanatory variables
-    (including intercept; the order of these values must be the same
+  \item{allXVal}{a vector of the values of the explanatory variables,
+    at which the semi-elasticity should be calculated
+    (including intercept; the order of its elements must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}),
     whereas the values that correspond to the intervals 
