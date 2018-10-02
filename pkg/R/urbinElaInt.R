@@ -39,26 +39,18 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     # vector of probabilities of y=1 for each interval
     xBeta <- calcXBetaInt( allCoef, allXVal, xPos )
     checkXBeta( xBeta )
-    phiVec <- pnorm( xBeta )
+    xCoef <- pnorm( xBeta )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  if( model == "lpm" ) {
-    # semi-elasticities 'around' each inner boundary and their weights
-    semElaBound <- rep( NA, nInt - 1 )
-    for( m in 1:(nInt-1) ){
-      semElaBound[m] <- 2 * ( xCoef[ m+1 ] - xCoef[ m ] ) * xBound[ m+1 ] /
-        ( xBound[m+2] - xBound[m] )
-    }
-    # (average) semi-elasticity
-    semEla <- sum( semElaBound * weights )
-  } else if( model == "probit" ) {
-    # calculation of the semi-elasticity
-    semEla <- urbinElaInt( phiVec, shareVec, xBound, xPos = 1:nInt,
-      model = "lpm" )[1]
-  } else {
-    stop( "argument 'model' specifies an unknown type of model" )
+  # semi-elasticities 'around' each inner boundary and their weights
+  semElaBound <- rep( NA, nInt - 1 )
+  for( m in 1:(nInt-1) ){
+    semElaBound[m] <- 2 * ( xCoef[ m+1 ] - xCoef[ m ] ) * xBound[ m+1 ] /
+      ( xBound[m+2] - xBound[m] )
   }
+  # (average) semi-elasticity
+  semEla <- sum( semElaBound * weights )
   # partial derivatives of semi-elasticities wrt coefficients
   if( model == "lpm" ) {
     derivCoef <- rep( 0, nCoef )
