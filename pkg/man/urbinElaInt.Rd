@@ -5,7 +5,8 @@
 
 \description{
   This function calculates 
-  the semi-elasticity of an interval-coded explanatory variable.
+  the semi-elasticity of an interval-coded explanatory variable
+  in a linear probability model or a probit model.
   The calculated semi-elasticity indicates
   by how many percentage points the probability
   that the dependent variable has a value of one
@@ -48,6 +49,7 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
     indicating the boundaries of the intervals.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
+    \code{"lpm"} = binary probit model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
