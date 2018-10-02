@@ -14,9 +14,9 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
       xCoef[i] <- allCoef[ xPos[i] ]
     }
   }
-  xShares <- calcSharesInt( allXVal, xPos )
+  shareVec <- calcSharesInt( allXVal, xPos )
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-    attr( xShares, "derivOnly" ) <- 1 
+    attr( shareVec, "derivOnly" ) <- 1 
   }
   # number of intervals
   nInt <- length( xPos ) 
@@ -29,7 +29,7 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, NA, xMeanSd = NULL )
   # weights
-  weights <- elaIntWeights( xShares )
+  weights <- elaIntWeights( shareVec )
   # semi-elasticities 'around' each inner boundary and their weights
   semElas <- rep( NA, nInt - 1 )
   for( m in 1:(nInt-1) ){
@@ -53,7 +53,7 @@ lpmElaInt <- function( allCoef, allXVal, xBound, xPos,
   }
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
-  if( "derivOnly" %in% names( attributes( xShares ) ) ) {
+  if( "derivOnly" %in% names( attributes( shareVec ) ) ) {
     return( derivCoef )
   }
   # standard error of the (average) semi-elasticity
