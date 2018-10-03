@@ -33,6 +33,11 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( 0, nCoef )
   derivCoef[ xPos ] <- DEffect - DRef
+  # if argument allXVal has attribute 'derivOnly',
+  # return partial derivatives only (for testing partial derivatives)
+  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+    return( derivCoef )
+  }
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
