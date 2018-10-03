@@ -156,13 +156,13 @@ attr( xMeanIntAttr, "derivOnly" ) <- 1
 numericGradient( logitElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
-# logitElaInt( coef( estLogitInt ), xMeanInt, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit", 
-#   vcov( estLogitInt ) )
+logitElaInt( coef( estLogitInt ), xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), #model = "logit",
+  allCoefVcov = vcov( estLogitInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
 logitElaInt( coef( estLogitInt ), xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), # model = "logit",
-  sqrt( diag( vcov( estLogitInt ) ) ) )
+  allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
 
 
 ### effect of age changing between discrete intervals 

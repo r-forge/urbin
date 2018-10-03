@@ -330,15 +330,17 @@ stdEr            NA           NA           NA           NA           NA
 semEla -0.09864146
 stdEr           NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> # logitElaInt( coef( estLogitInt ), xMeanInt, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit", 
-> #   vcov( estLogitInt ) )
+> logitElaInt( coef( estLogitInt ), xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), #model = "logit",
++   allCoefVcov = vcov( estLogitInt ) )
+    semEla      stdEr 
+-0.4749991  0.1382677 
 > # semi-elasticity of age with standard errors (only standard errors)
 > logitElaInt( coef( estLogitInt ), xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), # model = "logit",
-+   sqrt( diag( vcov( estLogitInt ) ) ) )
++   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
     semEla      stdEr 
--0.4749991         NA 
+-0.4749991  0.1671207 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -432,4 +434,4 @@ stdEr           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.550   0.024   0.577 
+  0.561   0.036   0.591 
