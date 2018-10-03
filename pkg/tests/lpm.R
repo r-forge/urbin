@@ -256,9 +256,9 @@ lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ) )
 lpmEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( -1, -1, 1, 0 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
-  allXVal = xMeanInt[3:5], Group = c( -1, -1, 1, 0 ) )
+  allXVal = xMeanInt[3:5], xGroups = c( -1, -1, 1, 0 ) )
 numericGradient( lpmEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
-  allXVal = xMeanInt, Group = c( -1, -1, 1, 0 ) )
+  allXVal = xMeanInt, xGroups = c( -1, -1, 1, 0 ) )
 # with full covariance matrix
 lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ),
   vcov( estLpmInt )[3:5, 3:5] )
@@ -278,9 +278,9 @@ lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ) )
 lpmEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( 0, 1, -1, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
-  allXVal = xMeanInt[3:5], Group = c( 0, 1, -1, 1 ) )
+  allXVal = xMeanInt[3:5], xGroups = c( 0, 1, -1, 1 ) )
 numericGradient( lpmEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
-  allXVal = xMeanInt, Group = c( 0, 1, -1, 1 ) )
+  allXVal = xMeanInt, xGroups = c( 0, 1, -1, 1 ) )
 # with full covariance matrix
 lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ),
   vcov( estLpmInt )[3:5,3:5] )

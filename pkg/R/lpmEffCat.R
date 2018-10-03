@@ -1,4 +1,4 @@
-lpmEffCat <- function( allCoef, allXVal, xPos, Group, 
+lpmEffCat <- function( allCoef, allXVal, xPos, xGroups, 
   allCoefVcov = NULL ){
   
   # number of coefficients
@@ -35,18 +35,18 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   # coefficients of the dummy variables for the categories
   xCoef <- c( allCoef[ xPos ], 0 )
   
-  if( length( xCoef ) != length( Group ) ){
-    stop( "arguments 'xCoef' and 'Group' must have the same length" )
+  if( length( xCoef ) != length( xGroups ) ){
+    stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
   }
-  if( ! all( Group %in% c( -1, 0, 1 ) ) ){
-    stop( "all elements of argument 'Group' must be -1, 0, or 1" )
+  if( ! all( xGroups %in% c( -1, 0, 1 ) ) ){
+    stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   # D_mr
-  DRef <- xShares * ( Group == -1 ) / sum( xShares[ Group == -1 ] )
+  DRef <- xShares * ( xGroups == -1 ) / sum( xShares[ xGroups == -1 ] )
   # D_ml
-  DEffect <- xShares * ( Group == 1 ) / sum( xShares[ Group == 1 ] )
+  DEffect <- xShares * ( xGroups == 1 ) / sum( xShares[ xGroups == 1 ] )
   # effect: sum of delta_m * ( D_ml - D_mr )
   effeG <- sum( xCoef * ( DEffect - DRef ) )
   # partial derivative of the effect w.r.t. all estimated coefficients
