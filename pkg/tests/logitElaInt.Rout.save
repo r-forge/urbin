@@ -1,0 +1,83 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "urbin" )
+Loading required package: miscTools
+> 
+> # Example
+> ela8a <- logitElaInt( allCoef = c( 0.33, 0.22, 0.05, 0.6 ), 
++   allXVal = c( 1, 0.4, 0.12, 0.13 ), 
++   xPos = c( 2, 0, 3, 4 ),
++   xBound = c( 0, 500, 1000, 1500, Inf ) )
+> ela8a 
+     semEla       stdEr 
+-0.02442287          NA 
+> 
+> ela8b <- logitElaInt( allCoef = c( 0.33, 0.22, 0.05, 0.6 ), 
++   allXVal = c( 1, 0.4, 0.12, 0.13 ), 
++   xPos = c( 2, 0, 3, 4 ),
++   xBound = c( 0, 500, 1000, 1500, Inf ),
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ) )
+> ela8b 
+      semEla        stdEr 
+-0.024422872  0.006055436 
+> 
+> # Example
+> ela9a <- logitElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, 0.4, 0.12 ), 
++   xPos = c( 2, 0, 3 ), 
++   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
++   method = "MNL" )
+> ela9a
+    semEla      stdEr 
+0.01775033         NA 
+> 
+> ela9b <- logitElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, 0.4, 0.12 ), 
++   xPos = c( 2, 0, 3 ), 
++   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
++   method = "MNL" )
+> ela9b
+     semEla       stdEr 
+0.017750330 0.003286756 
+> 
+> # Example
+> ela10a <- logitElaInt( allCoef = c( 1.33, 0.022, 0.58, 1.6 ), 
++   allXVal = c( 1, 0.4, 0.12, 0.0002, 
++     1, 0.28, 0.01, 0.000013 ), 
++   xPos = c( 2, 0, 3 ),
++   xBound = c( 0, 1000, 1500, Inf ), yCat = 2,
++   method = "CondL" )
+> ela10a 
+       semEla         stdEr 
+-4.699944e-17            NA 
+> 
+> ela10b <- logitElaInt( allCoef = c( 1.33, 0.022, 0.58, 1.6 ), 
++   allXVal = c( 1, 0.4, 0.12, 0.0002, 
++     1, 0.28, 0.01, 0.000013 ), 
++   xPos = c( 2, 0, 3 ),
++   xBound = c( 0, 1000, 1500, Inf ), 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ), yCat = 2,
++   method = "CondL" )
+> ela10b 
+       semEla         stdEr 
+-4.699944e-17  3.838242e-20 
+> 
+> proc.time()
+   user  system elapsed 
+  0.101   0.018   0.113 
