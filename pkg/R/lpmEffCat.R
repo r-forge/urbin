@@ -1,5 +1,16 @@
-lpmEffCat <- function( xCoef, xShares, Group, 
-  xCoefSE = rep( NA, length( xCoef ) ) ){
+lpmEffCat <- function( allCoef, allXVal, xPos, Group, 
+  allCoefSE = rep( NA, length( xCoef ) ) ){
+  
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
+    maxVal = nCoef )
+
+  xCoef <- allCoef[ xPos ]
+  xShares <- allXVal[ xPos ]
+  xCoefSE <- allCoefSE[ xPos ]
+  
   if( sum( xShares ) > 1 ){
     stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
   }
