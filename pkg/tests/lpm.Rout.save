@@ -454,18 +454,32 @@ stdEr           NA   NA  NA       NA   NA
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ) )
     effect      stdEr 
 -0.2392568         NA 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ) )
+    effect      stdEr 
+-0.2392568         NA 
 > # partial derivatives of the effect wrt the coefficients
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ) )
 [1] -0.587822 -0.412178  1.000000
+> lpmEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( -1, -1, 1, 0 ) )
+[1]  0.000000  0.000000 -0.587822 -0.412178  1.000000  0.000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
 +   allXVal = xMeanInt[3:5], Group = c( -1, -1, 1, 0 ) )
        age30.37TRUE age38.44TRUE age53.60TRUE
 effect    -0.587822    -0.412178            1
 stdEr            NA           NA           NA
+> numericGradient( lpmEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
++   allXVal = xMeanInt, Group = c( -1, -1, 1, 0 ) )
+       (Intercept) kids age30.37TRUE age38.44TRUE age53.60TRUE educ
+effect           0    0    -0.587822    -0.412178            1    0
+stdEr           NA   NA           NA           NA           NA   NA
 > # with full covariance matrix
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ),
 +   vcov( estLpmInt )[3:5, 3:5] )
+     effect       stdEr 
+-0.23925675  0.06451259 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ),
++   vcov( estLpmInt ) )
      effect       stdEr 
 -0.23925675  0.06451259 
 > # with standard errors only
@@ -473,23 +487,41 @@ stdEr            NA           NA           NA
 +   sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
      effect       stdEr 
 -0.23925675  0.07043513 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ),
++   sqrt( diag( vcov( estLpmInt ) ) ) )
+     effect       stdEr 
+-0.23925675  0.07043513 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ) )
    effect     stdEr 
 0.2107741        NA 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ) )
+   effect     stdEr 
+0.2107741        NA 
 > # partial derivatives of the effect wrt the coefficients
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ) )
 [1]  0.0000000  0.4345679 -1.0000000
+> lpmEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( 0, 1, -1, 1 ) )
+[1]  0.0000000  0.0000000  0.0000000  0.4345679 -1.0000000  0.0000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
 +   allXVal = xMeanInt[3:5], Group = c( 0, 1, -1, 1 ) )
        age30.37TRUE age38.44TRUE age53.60TRUE
 effect            0    0.4345679           -1
 stdEr            NA           NA           NA
+> numericGradient( lpmEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
++   allXVal = xMeanInt, Group = c( 0, 1, -1, 1 ) )
+       (Intercept) kids age30.37TRUE age38.44TRUE age53.60TRUE educ
+effect           0    0            0    0.4345679           -1    0
+stdEr           NA   NA           NA           NA           NA   NA
 > # with full covariance matrix
 > lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ),
 +   vcov( estLpmInt )[3:5,3:5] )
+    effect      stdEr 
+0.21077412 0.05990238 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ),
++   vcov( estLpmInt ) )
     effect      stdEr 
 0.21077412 0.05990238 
 > # with standard errors only
@@ -497,8 +529,12 @@ stdEr            NA           NA           NA
 +   sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
     effect      stdEr 
 0.21077412 0.06499097 
+> lpmEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ),
++   sqrt( diag( vcov( estLpmInt ) ) ) )
+    effect      stdEr 
+0.21077412 0.06499097 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.239   0.031   0.264 
+  0.245   0.020   0.259 
