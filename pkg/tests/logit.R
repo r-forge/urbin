@@ -150,8 +150,8 @@ logitElaInt( coef( estLogitInt ), xMeanInt,
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
-# logitElaInt( coef( estLogitInt ), xMeanIntAttr, 
-#   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
+logitElaInt( coef( estLogitInt ), xMeanIntAttr,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( logitElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )

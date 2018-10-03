@@ -318,8 +318,10 @@ Number of Fisher Scoring iterations: 4
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> # logitElaInt( coef( estLogitInt ), xMeanIntAttr, 
-> #   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
+> logitElaInt( coef( estLogitInt ), xMeanIntAttr,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
+[1] -0.008028212 -0.005586697 -0.547491063  0.173305967  0.441473157
+[6] -0.098641458
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( logitElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
 +   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
@@ -434,4 +436,4 @@ stdEr           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.561   0.036   0.591 
+  0.533   0.031   0.559 
