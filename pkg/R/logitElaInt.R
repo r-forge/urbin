@@ -1,8 +1,8 @@
 logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   allCoefVcov = NULL, 
-  model = "binary" ){
+  model = "logit" ){
   # number of coefficients
-  if( model == "binary" ){
+  if( model == "logit" ){
     nCoef <- length( allCoef )
     # checking arguments
     if( length( allXVal ) != nCoef ) {
@@ -38,7 +38,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   shareVec <- rep( NA, nInt )
   for( i in 1:nInt ){
     if( xPos[i] != 0 ) {
-      if( model == "binary" || model == "MNL" ){
+      if( model == "logit" || model == "MNL" ){
         shareVec[i] <- allXVal[ xPos[i] ] 
       } else {
         shareVec[i] <- mXVal[ xPos[i], yCat ]
@@ -61,7 +61,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   # weights
   weights <- elaIntWeights( shareVec )
   # prepare calculation of semi-elasticity 
-  if( model == "binary" ){
+  if( model == "logit" ){
     xBeta <- rep( NA, nInt ) 
     for( i in 1:nInt ){
       allXValTemp <- replace( allXVal, xPos, 0 )
@@ -97,7 +97,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     }
   }
   # vector of probabilities of y=1 for each interval
-  if( model == "binary" ){
+  if( model == "logit" ){
     expVec <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
     expVec <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
@@ -109,7 +109,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   ### calculation of its standard error
   # partial derivatives of each semi-elasticity around each boundary
   # w.r.t. all estimated coefficients
-  if( model == "binary" ){
+  if( model == "logit" ){
     gradM <- matrix( 0, nCoef, nInt - 1 )
     gradExpVec <- exp( xBeta )/( 1 + exp( xBeta ) )^2
     for( m in 1:( nInt - 1 ) ) {
