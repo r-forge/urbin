@@ -2,7 +2,13 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   allCoefVcov = NULL, 
   model = "binary" ){
   # number of coefficients
-  if( model == "binary" || model == "MNL" ){
+  if( model == "binary" ){
+    nCoef <- length( allCoef )
+    # checking arguments
+    if( length( allXVal ) != nCoef ) {
+      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    } 
+  } else if( model == "MNL" ){
     mCoef <- matrix( allCoef, nrow = length( allXVal ))
     nCoef <- dim( mCoef )[1]
     pCoef <- dim( mCoef )[2]
@@ -10,7 +16,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     if( length( allXVal ) != nCoef ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
-  } else{
+  } else {
     nCoef <- length( allCoef )
     mXVal <- matrix( allXVal, nrow = nCoef )
     pCoef <- dim( mXVal )[2]
@@ -55,8 +61,17 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   # weights
   weights <- elaIntWeights( shareVec )
   # vector of probabilities of y=1 for each interval
-  xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
-  if( model == "binary" || model == "MNL" ){
+  if( model == "binary" ){
+    xBeta <- rep( NA, nInt ) 
+    for( i in 1:nInt ){
+      allXValTemp <- replace( allXVal, xPos, 0 )
+      if( xPos[i] != 0 ) {
+        allXValTemp[ xPos[i] ] <- 1
+      }
+      xBeta[i] <- sum( allCoef * allXValTemp )
+    }
+  } else if( model == "MNL" ){
+    xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
         allXValTemp <- replace( allXVal, xPos, 0 )
@@ -66,7 +81,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
         xBeta[i,p] <- sum( mCoef[ ,p] * allXValTemp )
       }
     }
-  } else{
+  } else {
+    xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
         allXValTemp <- replace( mXVal[ ,p], xPos, 0 )
