@@ -3,19 +3,19 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
+  # Check x values
+  if( length( allXVal ) != nCoef ) {
+    stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+  }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
     minVal = 0, maxVal = nCoef )#, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
-  # Check x values
-  if( length( allXVal ) != nCoef ) {
-    stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
-  }
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
   # vector of shares of observations in each interval
   shareVec <- rep( NA, nInt )
   for( i in 1:nInt ){
