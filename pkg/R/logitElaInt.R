@@ -1,5 +1,5 @@
 logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
-  allCoefSE = rep( NA, length( allCoef ) ), 
+  allCoefVcov = NULL, 
   model = "binary" ){
   # number of coefficients
   if( model == "binary" || model == "MNL" ){
@@ -55,6 +55,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   }  
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
   # vector of probabilities of y=1 for each interval and
   # vector of shares of observations in each interval
   xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
@@ -164,10 +166,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   for( m in 1:( nInt - 1 ) ){
     derivCoef <- derivCoef + weights[m] * gradM[,m]
   }
-  # variance-covariance matrix of the coefficiencts
-  vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the semi-elasticity
-  semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # create object that will be returned
   result <- c( semEla[1], stdEr = semElaSE )
   return( result )
