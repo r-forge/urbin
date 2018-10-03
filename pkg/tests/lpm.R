@@ -256,8 +256,8 @@ lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ) )
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
   allXVal = xMeanIntShares, Group = c( -1, -1, 1, 0 ) )
 # with full covariance matrix
-# lpmEffCat( coef( estLpmInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-#   vcov( estLpmInt ) )
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
+  vcovLpmInt )
 # with standard errors only
 lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
   sqrt( diag( vcovLpmInt ) ) )
@@ -270,8 +270,8 @@ lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ) )
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
   allXVal = xMeanIntShares, Group = c( 0, 1, -1, 1 ) )
 # with full covariance matrix
-# lpmEffCat( coef( estLpmInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-#   vcov( estLpmInt ) )
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
+  vcovLpmInt )
 # with standard errors only
 lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
   sqrt( diag( vcovLpmInt ) ) )

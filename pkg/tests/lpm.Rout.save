@@ -463,8 +463,10 @@ stdEr           NA   NA  NA       NA   NA
 effect    -0.587822    -0.412178  1            0
 stdEr            NA           NA NA           NA
 > # with full covariance matrix
-> # lpmEffCat( coef( estLpmInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-> #   vcov( estLpmInt ) )
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
++   vcovLpmInt )
+     effect       stdEr 
+-0.04823588  0.04330589 
 > # with standard errors only
 > lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
 +   sqrt( diag( vcovLpmInt ) ) )
@@ -484,8 +486,10 @@ stdEr            NA           NA NA           NA
 effect            0    0.6446886 -1    0.3553114
 stdEr            NA           NA NA           NA
 > # with full covariance matrix
-> # lpmEffCat( coef( estLpmInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-> #   vcov( estLpmInt ) )
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
++   vcovLpmInt )
+     effect       stdEr 
+-0.03856761  0.04358286 
 > # with standard errors only
 > lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
 +   sqrt( diag( vcovLpmInt ) ) )
@@ -495,4 +499,4 @@ stdEr            NA           NA NA           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.238   0.028   0.259 
+  0.270   0.032   0.294 
