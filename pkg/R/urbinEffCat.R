@@ -5,8 +5,9 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   
+  # number of coefficients
   nCoef <- length( allCoef )
-  # check argument xPos
+  # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
   # number of categories
@@ -50,16 +51,17 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # D_mr
   DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
     sum( xShares[ xGroups == -1 ] )
-  XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
-    sum( DRef * xCoef )
   # D_ml
   DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
     sum( xShares[ xGroups == 1 ] )
+  # linear predictors
+  XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
+    sum( DRef * xCoef )
   XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
     sum( DEffect * xCoef )
   # effect
   effeG <- pnorm( XBetaEffect ) - pnorm( XBetaRef )
-  # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
+  # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( NA, nCoef )
   derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
     allXVal[ -xPos ] 
@@ -72,6 +74,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   }
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  # object to be returned
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
 }
