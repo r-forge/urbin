@@ -9,8 +9,7 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
 
   xCoef <- allCoef[ xPos ]
   xShares <- allXVal[ xPos ]
-  xCoefSE <- allCoefSE[ xPos ]
-  
+
   if( sum( xShares ) > 1 ){
     stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
   }
@@ -29,9 +28,13 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   DEffect <- xShares * ( Group == 1 ) / sum( xShares[ Group == 1 ] )
   # effect: sum of delta_m * ( D_ml - D_mr )
   effeG <- sum( xCoef * ( DEffect - DRef ) )
-  xCoefVcov <- diag( xCoefSE^2 )
+  # partial derivative of the effect w.r.t. all estimated coefficients
+  derivCoef <- rep( 0, nCoef )
+  derivCoef[ xPos ] <- DEffect - DRef
+  allCoefVcov <- diag( allCoefSE^2 )
   # approximate standard error of the effect
-  effeGSE <- drop( sqrt( t( DEffect - DRef ) %*% xCoefVcov %*% ( DEffect - DRef ) ) )
+  effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  # object to be returned
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
 }
