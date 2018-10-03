@@ -48,7 +48,14 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     }
   } else if( model == "probit" ) {
     # vector of probabilities of y=1 for each interval
-    xBeta <- calcXBetaInt( allCoef, allXVal, xPos )
+    xBeta <- rep( NA, nInt )
+    for( i in 1:nInt ){
+      allXValTemp <- replace( allXVal, xPos, 0 )
+      if( xPos[i] != 0 ) {
+        allXValTemp[ xPos[i] ] <- 1
+      }
+      xBeta[ i ] <- sum( allCoef * allXValTemp )
+    }
     checkXBeta( xBeta )
     xCoef <- pnorm( xBeta )
   } else {
