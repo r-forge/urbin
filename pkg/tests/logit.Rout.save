@@ -311,20 +311,21 @@ Number of Fisher Scoring iterations: 4
 > xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
 +   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 > # semi-elasticity of age without standard errors
-> logitElaInt( coef( estLogitInt ), xMeanInt,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
+> urbinElaInt( coef( estLogitInt ), xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
     semEla      stdEr 
 -0.4749991         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> logitElaInt( coef( estLogitInt ), xMeanIntAttr,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
+> urbinElaInt( coef( estLogitInt ), xMeanIntAttr,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 [1] -0.008028212 -0.005586697 -0.547491063  0.173305967  0.441473157
 [6] -0.098641458
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( logitElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
-+   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+> numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
++   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ),
++   model = "logit" )
         (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
 semEla -0.008028212 -0.005586697   -0.5474911     0.173306    0.4414732
 stdEr            NA           NA           NA           NA           NA
@@ -332,14 +333,14 @@ stdEr            NA           NA           NA           NA           NA
 semEla -0.09864146
 stdEr           NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
-> logitElaInt( coef( estLogitInt ), xMeanInt,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), #model = "logit",
+> urbinElaInt( coef( estLogitInt ), xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
 +   allCoefVcov = vcov( estLogitInt ) )
     semEla      stdEr 
 -0.4749991  0.1382677 
 > # semi-elasticity of age with standard errors (only standard errors)
-> logitElaInt( coef( estLogitInt ), xMeanInt,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), # model = "logit",
+> urbinElaInt( coef( estLogitInt ), xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
 +   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
     semEla      stdEr 
 -0.4749991  0.1671207 
@@ -436,4 +437,4 @@ stdEr           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.533   0.031   0.559 
+  0.524   0.028   0.546 

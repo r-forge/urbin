@@ -7,7 +7,7 @@
   This function calculates 
   the semi-elasticity of an interval-coded variable
   that is used as an explanatory variable
-  in a linear probability model or a probit model.
+  in a linear probability model, a probit model, or a logit model.
   The calculated semi-elasticity indicates
   by how many percentage points the probability
   that the dependent variable has a value of one
@@ -20,7 +20,8 @@
 }
 
 \usage{
-urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
+urbinElaInt( allCoef, allXVal, xPos, xBound, model, 
+  allCoefVcov = NULL, yCat = NA )
 }
 
 \arguments{
@@ -55,13 +56,17 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
-    \code{"probit"} = binary probit model.}
+    \code{"probit"} = binary probit model,
+    \code{"logit"} = binary logit model, 
+    \code{"MNL"} = multinomial logit model, or
+    \code{"CondL"} = conditional logit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+  \item{yCat}{not documented yet.}
 }
 
 \details{

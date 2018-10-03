@@ -145,23 +145,24 @@ summary( estLogitInt )
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[4] )
 # semi-elasticity of age without standard errors
-logitElaInt( coef( estLogitInt ), xMeanInt,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
+urbinElaInt( coef( estLogitInt ), xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
-logitElaInt( coef( estLogitInt ), xMeanIntAttr,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ) ) #, model = "logit" )
+urbinElaInt( coef( estLogitInt ), xMeanIntAttr,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( logitElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
-  xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ) )
+numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
+  xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ),
+  model = "logit" )
 # semi-elasticity of age with standard errors (full covariance matrix)
-logitElaInt( coef( estLogitInt ), xMeanInt,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), #model = "logit",
+urbinElaInt( coef( estLogitInt ), xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
   allCoefVcov = vcov( estLogitInt ) )
 # semi-elasticity of age with standard errors (only standard errors)
-logitElaInt( coef( estLogitInt ), xMeanInt,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), # model = "logit",
+urbinElaInt( coef( estLogitInt ), xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
 
 
