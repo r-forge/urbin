@@ -45,9 +45,11 @@ lpmEffCat <- function( allCoef, allXVal, xPos, xGroups,
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   # D_mr
-  DRef <- xShares * ( xGroups == -1 ) / sum( xShares[ xGroups == -1 ] )
+  DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
+    sum( xShares[ xGroups == -1 ] )
   # D_ml
-  DEffect <- xShares * ( xGroups == 1 ) / sum( xShares[ xGroups == 1 ] )
+  DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
+    sum( xShares[ xGroups == 1 ] )
   # effect: sum of delta_m * ( D_ml - D_mr )
   effeG <- sum( xCoef * ( DEffect - DRef ) )
   # partial derivative of the effect w.r.t. all estimated coefficients
