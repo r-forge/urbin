@@ -29,23 +29,17 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
   # vector of shares of observations in each interval
-  if( model == "binary" || model == "MNL" ){
-    shareVec <- rep( NA, nInt )
-    for( i in 1:nInt ){
-      if( xPos[i] != 0 ) {
+  shareVec <- rep( NA, nInt )
+  for( i in 1:nInt ){
+    if( xPos[i] != 0 ) {
+      if( model == "binary" || model == "MNL" ){
         shareVec[i] <- allXVal[ xPos[i] ] 
-      }
-    }
-    shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )  
-  } else {
-    shareVec <- rep( NA, nInt )
-    for( i in 1:nInt ){
-      if( xPos[i] != 0 ) {
+      } else {
         shareVec[i] <- mXVal[ xPos[i], yCat ]
       }
     }
-    shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )
   }
+  shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )  
   # vector of probabilities of y=1 for each interval
   xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
   if( model == "binary" || model == "MNL" ){
