@@ -108,11 +108,15 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   } else{
     xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   }
-  # calculation of the semi-elasticity
-  semEla <- urbinElaInt( xCoef, shareVec, 1:nInt, xBound, model = "lpm" )
-  ### calculation of its standard error
-  # partial derivatives of each semi-elasticity around each boundary
-  # w.r.t. all estimated coefficients
+  # semi-elasticities 'around' each inner boundary and their weights
+  semElaBound <- rep( NA, nInt - 1 )
+  for( m in 1:(nInt-1) ){
+    semElaBound[m] <- 2 * ( xCoef[ m+1 ] - xCoef[ m ] ) * xBound[ m+1 ] /
+      ( xBound[m+2] - xBound[m] )
+  }
+  # (average) semi-elasticity
+  semEla <- sum( semElaBound * weights )
+  # partial derivatives of semi-elasticities wrt coefficients
   if( model == "logit" ){
     gradM <- matrix( 0, nCoef, nInt - 1 )
     gradExpVec <- exp( xBeta )/( 1 + exp( xBeta ) )^2
@@ -184,6 +188,6 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # create object that will be returned
-  result <- c( semEla[1], stdEr = semElaSE )
+  result <- c( semEla = semEla, stdEr = semElaSE )
   return( result )
 }

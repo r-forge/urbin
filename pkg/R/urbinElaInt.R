@@ -3,13 +3,13 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
-  # Check x values
+  # check allXVal
   if( length( allXVal ) != nCoef ) {
     stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
-    minVal = 0, maxVal = nCoef )#, requiredVal = 0 )
+    minVal = 0, maxVal = nCoef, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
   # check 'xBound' and replace infinite values
