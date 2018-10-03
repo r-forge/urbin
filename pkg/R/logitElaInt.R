@@ -1,8 +1,8 @@
 logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   allCoefSE = rep( NA, length( allCoef ) ), 
-  method = "binary" ){
+  model = "binary" ){
   # number of coefficients
-  if( method == "binary" || method == "MNL" ){
+  if( model == "binary" || model == "MNL" ){
     mCoef <- matrix( allCoef, nrow = length( allXVal ))
     nCoef <- dim( mCoef )[1]
     pCoef <- dim( mCoef )[2]
@@ -19,11 +19,12 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
   }
-  # number of intervals
-  nInt <- length( xPos ) 
+  # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef, 
     minVal = 0, maxVal = nCoef, requiredVal = 0 )
-  if( method == "binary" || method == "MNL" ){
+  # number of intervals
+  nInt <- length( xPos ) 
+  if( model == "binary" || model == "MNL" ){
     if( any( allXVal[ xPos ] < 0 ) ) {
       stop( "all elements of argument 'allXVal'",
         " that are indicated by argument 'xPos'",
@@ -57,7 +58,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   # vector of probabilities of y=1 for each interval and
   # vector of shares of observations in each interval
   xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
-  if( method == "binary" || method == "MNL" ){
+  if( model == "binary" || model == "MNL" ){
     shareVec <- rep( NA, nInt )
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
@@ -86,9 +87,9 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     shareVec <- shareVec[ , yCat ]  
   }  
   #checkXBeta( xBeta )  #Please check this one with a matrix
-  if( method == "binary" ){
+  if( model == "binary" ){
     expVec <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     expVec <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
   } else{
     expVec <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
@@ -100,7 +101,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   ### calculation of its standard error
   # partial derivatives of each semi-elasticity around each boundary
   # w.r.t. all estimated coefficients
-  if( method == "binary" ){
+  if( model == "binary" ){
     gradM <- matrix( 0, nCoef, nInt - 1 )
     gradExpVec <- exp( xBeta )/( 1 + exp( xBeta ) )^2
     for( m in 1:( nInt - 1 ) ) {
@@ -111,7 +112,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       gradM[ xPos[m+1], m ] <- 2 * gradExpVec[m+1] * xBound[m+1] / 
         ( xBound[m+2] - xBound[m] )
     } 
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     gradM <- array( 0, c( nCoef, nInt - 1, pCoef ) )
     gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
         ( 1 + rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
@@ -165,9 +166,9 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   }
   # variance-covariance matrix of the coefficiencts
   vcovCoef <- diag( allCoefSE^2 )
-  # standard error of the (average) semi-elasticity
+  # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
-  # prepare object that will be returned
+  # create object that will be returned
   result <- c( semEla[1], stdEr = semElaSE )
   return( result )
 }

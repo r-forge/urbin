@@ -19,7 +19,7 @@ ela9a <- logitElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   allXVal = c( 1, 0.4, 0.12 ), 
   xPos = c( 2, 0, 3 ), 
   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
-  method = "MNL" )
+  model = "MNL" )
 ela9a
 
 ela9b <- logitElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -27,7 +27,7 @@ ela9b <- logitElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   xPos = c( 2, 0, 3 ), 
   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
-  method = "MNL" )
+  model = "MNL" )
 ela9b
 
 # Example
@@ -36,7 +36,7 @@ ela10a <- logitElaInt( allCoef = c( 1.33, 0.022, 0.58, 1.6 ),
     1, 0.28, 0.01, 0.000013 ), 
   xPos = c( 2, 0, 3 ),
   xBound = c( 0, 1000, 1500, Inf ), yCat = 2,
-  method = "CondL" )
+  model = "CondL" )
 ela10a 
 
 ela10b <- logitElaInt( allCoef = c( 1.33, 0.022, 0.58, 1.6 ), 
@@ -45,5 +45,5 @@ ela10b <- logitElaInt( allCoef = c( 1.33, 0.022, 0.58, 1.6 ),
   xPos = c( 2, 0, 3 ),
   xBound = c( 0, 1000, 1500, Inf ), 
   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ), yCat = 2,
-  method = "CondL" )
+  model = "CondL" )
 ela10b 

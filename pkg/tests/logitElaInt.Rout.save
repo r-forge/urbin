@@ -41,7 +41,7 @@ Loading required package: miscTools
 +   allXVal = c( 1, 0.4, 0.12 ), 
 +   xPos = c( 2, 0, 3 ), 
 +   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
-+   method = "MNL" )
++   model = "MNL" )
 > ela9a
     semEla      stdEr 
 0.01775033         NA 
@@ -51,7 +51,7 @@ Loading required package: miscTools
 +   xPos = c( 2, 0, 3 ), 
 +   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
 +   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
-+   method = "MNL" )
++   model = "MNL" )
 > ela9b
      semEla       stdEr 
 0.017750330 0.003286756 
@@ -62,7 +62,7 @@ Loading required package: miscTools
 +     1, 0.28, 0.01, 0.000013 ), 
 +   xPos = c( 2, 0, 3 ),
 +   xBound = c( 0, 1000, 1500, Inf ), yCat = 2,
-+   method = "CondL" )
++   model = "CondL" )
 > ela10a 
        semEla         stdEr 
 -4.699944e-17            NA 
@@ -73,11 +73,11 @@ Loading required package: miscTools
 +   xPos = c( 2, 0, 3 ),
 +   xBound = c( 0, 1000, 1500, Inf ), 
 +   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ), yCat = 2,
-+   method = "CondL" )
++   model = "CondL" )
 > ela10b 
        semEla         stdEr 
 -4.699944e-17  3.838242e-20 
 > 
 > proc.time()
    user  system elapsed 
-  0.101   0.018   0.113 
+  0.100   0.023   0.116 
