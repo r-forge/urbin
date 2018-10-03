@@ -102,14 +102,14 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   }
   # vector of probabilities of y=1 for each interval
   if( model == "logit" ){
-    expVec <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
+    xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
-    expVec <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
+    xCoef <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
   } else{
-    expVec <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
+    xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   }
   # calculation of the semi-elasticity
-  semEla <- urbinElaInt( expVec, shareVec, 1:nInt, xBound, model = "lpm" )
+  semEla <- urbinElaInt( xCoef, shareVec, 1:nInt, xBound, model = "lpm" )
   ### calculation of its standard error
   # partial derivatives of each semi-elasticity around each boundary
   # w.r.t. all estimated coefficients
