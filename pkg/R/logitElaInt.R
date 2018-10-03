@@ -28,19 +28,14 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
-  # vector of probabilities of y=1 for each interval and
   # vector of shares of observations in each interval
-  xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
   if( model == "binary" || model == "MNL" ){
     shareVec <- rep( NA, nInt )
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
-        allXValTemp <- replace( allXVal, xPos, 0 )
         if( xPos[i] != 0 ) {
-          allXValTemp[ xPos[i] ] <- 1
           shareVec[i] <- allXVal[ xPos[i] ] 
         }
-        xBeta[i,p] <- sum( mCoef[ ,p] * allXValTemp )
       }
     }
     shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )  
@@ -48,17 +43,37 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     shareVec <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef )
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
-        allXValTemp <- replace( mXVal[ ,p], xPos, 0 )
         if( xPos[i] != 0 ) {
-          allXValTemp[ xPos[i] ] <- 1 
           shareVec[i,p] <- mXVal[ xPos[i], p ]
         }
-        xBeta[i,p] <- sum( allCoef * allXValTemp )    
       }
       shareVec[ xPos == 0, p ] <- 1 - sum( shareVec[ xPos != 0, p ] )
     }
     shareVec <- shareVec[ , yCat ]  
-  }  
+  }
+  # vector of probabilities of y=1 for each interval
+  xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
+  if( model == "binary" || model == "MNL" ){
+    for( p in 1:pCoef ){
+      for( i in 1:nInt ){
+        allXValTemp <- replace( allXVal, xPos, 0 )
+        if( xPos[i] != 0 ) {
+          allXValTemp[ xPos[i] ] <- 1
+        }
+        xBeta[i,p] <- sum( mCoef[ ,p] * allXValTemp )
+      }
+    }
+  } else{
+    for( p in 1:pCoef ){
+      for( i in 1:nInt ){
+        allXValTemp <- replace( mXVal[ ,p], xPos, 0 )
+        if( xPos[i] != 0 ) {
+          allXValTemp[ xPos[i] ] <- 1 
+        }
+        xBeta[i,p] <- sum( allCoef * allXValTemp )    
+      }
+    }
+  }
   #checkXBeta( xBeta )  #Please check this one with a matrix
   if( model == "binary" ){
     expVec <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
