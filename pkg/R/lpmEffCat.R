@@ -1,5 +1,5 @@
 lpmEffCat <- function( allCoef, allXVal, xPos, Group, 
-  allCoefSE = rep( NA, length( xCoef ) ) ){
+  allCoefVcov = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -22,6 +22,8 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   if( ! all( Group %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'Group' must be -1, 0, or 1" )
   }
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   # D_mr
   DRef <- xShares * ( Group == -1 ) / sum( xShares[ Group == -1 ] )
   # D_ml
@@ -31,7 +33,6 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( 0, nCoef )
   derivCoef[ xPos ] <- DEffect - DRef
-  allCoefVcov <- diag( allCoefSE^2 )
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
