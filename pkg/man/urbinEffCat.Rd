@@ -5,17 +5,21 @@
 
 \description{
   This function calculates 
-  the effect of a categorical variable,
+  the effect of a categorical variable
+  that is used as an explanatory variable
+  in a linear probability model or a probit model,
   particularly if one wants to change the reference category and/or
   wants to group some of the categories together to a new category.
   The calculated effect indicates
-  by how many percentage points the probability
+  by how much the probability
   that the dependent variable has a value of one
   increases
   if the explanatory variable of interest
   changes from the 'reference' category 
-  to a selected category of interest.
-  This function also applies the Delta-method
+  to a selected category of interest
+  (this effect multiplied by 100
+  indicates the increase in percentage points).
+  This function applies the Delta-method
   to calculate the approximate standard error 
   of the calculated effect.
 }
@@ -25,12 +29,16 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
 }
 
 \arguments{
-  \item{allCoef}{a vector with all estimated coefficients
+  \item{allCoef}{a vector of all estimated coefficients
     (including intercept).}
-  \item{allXVal}{a vector with the values of all explanatory variables
-    (including intercept; the order of these values must be the same
+  \item{allXVal}{a vector of the values of the explanatory variables,
+    at which the effect should be calculated
+    (including intercept; the order of its elements must be the same
     as the order of the corresponding coefficients in argument 
-    \code{allCoef}).}
+    \code{allCoef}),
+    whereas the values that correspond to the categories 
+    of the explanatory variable of interest must indicate 
+    the shares of these categories in the sample of interest.}
   \item{xPos}{a vector of posivite integers 
     indicating the positions of the coefficients of the categorical variable
     in argument \code{allCoef}
@@ -41,9 +49,9 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
     of the reference category.}
   \item{xGroups}{a vector consisting of \eqn{-1}s, \eqn{0}s, and \eqn{1}s, 
     where a \eqn{-1} indicates 
-    that the category belongs to the new reference category, 
+    that the category should belong to the new reference category, 
     a \eqn{1} indicates 
-    that the category belongs to the new category of interest,
+    that the category should belong to the new category of interest,
     and a zero indicates 
     that the category belongs to neither;
     the length of this vector must be equal to the number of categories;
@@ -52,6 +60,7 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
     as indicated by argument \code{xPos}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
+    \code{"lpm"} = binary probit model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
@@ -59,6 +68,15 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+}
+
+\details{
+If \code{urbinEffCat()} calculates the effect of a variable of interest 
+based on a linear probability model (\code{model = "lpm"}),
+argument \code{allCoef} can only include the coefficient(s)
+of the explanatory variable of interest.
+In this case, arguments \code{allXVal} and \code{allCoefVcov}
+must be adjusted accordingly.
 }
 
 \value{

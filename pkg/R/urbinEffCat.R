@@ -1,10 +1,6 @@
 urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     allCoefVcov = NULL ){
   
-  if( model != "probit" ) {
-    stop( "argument 'model' specifies an unknown type of model" )
-  }
-  
   # number of coefficients
   nCoef <- length( allCoef )
   # Check position vector
@@ -54,19 +50,33 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # D_ml
   DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
     sum( xShares[ xGroups == 1 ] )
-  # linear predictors
-  XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
-    sum( DRef * xCoef )
-  XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
-    sum( DEffect * xCoef )
-  # effect
-  effeG <- pnorm( XBetaEffect ) - pnorm( XBetaRef )
+  if( model == "lpm" ) {
+    # effect: sum of delta_m * ( D_ml - D_mr )
+    effeG <- sum( xCoef * ( DEffect - DRef ) )
+  } else if( model == "probit" ) {
+    # linear predictors
+    XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
+      sum( DRef * xCoef )
+    XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
+      sum( DEffect * xCoef )
+    # effect
+    effeG <- pnorm( XBetaEffect ) - pnorm( XBetaRef )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
   # partial derivative of the effect w.r.t. all estimated coefficients
-  derivCoef <- rep( NA, nCoef )
-  derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
-    allXVal[ -xPos ] 
-  derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect[ -nCat ] - 
-    dnorm( XBetaRef ) * DRef[ -nCat ]
+  if( model == "lpm" ) {
+    derivCoef <- rep( 0, nCoef )
+    derivCoef[ xPos ] <- DEffect[ -nCat ] - DRef[ -nCat ]
+  } else if( model == "probit" ) {
+    derivCoef <- rep( NA, nCoef )
+    derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
+      allXVal[ -xPos ] 
+    derivCoef[ xPos ] = dnorm( XBetaEffect ) * DEffect[ -nCat ] - 
+      dnorm( XBetaRef ) * DRef[ -nCat ]
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
+  }
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
