@@ -47,7 +47,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       }
     }
   } else if( model == "probit" ) {
-    # vector of probabilities of y=1 for each interval
     xBeta <- rep( NA, nInt )
     for( i in 1:nInt ){
       allXValTemp <- replace( allXVal, xPos, 0 )
@@ -57,6 +56,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       xBeta[ i ] <- sum( allCoef * allXValTemp )
     }
     checkXBeta( xBeta )
+    # vector of probabilities of y=1 for each interval
     xCoef <- pnorm( xBeta )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
