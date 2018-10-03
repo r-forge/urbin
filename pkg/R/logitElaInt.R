@@ -2,28 +2,32 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   allCoefVcov = NULL, 
   model = "logit" ){
   # number of coefficients
+  nCoef <- length( allCoef )
+  # number of explanatory variables
+  nXVal <- length( allXVal )
+  # check allXVal and allCoef
   if( model == "logit" ){
-    nCoef <- length( allCoef )
-    # checking arguments
-    if( length( allXVal ) != nCoef ) {
+    if( nXVal != nCoef ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
   } else if( model == "MNL" ){
-    mCoef <- matrix( allCoef, nrow = length( allXVal ))
-    nCoef <- dim( mCoef )[1]
-    pCoef <- dim( mCoef )[2]
-    # checking arguments
-    if( length( allXVal ) != nCoef ) {
-      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    # number of ???
+    pCoef <- round( nCoef / nXVal )
+    if( nCoef != nXVal * pCoef ) {
+      stop( "length of argument 'allCoef' must be a multiple",
+        " of the length of argument 'allXVal'" )
     } 
+    # create matrix of coefficients
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
   } else {
-    nCoef <- length( allCoef )
-    mXVal <- matrix( allXVal, nrow = nCoef )
-    pCoef <- dim( mXVal )[2]
-    # checking arguments
-    if( dim( mXVal )[1] != nCoef ) {
-      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    # number of ???
+    pCoef <- round( nXVal / nCoef )
+    if( nXVal != nCoef * pCoef ) {
+      stop( "length of argument 'allXVal' must be a multiple",
+        " of the length of argument 'allCoef'" )
     } 
+    # create matrix of explanatory variables
+    mXVal <- matrix( allXVal, nrow = nCoef )
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef, 
@@ -121,7 +125,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
         ( xBound[m+2] - xBound[m] )
     } 
   } else if( model == "MNL" ){
-    gradM <- array( 0, c( nCoef, nInt - 1, pCoef ) )
+    gradM <- array( 0, c( nXVal, nInt - 1, pCoef ) )
     gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
         ( 1 + rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
       ( 1 + rowSums( exp( xBeta ) ) )^2 
