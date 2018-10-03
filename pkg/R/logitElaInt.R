@@ -24,35 +24,6 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     minVal = 0, maxVal = nCoef, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
-  if( model == "binary" || model == "MNL" ){
-    if( any( allXVal[ xPos ] < 0 ) ) {
-      stop( "all elements of argument 'allXVal'",
-        " that are indicated by argument 'xPos'",
-        " (i.e., the shares of observations in each interval)",
-        " must be non-negative" )
-    }
-    if( sum( allXVal[ xPos ] > 1 ) ) {
-      stop( "the sum of the elements of argument 'allXVal'",
-        " that are indicated by argument 'xPos'",
-        " (i.e., the shares of observations in each interval)",
-        " must not be larger than one" )
-    }
-  } else{
-    for( p in 1:pCoef ){
-      if( any( mXVal[ xPos, p ] < 0 ) ) {
-        stop( "all elements of argument 'allXVal'",
-          " that are indicated by argument 'xPos'",
-          " (i.e., the shares of observations in each interval)",
-          " must be non-negative" )
-      }
-      if( sum( mXVal[ xPos, p ] > 1 ) ) {
-        stop( "the sum of the elements of argument 'allXVal'",
-          " that are indicated by argument 'xPos'",
-          " (i.e., the shares of observations in each interval)",
-          " must not be larger than one" )
-      }
-    }  
-  }  
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
