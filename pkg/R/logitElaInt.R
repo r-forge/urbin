@@ -19,7 +19,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
-  } else {
+  } else if( model == "CondL" ) {
     # number of ???
     pCoef <- round( nXVal / nCoef )
     if( nXVal != nCoef * pCoef ) {
@@ -28,6 +28,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     } 
     # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef, 
@@ -44,8 +46,10 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
     if( xPos[i] != 0 ) {
       if( model == "logit" || model == "MNL" ){
         shareVec[i] <- allXVal[ xPos[i] ] 
-      } else {
+      } else if( model == "CondL" ) {
         shareVec[i] <- mXVal[ xPos[i], yCat ]
+      } else {
+        stop( "argument 'model' specifies an unknown type of model" )
       }
     }
   }
@@ -87,7 +91,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       }
       checkXBeta( xBeta[,p] )
     }
-  } else {
+  } else if( model == "CondL" ) {
     xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
     for( p in 1:pCoef ){
       for( i in 1:nInt ){
@@ -99,14 +103,18 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       }
       checkXBeta( xBeta[,p] )
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # vector of probabilities of y=1 for each interval
   if( model == "logit" ){
     xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
     xCoef <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
-  } else{
+  } else if( model == "CondL" ){
     xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # semi-elasticities 'around' each inner boundary and their weights
   semElaBound <- rep( NA, nInt - 1 )
@@ -155,7 +163,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       }
     }
     gradM <- apply( gradM, 2, function( x ) x )
-  } else{
+  } else if( model == "CondL" ){
     gradM <- matrix( 0, nCoef, nInt - 1 )
     for( m in 1:( nInt - 1 ) ) {
       gradM[ -xPos, m ] <- 2 * 
@@ -173,6 +181,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       gradM[ xPos[m], m ] <- 0
       gradM[ xPos[m+1], m ] <- 0
     } 
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # partial derivative of the semi-elasticity 
   # w.r.t. all estimated coefficients
