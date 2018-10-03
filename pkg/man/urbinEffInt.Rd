@@ -11,12 +11,14 @@
   in a linear probability model or a probit model
   if this variable changes between discrete intervals.
   The calculated effect indicates
-  by how many percentage points the probability
+  by how much the probability
   that the dependent variable has a value of one
   increases
   if the explanatory variable of interest
   changes from the 'reference' interval 
-  to a selected interval of interest.
+  to a selected interval of interest
+  (this effect multiplied by 100
+  indicates the increase in percentage points).
   This function applies the Delta-method
   to calculate the approximate standard error 
   of the calculated effect.
@@ -76,7 +78,7 @@ urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
 }
 
 \details{
-If \code{urbinEffInt()} calculates the effect of the variable of interest 
+If \code{urbinEffInt()} calculates the effect of a variable of interest 
 based on a linear probability model (\code{model = "lpm"}),
 argument \code{allCoef} can only include the coefficient(s)
 of the explanatory variable of interest.

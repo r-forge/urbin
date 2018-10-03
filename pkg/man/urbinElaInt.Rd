@@ -32,7 +32,7 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model, allCoefVcov = NULL )
     as the order of the corresponding coefficients in argument 
     \code{allCoef}),
     whereas the values that correspond to the intervals 
-    of the explanatory variable of interested must indicate 
+    of the explanatory variable of interest must indicate 
     the shares of these intervals in the sample of interest.}
   \item{xPos}{a vector of positive integers
     with length equal to the number of intervals.
