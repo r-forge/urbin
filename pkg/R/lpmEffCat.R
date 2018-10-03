@@ -29,8 +29,9 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   DEffect <- xShares * ( Group == 1 ) / sum( xShares[ Group == 1 ] )
   # effect: sum of delta_m * ( D_ml - D_mr )
   effeG <- sum( xCoef * ( DEffect - DRef ) )
-  # approximate standard error
-  effeGSE <- sqrt( sum( ( xCoefSE * ( DEffect - DRef ) )^2 ) )
+  xCoefVcov <- diag( xCoefSE^2 )
+  # approximate standard error of the effect
+  effeGSE <- drop( sqrt( t( DEffect - DRef ) %*% xCoefVcov %*% ( DEffect - DRef ) ) )
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
 }
