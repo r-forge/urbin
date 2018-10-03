@@ -251,7 +251,9 @@ urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
 # without standard errors
 lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ) )
 # partial derivatives of the effect wrt the coefficients
-# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 0, 1 ) )
+xMeanIntSharesAttr <- xMeanIntShares
+attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
+lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( -1, -1, 0, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
   allXVal = xMeanIntShares, Group = c( -1, -1, 0, 1 ) )
@@ -265,7 +267,7 @@ lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
 # without standard errors
 lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ) )
 # partial derivatives of the effect wrt the coefficients
-# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, 1, -1 ) )
+lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( 0, 1, 1, -1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
   allXVal = xMeanIntShares, Group = c( 0, 1, 1, -1 ) )

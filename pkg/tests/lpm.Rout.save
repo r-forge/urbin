@@ -455,7 +455,10 @@ stdEr           NA   NA  NA       NA   NA
     effect      stdEr 
 -0.2392568         NA 
 > # partial derivatives of the effect wrt the coefficients
-> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 0, 1 ) )
+> xMeanIntSharesAttr <- xMeanIntShares
+> attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
+> lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( -1, -1, 0, 1 ) )
+[1] -0.587822 -0.412178  0.000000  1.000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
 +   allXVal = xMeanIntShares, Group = c( -1, -1, 0, 1 ) )
@@ -478,7 +481,8 @@ stdEr            NA           NA NA           NA
    effect     stdEr 
 0.2107741        NA 
 > # partial derivatives of the effect wrt the coefficients
-> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, 1, -1 ) )
+> lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( 0, 1, 1, -1 ) )
+[1]  0.0000000  0.4345679  0.5654321 -1.0000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
 +   allXVal = xMeanIntShares, Group = c( 0, 1, 1, -1 ) )
@@ -499,4 +503,4 @@ stdEr            NA           NA        NA           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.285   0.027   0.305 
+  0.245   0.024   0.261 
