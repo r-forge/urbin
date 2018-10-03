@@ -249,32 +249,30 @@ urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ) )
 # partial derivatives of the effect wrt the coefficients
-xMeanIntSharesAttr <- xMeanIntShares
-attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
-lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( -1, -1, 0, 1 ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-  allXVal = xMeanIntShares, Group = c( -1, -1, 0, 1 ) )
+numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
+  allXVal = xMeanInt[3:5], Group = c( -1, -1, 1, 0 ) )
 # with full covariance matrix
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
-  vcovLpmInt )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ),
+  vcov( estLpmInt )[3:5, 3:5] )
 # with standard errors only
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
-  sqrt( diag( vcovLpmInt ) ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ),
+  sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ) )
 # partial derivatives of the effect wrt the coefficients
-lpmEffCat( coefLpmInt, xMeanIntSharesAttr, 1:4, c( 0, 1, 1, -1 ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-  allXVal = xMeanIntShares, Group = c( 0, 1, 1, -1 ) )
+numericGradient( lpmEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
+  allXVal = xMeanInt[3:5], Group = c( 0, 1, -1, 1 ) )
 # with full covariance matrix
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
-  vcovLpmInt )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ),
+  vcov( estLpmInt )[3:5,3:5] )
 # with standard errors only
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
-  sqrt( diag( vcovLpmInt ) ) )
+lpmEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ),
+  sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
 

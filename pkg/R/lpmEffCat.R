@@ -6,10 +6,15 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
-
-  xCoef <- allCoef[ xPos ]
+  # number of categories
+  nCat <- length( xPos ) + 1
+  # shares in each category
   xShares <- allXVal[ xPos ]
 
+  xShares <- c( xShares, 1 - sum( xShares ) )
+
+  xCoef <- c( allCoef[ xPos ], 0 )
+  
   if( sum( xShares ) > 1 ){
     stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
   }
@@ -32,7 +37,7 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   effeG <- sum( xCoef * ( DEffect - DRef ) )
   # partial derivative of the effect w.r.t. all estimated coefficients
   derivCoef <- rep( 0, nCoef )
-  derivCoef[ xPos ] <- DEffect - DRef
+  derivCoef[ xPos ] <- DEffect[ -nCat ] - DRef[ -nCat ]
   # if argument allXVal has attribute 'derivOnly',
   # return partial derivatives only (for testing partial derivatives)
   if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
