@@ -5,7 +5,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   nCoef <- length( allCoef )
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = length( allCoef ) + 1, 
-    minVal = 0, maxVal = nCoef, requiredVal = 0 )
+    minVal = 0, maxVal = nCoef )#, requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
   # Check x values
