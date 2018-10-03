@@ -249,30 +249,30 @@ urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ) )
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ) )
 # partial derivatives of the effect wrt the coefficients
-# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 0, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-  allXVal = xMeanIntShares, Group = c( -1, -1, 1, 0 ) )
+  allXVal = xMeanIntShares, Group = c( -1, -1, 0, 1 ) )
 # with full covariance matrix
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
   vcovLpmInt )
 # with standard errors only
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
   sqrt( diag( vcovLpmInt ) ) )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ) )
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ) )
 # partial derivatives of the effect wrt the coefficients
-# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+# lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, 1, -1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-  allXVal = xMeanIntShares, Group = c( 0, 1, -1, 1 ) )
+  allXVal = xMeanIntShares, Group = c( 0, 1, 1, -1 ) )
 # with full covariance matrix
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
   vcovLpmInt )
 # with standard errors only
-lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
+lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
   sqrt( diag( vcovLpmInt ) ) )
 

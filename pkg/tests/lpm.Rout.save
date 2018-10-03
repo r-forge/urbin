@@ -451,52 +451,52 @@ stdEr           NA   NA  NA       NA   NA
 > ### grouping and re-basing categorical variables
 > ### effects of age changing from the 30-44 category to the 53-60 category
 > # without standard errors
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ) )
-     effect       stdEr 
--0.04823588          NA 
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ) )
+    effect      stdEr 
+-0.2392568         NA 
 > # partial derivatives of the effect wrt the coefficients
-> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 0, 1 ) )
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-+   allXVal = xMeanIntShares, Group = c( -1, -1, 1, 0 ) )
++   allXVal = xMeanIntShares, Group = c( -1, -1, 0, 1 ) )
        age30.37TRUE age38.44TRUE    age53.60TRUE
-effect    -0.587822    -0.412178  1            0
+effect    -0.587822    -0.412178  0            1
 stdEr            NA           NA NA           NA
 > # with full covariance matrix
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
 +   vcovLpmInt )
      effect       stdEr 
--0.04823588  0.04330589 
+-0.23925675  0.06451259 
 > # with standard errors only
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 1, 0 ),
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( -1, -1, 0, 1 ),
 +   sqrt( diag( vcovLpmInt ) ) )
      effect       stdEr 
--0.04823588  0.03513348 
+-0.23925675  0.07043513 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ) )
-     effect       stdEr 
--0.03856761          NA 
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ) )
+   effect     stdEr 
+0.2107741        NA 
 > # partial derivatives of the effect wrt the coefficients
-> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+> # lpmEffCat( coef( estLpmInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, 1, -1 ) )
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( lpmEffCat, t0 = coefLpmInt, xPos = 1:4,
-+   allXVal = xMeanIntShares, Group = c( 0, 1, -1, 1 ) )
-       age30.37TRUE age38.44TRUE    age53.60TRUE
-effect            0    0.6446886 -1    0.3553114
-stdEr            NA           NA NA           NA
++   allXVal = xMeanIntShares, Group = c( 0, 1, 1, -1 ) )
+       age30.37TRUE age38.44TRUE           age53.60TRUE
+effect            0    0.4345679 0.5654321           -1
+stdEr            NA           NA        NA           NA
 > # with full covariance matrix
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
 +   vcovLpmInt )
-     effect       stdEr 
--0.03856761  0.04358286 
+    effect      stdEr 
+0.21077412 0.05990238 
 > # with standard errors only
-> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, -1, 1 ),
+> lpmEffCat( coefLpmInt, xMeanIntShares, 1:4, c( 0, 1, 1, -1 ),
 +   sqrt( diag( vcovLpmInt ) ) )
-     effect       stdEr 
--0.03856761  0.03955339 
+    effect      stdEr 
+0.21077412 0.06499097 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.270   0.032   0.294 
+  0.285   0.027   0.305 
