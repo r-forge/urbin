@@ -52,6 +52,8 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       " must not be larger than one" )
   }
   shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )  
+  # weights
+  weights <- elaIntWeights( shareVec )
   # vector of probabilities of y=1 for each interval
   xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
   if( model == "binary" || model == "MNL" ){
@@ -83,8 +85,6 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   } else{
     expVec <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   }
-  # weights
-  weights <- elaIntWeights( shareVec )
   # calculation of the semi-elasticity
   semEla <- urbinElaInt( expVec, shareVec, 1:nInt, xBound, model = "lpm" )
   ### calculation of its standard error
