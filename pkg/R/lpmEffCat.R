@@ -34,9 +34,10 @@ lpmEffCat <- function( allCoef, allXVal, xPos, xGroups,
   }
   # coefficients of the dummy variables for the categories
   xCoef <- c( allCoef[ xPos ], 0 )
-  
-  if( length( xCoef ) != length( xGroups ) ){
-    stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
+  # check argument xGroups
+  if( length( xGroups ) != ( length( xPos ) + 1 ) ){
+    stop( "the vector specified by argument 'xGroups' must have",
+      " one more element that the vector specified by argument 'xPos'" )
   }
   if( ! all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
