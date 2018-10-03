@@ -60,7 +60,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
   shareVec[ xPos == 0 ] <- 1 - sum( shareVec[ xPos != 0 ] )  
   # weights
   weights <- elaIntWeights( shareVec )
-  # vector of probabilities of y=1 for each interval
+  # prepare calculation of semi-elasticity 
   if( model == "binary" ){
     xBeta <- rep( NA, nInt ) 
     for( i in 1:nInt ){
@@ -70,6 +70,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
       }
       xBeta[i] <- sum( allCoef * allXValTemp )
     }
+    checkXBeta( xBeta )
   } else if( model == "MNL" ){
     xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
     for( p in 1:pCoef ){
@@ -80,6 +81,7 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
         }
         xBeta[i,p] <- sum( mCoef[ ,p] * allXValTemp )
       }
+      checkXBeta( xBeta[,p] )
     }
   } else {
     xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
@@ -91,9 +93,10 @@ logitElaInt <- function( allCoef, allXVal, xPos, xBound, yCat = NA,
         }
         xBeta[i,p] <- sum( allCoef * allXValTemp )    
       }
+      checkXBeta( xBeta[,p] )
     }
   }
-  #checkXBeta( xBeta )  #Please check this one with a matrix
+  # vector of probabilities of y=1 for each interval
   if( model == "binary" ){
     expVec <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
