@@ -10,17 +10,31 @@ lpmEffCat <- function( allCoef, allXVal, xPos, Group,
   nCat <- length( xPos ) + 1
   # shares in each category
   xShares <- allXVal[ xPos ]
-
+  if( any( xShares < 0 ) ){
+    stop( "the share of the observations in at least one category",
+      " is negative" )
+  }
+  if( sum( xShares ) > 1 ){
+    stop( "the shares of the observations in the individual categories",
+      " (without the reference category) sum up to a value larger than 1" )
+  }
   xShares <- c( xShares, 1 - sum( xShares ) )
-
+  if( length( xShares ) != nCat ) {
+    stop( "internal error: length of shares not equal to number of categories" )
+  }
+  if( xShares[ nCat ] < 0.05  ) {
+    warning( "there are only ", 100 * xShares[ length( xShares ) ],
+      "% of the observations in the reference category --",
+      " please check whether this is indeed the case" )
+  }
+  if( xShares[ nCat ] > 0.95  ) {
+    warning( "there are ", 100 * xShares[ length( xShares ) ],
+      "% of the observations in the reference category --",
+      " please check whether this is indeed the case" )
+  }
+  # coefficients of the dummy variables for the categories
   xCoef <- c( allCoef[ xPos ], 0 )
   
-  if( sum( xShares ) > 1 ){
-    stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
-  }
-  if( length( xCoef ) != length( xShares ) ){
-    stop( "arguments 'xCoef' and 'xShares' must have the same length" )
-  }
   if( length( xCoef ) != length( Group ) ){
     stop( "arguments 'xCoef' and 'Group' must have the same length" )
   }
