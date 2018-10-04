@@ -41,7 +41,7 @@ urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
     this argument is ignored.
     In case of all other types of models, 
     the element(s) that correspond to the variable of interest
-    is (are) ignored and should be set to \code{NA}.}
+    is (are) ignored and can be set to \code{NA}.}
   \item{xPos}{a posivite integer 
     indicating the position of the explanatory variable of interest
     or a vector of two positive integers 

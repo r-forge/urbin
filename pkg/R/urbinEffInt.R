@@ -26,11 +26,11 @@ urbinEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   if( length( allXVal ) != nCoef ){
     stop( "argument 'allCoef' and 'allXVal' must have the same length" )
   }  
-  if( any( !is.na( allXVal[ xPos ] ) ) ) {
-    allXVal[ xPos ] <- NA
-    warning( "values of argument 'allXVal[ xPos ]' are ignored",
-      " (set these values to 'NA' to avoid this warning)" )
-  }
+  # if( any( !is.na( allXVal[ xPos ] ) ) ) {
+  #   allXVal[ xPos ] <- NA
+  #   warning( "values of argument 'allXVal[ xPos ]' are ignored",
+  #     " (set these values to 'NA' to avoid this warning)" )
+  # }
 
   # calculate xBars
   intX <- mean( intBound )
