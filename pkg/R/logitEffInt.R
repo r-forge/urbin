@@ -1,5 +1,5 @@
 logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
-  model = "binary", allCoefBra = NULL, allXValBra = NULL, 
+  model = "logit", allCoefBra = NULL, allXValBra = NULL, 
   yCat = NULL, yCatBra = NULL, lambda = NULL, 
   allCoefSE = rep( NA, length( allCoef ) ) ){
   
@@ -8,7 +8,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   # number of explanatory variables
   nXVal <- length( allXVal )
   # check allXVal and allCoef
-  if( model == "binary" ){  
+  if( model == "logit" ){  
     # check arguments
     if( nXVal != nCoef ){
       stop( "argument 'allCoef' and 'allXVal' must have the same length" )
@@ -78,7 +78,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     stop( "internal error: 'intX' or 'refX' does not have the expected length" )
   }
   # define X' * beta 
-  if( model == "binary" ){
+  if( model == "logit" ){
     intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
     refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
     checkXBeta( c( intXbeta, refXbeta ) )
@@ -112,7 +112,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # effect E_{k,ml}
-  if( model == "binary" ){  
+  if( model == "logit" ){  
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
   } else if( model == "MNL" ){
@@ -140,7 +140,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   }
   # calculating approximate standard error
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
-  if( model == "binary" ){
+  if( model == "logit" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] <- ( exp( intXbeta )/( 1 + exp( intXbeta ) )^2 - 
         exp( refXbeta )/( 1 + exp( refXbeta ) )^2 ) * 
