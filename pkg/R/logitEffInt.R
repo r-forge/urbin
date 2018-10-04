@@ -1,8 +1,8 @@
 logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
   allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
   lambda = NULL, allCoefSE = rep( NA, length( allCoef ) ), 
-  method = "binary" ){
-  if( method == "binary" ){  
+  model = "binary" ){
+  if( model == "binary" ){  
     # number of coefficients
     nCoef <- length( allCoef )
     # check arguments
@@ -12,7 +12,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( length( allCoefSE ) != nCoef ){
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     # number of coefficients
     NCoef <- length( allCoef )
     mCoef <- matrix( allCoef, nrow = length( allXVal ))
@@ -25,7 +25,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( length( allCoefSE ) != NCoef ){
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }
-  } else if( method == "CondL"){
+  } else if( model == "CondL"){
     # number of coefficients
     nCoef <- length( allCoef )
     mXVal <- matrix( allXVal, nrow = nCoef )
@@ -60,13 +60,13 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
-  if( method == "binary" || method == "MNL" ){  
+  if( model == "binary" || model == "MNL" ){  
     if( any( !is.na( allXVal[ xPos ] ) ) ) {
       allXVal[ xPos ] <- NA
       warning( "values of argument 'allXVal[ xPos ]' are ignored",
         " (set these values to 'NA' to avoid this warning)" )
     }
-  }else if( method == "CondL" ){
+  }else if( model == "CondL" ){
     for( p in 1:pCoef ){
       if( any( !is.na( mXVal[ xPos, p ] ) ) ){
         mXVal[ xPos, p ] <- NA
@@ -94,14 +94,14 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     stop( "internal error: 'intX' or 'refX' does not have the expected length" )
   }
   # define X' * beta 
-  if( method == "binary" ){
+  if( model == "binary" ){
     intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
     refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
     checkXBeta( c( intXbeta, refXbeta ) )
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     intXbeta <- colSums( mCoef * replace( allXVal, xPos, intX ) )
     refXbeta <- colSums( mCoef * replace( allXVal, xPos, refX ) )
-  } else if( method == "CondL" ){
+  } else if( model == "CondL" ){
     mXValint <- mXValref <- mXVal
     for( p in 1:pCoef ){
       mXValint[ ,p] <- replace( mXValint[ ,p], xPos, intX )
@@ -126,13 +126,13 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     XbetaBra <- colSums( allCoefBra * mXValBra )
   }
   # effect E_{k,ml}
-  if( method == "binary" ){  
+  if( model == "binary" ){  
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     eff <- exp( intXbeta[ yCat ] )/( 1 + sum( exp( intXbeta ) ) ) - 
       exp( refXbeta[ yCat ] )/( 1 + sum( exp( refXbeta ) ) )
-  } else if( method == "CondL"){
+  } else if( model == "CondL"){
     eff <- exp( intXbeta[ yCat ] )/( sum( exp( intXbeta ) ) ) -
       exp( refXbeta[ yCat ] )/( sum( exp( refXbeta ) ) )    
   } else{
@@ -152,14 +152,14 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   }
   # calculating approximate standard error
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
-  if( method == "binary" ){
+  if( model == "binary" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] <- ( exp( intXbeta )/( 1 + exp( intXbeta ) )^2 - 
         exp( refXbeta )/( 1 + exp( refXbeta ) )^2 ) * 
       allXVal[ -xPos ] 
     derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     derivCoef <- matrix( NA, nrow=nCoef, ncol=pCoef )
     for( p in 1:pCoef ){
       if( p == yCat ){
@@ -191,7 +191,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       }     
     }
     derivCoef <- c( derivCoef )
-  } else if( method == "CondL" ){
+  } else if( model == "CondL" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] <- ( exp( intXbeta[ yCat] ) * mXVal[ -xPos, yCat] * 
         sum( exp( intXbeta ) ) -

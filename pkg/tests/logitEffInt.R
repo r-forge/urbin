@@ -33,7 +33,7 @@ eff8a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   allXVal = c( 1, NA, 0.12 ), 
   xPos = 2, 
   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
-  yCat = 2, method = "MNL" )
+  yCat = 2, model = "MNL" )
 eff8a
 
 eff8b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -42,7 +42,7 @@ eff8b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
   yCat = 2, 
   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
-  method = "MNL" )
+  model = "MNL" )
 eff8b
 
 #Example
@@ -50,7 +50,7 @@ eff9a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   allXVal = c( 1, NA, NA ), 
   xPos = c( 2, 3 ), 
   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
-  yCat = 2, method = "MNL" )
+  yCat = 2, model = "MNL" )
 eff9a
 
 eff9b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -59,7 +59,7 @@ eff9b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
   yCat = 2, 
   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.009 ),
-  method = "MNL" )
+  model = "MNL" )
 eff9b
 
 #Example
@@ -67,7 +67,7 @@ eff10a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, 0.091 ),
   allXVal = c( 1, NA, NA, 2.45, 1, NA, NA, 0.79 ), 
   xPos = c( 2, 3 ), 
   refBound = c( 1, 12 ), intBound = c( 13, 15 ),
-  yCat = 2, method = "CondL" )
+  yCat = 2, model = "CondL" )
 eff10a
 
 eff10b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, 0.091 ), 
@@ -75,7 +75,7 @@ eff10b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, 0.091 ),
   xPos = c( 2, 3 ), 
   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ),
-  yCat = 2, method = "CondL" )
+  yCat = 2, model = "CondL" )
 eff10b
 
 # Example 
@@ -87,7 +87,7 @@ eff12a <- urbin:::logitEffInt( allCoefBra = c( 0.445, 0.03, -0.002 ),
   allXVal = list( matrix1, matrix2 ), 
   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-  method = "NestedL" )
+  model = "NestedL" )
 eff12a
 
 matrix1 <- matrix( c( 1, NA, 0.3, 0.09, 1, NA, 0.9, 1.8 ), nrow = 4 )
@@ -99,5 +99,5 @@ eff12b <- urbin:::logitEffInt( allCoefBra = c( 0.445, 0.03, -0.002 ),
   allCoefSE = c( 0.003, 0.045, 0.007, 0.0032 ),
   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
-  method = "NestedL" )
+  model = "NestedL" )
 eff12b
