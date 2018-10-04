@@ -1,6 +1,6 @@
-logitEffInt <- function( allCoef, allCoefBra = NA, allXVal, allXValBra=NA,
-  xPos, refBound, intBound, yCat, yCatBra, lambda, 
-  allCoefSE = rep( NA, length( allCoef ) ), 
+logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
+  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
+  lambda = NULL, allCoefSE = rep( NA, length( allCoef ) ), 
   method = "binary" ){
   if( method == "binary" ){  
     # number of coefficients
