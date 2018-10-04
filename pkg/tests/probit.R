@@ -186,12 +186,13 @@ numericGradient( urbinEffInt, t0 = coef( estProbitLin ),
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
-  c( 30, 40 ), c( 50, 60 ), model = "probit", vcov( estProbitLin ) )
+  c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  allCoefVcov = vcov( estProbitLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-  sqrt( diag( vcov( estProbitLin ) ) ) )
+  allCoefVcov = sqrt( diag( vcov( estProbitLin ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
@@ -214,17 +215,18 @@ numericGradient( urbinEffInt, t0 = coef( estProbitQuad ),
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), model = "probit", vcov( estProbitQuad ) )
+  c( 30, 40 ), c( 50, 60 ), model = "probit",
+  allCoefVcov = vcov( estProbitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-  sqrt( diag( vcov( estProbitQuad ) ) ) )
+  allCoefVcov = sqrt( diag( vcov( estProbitQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-  sqrt( diag( vcov( estProbitQuad ) ) ),
+  allCoefVcov = sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### grouping and re-basing categorical variables

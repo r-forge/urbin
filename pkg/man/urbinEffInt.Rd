@@ -8,7 +8,7 @@
   the effect of a continuous variable
   that is used as a linear explanatory variable
   or as a linear and quadratic explanatory variable
-  in a linear probability model or a probit model
+  in a linear probability model, a probit model, or a logit model
   if this variable changes between discrete intervals.
   The calculated effect indicates
   by how much the probability
@@ -26,6 +26,8 @@
 
 \usage{
 urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
+  allCoefBra = NULL, allXValBra = NULL, 
+  yCat = NULL, yCatBra = NULL, lambda = NULL, 
   allCoefVcov = NULL, xMeanSd = NULL )
 }
 
@@ -58,7 +60,12 @@ urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
-    \code{"probit"} = binary probit model.}
+    \code{"probit"} = binary probit model,
+    \code{"logit"} = binary logit model, 
+    \code{"MNL"} = multinomial logit model,
+    \code{"CondL"} = conditional logit model, or
+    \code{"NestedL"} = nested logit model.}
+  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda}{not yet documented.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients

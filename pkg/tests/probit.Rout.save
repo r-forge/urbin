@@ -372,14 +372,15 @@ stdEr           NA         NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
-+   c( 30, 40 ), c( 50, 60 ), model = "probit", vcov( estProbitLin ) )
++   c( 30, 40 ), c( 50, 60 ), model = "probit", 
++   allCoefVcov = vcov( estProbitLin ) )
     effect      stdEr 
 -0.1506167  0.0545738 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-+   sqrt( diag( vcov( estProbitLin ) ) ) )
++   allCoefVcov = sqrt( diag( vcov( estProbitLin ) ) ) )
      effect       stdEr 
 -0.15061666  0.06132438 
 > 
@@ -410,21 +411,22 @@ stdEr           NA          NA       NA       NA         NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
-+   c( 30, 40 ), c( 50, 60 ), model = "probit", vcov( estProbitQuad ) )
++   c( 30, 40 ), c( 50, 60 ), model = "probit",
++   allCoefVcov = vcov( estProbitQuad ) )
      effect       stdEr 
 -0.25282386  0.06147638 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-+   sqrt( diag( vcov( estProbitQuad ) ) ) )
++   allCoefVcov = sqrt( diag( vcov( estProbitQuad ) ) ) )
     effect      stdEr 
 -0.2528239  0.7331598 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
 > urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "probit", 
-+   sqrt( diag( vcov( estProbitQuad ) ) ),
++   allCoefVcov = sqrt( diag( vcov( estProbitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
 -0.25282386  0.07121468 
@@ -493,4 +495,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.508   0.027   0.529 
+  0.492   0.047   0.533 

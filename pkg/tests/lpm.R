@@ -201,13 +201,14 @@ numericGradient( urbinEffInt, t0 = coef( estLpmLin ), allXVal = NA,
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estLpmLin ), NA,
-  c( 30, 40 ), c( 50, 60 ), xPos = 3, model = "lpm", vcov( estLpmLin ) )
+  c( 30, 40 ), c( 50, 60 ), xPos = 3, model = "lpm",
+  allCoefVcov = vcov( estLpmLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1, 
-  model = "lpm", sqrt( diag( vcov( estLpmLin ) ) )[3] )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmLin ) ) )[3] )
 urbinEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3, 
-  model = "lpm", sqrt( diag( vcov( estLpmLin ) ) ) )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmLin ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
@@ -231,19 +232,22 @@ numericGradient( urbinEffInt, t0 = coef( estLpmQuad ),
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estLpmQuad )[3:4], NA, c( 30, 40 ), c( 50, 60 ), 
-  xPos = 1:2, model = "lpm", vcov( estLpmQuad )[3:4,3:4] )
+  xPos = 1:2, model = "lpm", allCoefVcov = vcov( estLpmQuad )[3:4,3:4] )
 urbinEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
-  xPos = 3:4, model = "lpm", vcov( estLpmQuad ) )
+  xPos = 3:4, model = "lpm", allCoefVcov = vcov( estLpmQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estLpmQuad )[3:4], NA, c( 30, 40 ), c( 50, 60 ), 
-  xPos = 1:2, model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
+  xPos = 1:2, model = "lpm", 
+  allCoefVcov = sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
 urbinEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
-  xPos = 3:4, model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) ) )
+  xPos = 3:4, model = "lpm", 
+  allCoefVcov = sqrt( diag( vcov( estLpmQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), model = "lpm", sqrt( diag( vcov( estLpmQuad ) ) ),
+  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  allCoefVcov = sqrt( diag( vcov( estLpmQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### grouping and re-basing categorical variables

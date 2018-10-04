@@ -172,25 +172,25 @@ urbinElaInt( coef( estLogitInt ), xMeanInt,
 xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+urbinEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-urbin:::logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3,
-  c( 30, 40 ), c( 50, 60 ) )
+urbinEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
+numericGradient( urbinEffInt, t0 = coef( estLogitLin ),
   allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-  c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitLin ) )
+urbinEffInt( coef( estLogitLin ), xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "logit", allCoefVcov = vcov( estLogitLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+urbinEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit", 
   allCoefVcov = sqrt( diag( vcov( estLogitLin ) ) ) )
 
 
@@ -200,30 +200,33 @@ urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
 xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
-  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+urbinEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "logit" )
 # partial derivatives of the effect wrt the coefficients
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ) )
+urbinEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
+numericGradient( urbinEffInt, t0 = coef( estLogitQuad ),
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitQuad ) )
+urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "logit", 
+  allCoefVcov = vcov( estLogitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
+urbinEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ) )
+  model = "logit", allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
-urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ),
+urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "logit", 
+  allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 ### grouping and re-basing categorical variables
