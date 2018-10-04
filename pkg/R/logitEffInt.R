@@ -37,7 +37,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( length( allCoefSE ) != nCoef ){
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }  
-  } else{
+  } else if( model == "NestedL" ){
     nCoef <- length( allCoef )
     NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
@@ -56,6 +56,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( nCoef != length( allCoefSE) ){
       stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
@@ -66,7 +68,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       warning( "values of argument 'allXVal[ xPos ]' are ignored",
         " (set these values to 'NA' to avoid this warning)" )
     }
-  }else if( model == "CondL" ){
+  } else if( model == "CondL" ){
     for( p in 1:pCoef ){
       if( any( !is.na( mXVal[ xPos, p ] ) ) ){
         mXVal[ xPos, p ] <- NA
@@ -74,7 +76,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
           " (set these values to 'NA' to avoid this warning)" )
       }
     }
-  }else{
+  } else if( model == "NestedL" ){
     for( p in 1:pCoef[ yCatBra ] ){
       if( any( !is.na( allXVal[[ yCatBra ]][ xPos, p ] ) ) ){
         mXVal[ xPos, p ] <- NA
@@ -82,6 +84,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
           " (set these values to 'NA' to avoid this warning)" )
       }
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   } 
   # calculate xBars
   intX <- mean( intBound )
@@ -109,7 +113,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     }
     intXbeta <- colSums( allCoef * mXValint )
     refXbeta <- colSums( allCoef * mXValref )
-  } else{
+  } else if( model == "NestedL" ){
     mCoef <- matrix( rep( allCoef, O ), nrow = nCoef, O ) %*% diag( 1/ lambda )
     mXValint <- mXValref <- allXVal
     for( i in 1:O ){
@@ -124,6 +128,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       refXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValref[[ l ]] )
     }
     XbetaBra <- colSums( allCoefBra * mXValBra )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # effect E_{k,ml}
   if( model == "binary" ){  
@@ -135,7 +141,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else if( model == "CondL"){
     eff <- exp( intXbeta[ yCat ] )/( sum( exp( intXbeta ) ) ) -
       exp( refXbeta[ yCat ] )/( sum( exp( refXbeta ) ) )    
-  } else{
+  } else if( model == "NestedL" ){
     intBranch <- refBranch <- rep( list( NA ), O )
     for( l in 1:O ){
       intBranch[[ l ]] <- exp( XbetaBra[ l ] + lambda[ l ] * 
@@ -149,6 +155,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       intBranch[ yCatBra ]/ sum( intBranch ) - 
       exp( refXbeta[[ yCatBra ]][ yCat ] )/( sum( exp( refXbeta[[ yCatBra ]] ) ) ) *
       refBranch[ yCatBra ]/ sum( refBranch )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # calculating approximate standard error
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
@@ -211,7 +219,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
           sum( exp( refXbeta ) ) -
           exp( refXbeta[ yCat] ) * sum( exp( refXbeta ) * refX ) )/
       ( sum( exp( refXbeta ) ) )^2 
-  } else{
+  } else if( model == "NestedL" ){
     derivCoef <- rep( NA, nCoef ) 
     PImp <- exp( intXbeta[[ yCatBra ]][ yCat ])/( sum( exp( intXbeta[[ yCatBra ]] ) ) )
     PIlp <- exp( refXbeta[[ yCatBra ]][ yCat ])/( sum( exp( refXbeta[[ yCatBra ]] ) ) )
@@ -250,6 +258,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
           ( refX * pCoef[ yCatBra ] -
               ( sum( refX * exp( refBranch ) )/
                   ( sum( refBranch ) ) ) ) ) * PImp * PImo  
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # variance covariance of the coefficients (covariances set to zero)
   vcovCoef <- diag( allCoefSE^2 )
