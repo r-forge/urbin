@@ -7,9 +7,10 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   nCoef <- length( allCoef )
   # number of explanatory variables
   nXVal <- length( allXVal )
+  # check allXVal and allCoef
   if( model == "binary" ){  
     # check arguments
-    if( length( allXVal ) != nCoef ){
+    if( nXVal != nCoef ){
       stop( "argument 'allCoef' and 'allXVal' must have the same length" )
     }  
     if( length( allCoefSE ) != nCoef ){
@@ -28,19 +29,18 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }
   } else if( model == "CondL"){
-    # number of coefficients
-    nCoef <- length( allCoef )
+    # number of ???
+    pCoef <- round( nXVal / nCoef )
+    if( nXVal != nCoef * pCoef ) {
+      stop( "length of argument 'allXVal' must be a multiple",
+        " of the length of argument 'allCoef'" )
+    } 
+    # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
-    pCoef <- dim( mXVal )[2]
-    # check arguments
-    if( dim( mXVal )[1] != nCoef ){
-      stop( "argument 'allCoef' and 'allXVal' must have the same length" )
-    }
     if( length( allCoefSE ) != nCoef ){
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }  
   } else if( model == "NestedL" ){
-    nCoef <- length( allCoef )
     NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
     nXValBra <- dim( mXValBra )[1]
