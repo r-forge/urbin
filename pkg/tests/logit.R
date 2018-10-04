@@ -191,7 +191,7 @@ numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
 # (only standard errors) 
 urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  allCoefSE = sqrt( diag( vcov( estLogitLin ) ) ) )
+  allCoefVcov = sqrt( diag( vcov( estLogitLin ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
@@ -219,7 +219,7 @@ numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
 # (only standard errors) 
 urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  allCoefSE = sqrt( diag( vcov( estLogitQuad ) ) ) )
+  allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),

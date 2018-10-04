@@ -1,7 +1,7 @@
 logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
   model = "logit", allCoefBra = NULL, allXValBra = NULL, 
   yCat = NULL, yCatBra = NULL, lambda = NULL, 
-  allCoefSE = rep( NA, length( allCoef ) ) ){
+  allCoefVcov = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -13,9 +13,6 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( nXVal != nCoef ){
       stop( "argument 'allCoef' and 'allXVal' must have the same length" )
     }  
-    if( length( allCoefSE ) != nCoef ){
-      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
-    }
   } else if( model == "MNL" ){
     # number of ???
     pCoef <- round( nCoef / nXVal )
@@ -25,9 +22,6 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
-    if( length( allCoefSE ) != nCoef ){
-      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
-    }
   } else if( model == "CondL"){
     # number of ???
     pCoef <- round( nXVal / nCoef )
@@ -37,9 +31,6 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     } 
     # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
-    if( length( allCoefSE ) != nCoef ){
-      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
-    }  
   } else if( model == "NestedL" ){
     NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
@@ -55,14 +46,13 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     if( nCoef != nXVal[ yCatBra ] ){
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
-    if( nCoef != length( allCoefSE) ){
-      stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
-    }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
@@ -241,10 +231,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # variance covariance of the coefficients (covariances set to zero)
-  vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the effect
-  effSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
   result <- c( effect = eff, stdEr = effSE )
   return( result )
