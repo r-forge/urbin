@@ -185,8 +185,8 @@ numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-#   c( 30, 40 ), c( 50, 60 ), vcov( estLogitLin ) )
+urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
@@ -213,8 +213,8 @@ numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-#   c( 30, 40 ), c( 50, 60 ), vcov( estLogitQuad ) )
+urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 

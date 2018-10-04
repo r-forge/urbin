@@ -370,8 +370,10 @@ effect  0.01581969 0.01100865 5.541827 0.1943742
 stdEr           NA         NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-> #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitLin ) )
+> urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitLin ) )
+    effect      stdEr 
+-0.1524657  0.0553270 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
@@ -405,8 +407,10 @@ effect 0.001806166 0.001256881 4.759617 424.9036 0.0221921
 stdEr           NA          NA       NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-> #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitQuad ) )
+> urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), allCoefVcov = vcov( estLogitQuad ) )
+     effect       stdEr 
+-0.25353772  0.06224043 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
 > urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
@@ -453,4 +457,4 @@ stdEr           NA          NA       NA       NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.494   0.031   0.519 
+  0.493   0.039   0.526 
