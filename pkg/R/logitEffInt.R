@@ -1,7 +1,7 @@
 logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
   model = "logit", allCoefBra = NULL, allXValBra = NULL, 
   yCat = NULL, yCatBra = NULL, lambda = NULL, 
-  allCoefVcov = NULL ){
+  allCoefVcov = NULL, xMeanSd = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -52,7 +52,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
