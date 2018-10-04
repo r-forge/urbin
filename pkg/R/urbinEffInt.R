@@ -3,14 +3,7 @@ urbinEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
-  # Check position vector
-  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
-  # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
-  # check the boundaries of the intervals
-  refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
-  intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
-  # Check x values
+  # check allXVal and allCoef
   if( model == "lpm" ) {
     if( any( !is.na( allXVal ) ) ) {
       warning( "argument allXVal is ignored for lpm models",
@@ -31,6 +24,14 @@ urbinEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, model,
   #   warning( "values of argument 'allXVal[ xPos ]' are ignored",
   #     " (set these values to 'NA' to avoid this warning)" )
   # }
+  
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
+  # check the boundaries of the intervals
+  refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
+  intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
 
   # calculate xBars
   intX <- mean( intBound )
