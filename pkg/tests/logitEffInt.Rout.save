@@ -60,6 +60,9 @@ Loading required package: miscTools
 +   xPos = 2, 
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
 +   yCat = 2, model = "MNL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 4.46, 0.292, 3.26, 0.172
 > eff8a
      effect       stdEr 
 -0.02698526          NA 
@@ -71,6 +74,9 @@ Loading required package: miscTools
 +   yCat = 2, 
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
 +   model = "MNL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 4.46, 0.292, 3.26, 0.172
 > eff8b
      effect       stdEr 
 -0.02698526  0.01805266 
@@ -81,6 +87,9 @@ Loading required package: miscTools
 +   xPos = c( 2, 3 ), 
 +   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
 +   yCat = 2, model = "MNL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 192.4, 224.17, 28.3166666666667, 31.395
 > eff9a
     effect      stdEr 
 0.04400988         NA 
@@ -92,6 +101,9 @@ Loading required package: miscTools
 +   yCat = 2, 
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.009 ),
 +   model = "MNL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 192.4, 224.17, 28.3166666666667, 31.395
 > eff9b
     effect      stdEr 
 0.04400988 0.11727964 
@@ -102,6 +114,9 @@ Loading required package: miscTools
 +   xPos = c( 2, 3 ), 
 +   refBound = c( 1, 12 ), intBound = c( 13, 15 ),
 +   yCat = 2, model = "CondL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 102.789616666667, 102.638556666667, 28.5396166666667, 28.3885566666667
 > eff10a
        effect         stdEr 
 -5.551115e-17            NA 
@@ -112,6 +127,9 @@ Loading required package: miscTools
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009 ),
 +   yCat = 2, model = "CondL" )
+Warning message:
+In checkXBeta(c(intXbeta, refXbeta)) :
+  At least one x'beta has an implausible value: 102.789616666667, 102.638556666667, 54.0896166666667, 53.9385566666667
 > eff10b
       effect        stdEr 
 5.551115e-17 8.894225e-01 
@@ -126,6 +144,9 @@ Loading required package: miscTools
 +   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(c(unlist(refXbeta), unlist(intXbeta), XbetaBra)) :
+  At least one x'beta has an implausible value: 2.30125, 3.92125, 1.96192, 2.3121875, 3.9321875, 1.97067, 0.535, 0.446026
 > eff12a
       effect        stdEr 
 1.110223e-16           NA 
@@ -140,10 +161,13 @@ Loading required package: miscTools
 +   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(c(unlist(refXbeta), unlist(intXbeta), XbetaBra)) :
+  At least one x'beta has an implausible value: 2.30125, 3.92125, 1.96192, 2.3121875, 3.9321875, 1.97067, 0.535, 0.446026
 > eff12b
       effect        stdEr 
 1.110223e-16 8.904229e+16 
 > 
 > proc.time()
    user  system elapsed 
-  0.094   0.020   0.109 
+  0.105   0.017   0.116 

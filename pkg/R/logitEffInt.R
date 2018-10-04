@@ -75,6 +75,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else if( model == "MNL" ){
     intXbeta <- colSums( mCoef * replace( allXVal, xPos, intX ) )
     refXbeta <- colSums( mCoef * replace( allXVal, xPos, refX ) )
+    checkXBeta( c( intXbeta, refXbeta ) )
   } else if( model == "CondL" ){
     mXValint <- mXValref <- mXVal
     for( p in 1:pCoef ){
@@ -83,6 +84,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     }
     intXbeta <- colSums( allCoef * mXValint )
     refXbeta <- colSums( allCoef * mXValref )
+    checkXBeta( c( intXbeta, refXbeta ) )
   } else if( model == "NestedL" ){
     mCoef <- matrix( rep( allCoef, O ), nrow = nCoef, O ) %*% diag( 1/ lambda )
     mXValint <- mXValref <- allXVal
@@ -98,6 +100,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       refXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValref[[ l ]] )
     }
     XbetaBra <- colSums( allCoefBra * mXValBra )
+    checkXBeta( c( unlist(refXbeta), unlist(intXbeta), XbetaBra ) )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
