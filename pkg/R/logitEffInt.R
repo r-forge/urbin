@@ -2,9 +2,12 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   model = "binary", allCoefBra = NULL, allXValBra = NULL, 
   yCat = NULL, yCatBra = NULL, lambda = NULL, 
   allCoefSE = rep( NA, length( allCoef ) ) ){
+  
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # number of explanatory variables
+  nXVal <- length( allXVal )
   if( model == "binary" ){  
-    # number of coefficients
-    nCoef <- length( allCoef )
     # check arguments
     if( length( allXVal ) != nCoef ){
       stop( "argument 'allCoef' and 'allXVal' must have the same length" )
@@ -13,16 +16,15 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }
   } else if( model == "MNL" ){
-    # number of coefficients
-    NCoef <- length( allCoef )
-    mCoef <- matrix( allCoef, nrow = length( allXVal ))
-    nCoef <- dim( mCoef )[1]
-    pCoef <- dim( mCoef )[2]
-    # check arguments
-    if( length( allXVal ) != nCoef ){
-      stop( "argument 'allCoef' and 'allXVal' must have the same length" )
-    }
-    if( length( allCoefSE ) != NCoef ){
+    # number of ???
+    pCoef <- round( nCoef / nXVal )
+    if( nCoef != nXVal * pCoef ) {
+      stop( "length of argument 'allCoef' must be a multiple",
+        " of the length of argument 'allXVal'" )
+    } 
+    # create matrix of coefficients
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
+    if( length( allCoefSE ) != nCoef ){
       stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
     }
   } else if( model == "CondL"){
@@ -168,7 +170,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow=nCoef, ncol=pCoef )
+    derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
     for( p in 1:pCoef ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
