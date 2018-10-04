@@ -1,7 +1,7 @@
 logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound, 
-  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, allCoefSE = rep( NA, length( allCoef ) ), 
-  model = "binary" ){
+  model = "binary", allCoefBra = NULL, allXValBra = NULL, 
+  yCat = NULL, yCatBra = NULL, lambda = NULL, 
+  allCoefSE = rep( NA, length( allCoef ) ) ){
   if( model == "binary" ){  
     # number of coefficients
     nCoef <- length( allCoef )
