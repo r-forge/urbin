@@ -9,7 +9,6 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   nXVal <- length( allXVal )
   # check allXVal and allCoef
   if( model == "logit" ){  
-    # check arguments
     if( nXVal != nCoef ){
       stop( "argument 'allCoef' and 'allXVal' must have the same length" )
     }  
@@ -64,7 +63,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
     intX <- c( intX, EXSquared( intBound[1], intBound[2] ) )
     refX <- c( refX, EXSquared( refBound[1], refBound[2] ) )
   }
-  if( length( intX ) != length( xPos ) || length( refX ) != length( xPos ) ) {
+  if( length( intX ) != length( xPos ) || 
+      length( refX ) != length( xPos ) ) {
     stop( "internal error: 'intX' or 'refX' does not have the expected length" )
   }
   # define X' * beta 
@@ -101,7 +101,7 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # effect E_{k,ml}
+  # calculate the effect
   if( model == "logit" ){  
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
@@ -128,8 +128,8 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # calculating approximate standard error
-  # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
+
+  # partial derivative of the effect w.r.t. all estimated coefficients
   if( model == "logit" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] <- ( exp( intXbeta )/( 1 + exp( intXbeta ) )^2 - 
