@@ -61,34 +61,12 @@ logitEffInt <- function( allCoef, allXVal = NA, xPos, refBound, intBound,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
+  # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
-  if( model == "binary" || model == "MNL" ){  
-    if( any( !is.na( allXVal[ xPos ] ) ) ) {
-      allXVal[ xPos ] <- NA
-      warning( "values of argument 'allXVal[ xPos ]' are ignored",
-        " (set these values to 'NA' to avoid this warning)" )
-    }
-  } else if( model == "CondL" ){
-    for( p in 1:pCoef ){
-      if( any( !is.na( mXVal[ xPos, p ] ) ) ){
-        mXVal[ xPos, p ] <- NA
-        warning( "values of argument 'allXVal[ xPos ]' are ignored",
-          " (set these values to 'NA' to avoid this warning)" )
-      }
-    }
-  } else if( model == "NestedL" ){
-    for( p in 1:pCoef[ yCatBra ] ){
-      if( any( !is.na( allXVal[[ yCatBra ]][ xPos, p ] ) ) ){
-        mXVal[ xPos, p ] <- NA
-        warning( "values of argument 'allXVal[ xPos ]' are ignored",
-          " (set these values to 'NA' to avoid this warning)" )
-      }
-    }
-  } else {
-    stop( "argument 'model' specifies an unknown type of model" )
-  } 
+
   # calculate xBars
   intX <- mean( intBound )
   refX <- mean( refBound ) 
