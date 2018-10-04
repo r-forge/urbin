@@ -359,8 +359,9 @@ stdEr           NA
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanLinIntAttr <- xMeanLinInt
 > attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> # urbin:::logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3, 
-> #   c( 30, 40 ), c( 50, 60 ) )
+> urbin:::logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3,
++   c( 30, 40 ), c( 50, 60 ) )
+[1] 0.01581969 0.01100865 5.54182737 0.19437417
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
 +   allXVal = xMeanLinInt, xPos = 3,
@@ -396,8 +397,9 @@ stdEr           NA         NA       NA        NA
 > # partial derivatives of the effect wrt the coefficients
 > xMeanQuadIntAttr <- xMeanQuadInt
 > attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
-> #   c( 30, 40 ), c( 50, 60 ) )
+> urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ) )
+[1] 1.806166e-03 1.256881e-03 4.759617e+00 4.249037e+02 2.219210e-02
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
@@ -457,4 +459,4 @@ stdEr           NA          NA       NA       NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.493   0.039   0.526 
+  0.508   0.040   0.542 
