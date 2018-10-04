@@ -172,25 +172,26 @@ urbinElaInt( coef( estLogitInt ), xMeanInt,
 xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-# logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-#   c( 30, 40 ), c( 50, 60 ) )
+urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-# logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3, 
+# urbin:::logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3, 
 #   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-# numericGradient( logitEffInt, t0 = coef( estLogitLin ), 
-#   allXVal = xMeanLinInt, xPos = 3, 
-#   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
+  allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
+# urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
 #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitLin ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-# logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-#   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitLin ) ) ) )
+urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  allCoefSE = sqrt( diag( vcov( estLogitLin ) ) ) )
 
 
 ### effect of age changing between discrete intervals 
@@ -199,28 +200,29 @@ attr( xMeanLinIntAttr, "derivOnly" ) <- 1
 xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
-# logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-#   c( 30, 40 ), c( 50, 60 ) )
+urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # partial derivatives of the effect wrt the coefficients
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-# logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
+# urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
 #   c( 30, 40 ), c( 50, 60 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
-# numericGradient( logitEffInt, t0 = coef( estLogitQuad ), 
-#   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
-#   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
+  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
-# logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+# urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitQuad ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
-# logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-#   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitQuad ) ) ) )
+urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  allCoefSE = sqrt( diag( vcov( estLogitQuad ) ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
-# logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+# urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 #   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitQuad ) ) ),
 #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 

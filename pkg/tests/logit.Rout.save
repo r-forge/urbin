@@ -352,25 +352,33 @@ stdEr           NA
 > xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> # logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-> #   c( 30, 40 ), c( 50, 60 ) )
+> urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+    effect      stdEr 
+-0.1524657         NA 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanLinIntAttr <- xMeanLinInt
 > attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> # logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3, 
+> # urbin:::logitEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3, 
 > #   c( 30, 40 ), c( 50, 60 ) )
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> # numericGradient( logitEffInt, t0 = coef( estLogitLin ), 
-> #   allXVal = xMeanLinInt, xPos = 3, 
-> #   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+> numericGradient( urbin:::logitEffInt, t0 = coef( estLogitLin ),
++   allXVal = xMeanLinInt, xPos = 3,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+       (Intercept)       kids      age      educ
+effect  0.01581969 0.01100865 5.541827 0.1943742
+stdEr           NA         NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
+> # urbin:::logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
 > #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitLin ) )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> # logitEffInt( coef( estLogitLin ), xMeanLinInt, 3,
-> #   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitLin ) ) ) )
+> urbin:::logitEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
++   allCoefSE = sqrt( diag( vcov( estLogitLin ) ) ) )
+     effect       stdEr 
+-0.15246566  0.06446329 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -379,28 +387,36 @@ stdEr           NA
 > xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
-> # logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-> #   c( 30, 40 ), c( 50, 60 ) )
+> urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
++   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+    effect      stdEr 
+-0.2535377         NA 
 > # partial derivatives of the effect wrt the coefficients
 > xMeanQuadIntAttr <- xMeanQuadInt
 > attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> # logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
+> # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
 > #   c( 30, 40 ), c( 50, 60 ) )
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> # numericGradient( logitEffInt, t0 = coef( estLogitQuad ), 
-> #   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
-> #   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+> numericGradient( urbin:::logitEffInt, t0 = coef( estLogitQuad ),
++   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ) )
+       (Intercept)        kids      age I(age^2)      educ
+effect 0.001806166 0.001256881 4.759617 424.9036 0.0221921
+stdEr           NA          NA       NA       NA        NA
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
-> # logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+> # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 > #   c( 30, 40 ), c( 50, 60 ), vcov( estLogitQuad ) )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
-> # logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
-> #   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitQuad ) ) ) )
+> urbin:::logitEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
++   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
++   allCoefSE = sqrt( diag( vcov( estLogitQuad ) ) ) )
+    effect      stdEr 
+-0.2535377  0.7407856 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
-> # logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
+> # urbin:::logitEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 > #   c( 30, 40 ), c( 50, 60 ), sqrt( diag( vcov( estLogitQuad ) ) ),
 > #   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 > 
@@ -437,4 +453,4 @@ stdEr           NA
 > 
 > proc.time()
    user  system elapsed 
-  0.524   0.028   0.546 
+  0.539   0.048   0.580 
