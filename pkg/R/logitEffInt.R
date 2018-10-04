@@ -1,0 +1,261 @@
+logitEffInt <- function( allCoef, allCoefBra = NA, allXVal, allXValBra=NA,
+  xPos, refBound, intBound, yCat, yCatBra, lambda, 
+  allCoefSE = rep( NA, length( allCoef ) ), 
+  method = "binary" ){
+  if( method == "binary" ){  
+    # number of coefficients
+    nCoef <- length( allCoef )
+    # check arguments
+    if( length( allXVal ) != nCoef ){
+      stop( "argument 'allCoef' and 'allXVal' must have the same length" )
+    }  
+    if( length( allCoefSE ) != nCoef ){
+      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
+    }
+  } else if( method == "MNL" ){
+    # number of coefficients
+    NCoef <- length( allCoef )
+    mCoef <- matrix( allCoef, nrow = length( allXVal ))
+    nCoef <- dim( mCoef )[1]
+    pCoef <- dim( mCoef )[2]
+    # check arguments
+    if( length( allXVal ) != nCoef ){
+      stop( "argument 'allCoef' and 'allXVal' must have the same length" )
+    }
+    if( length( allCoefSE ) != NCoef ){
+      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
+    }
+  } else if( method == "CondL"){
+    # number of coefficients
+    nCoef <- length( allCoef )
+    mXVal <- matrix( allXVal, nrow = nCoef )
+    pCoef <- dim( mXVal )[2]
+    # check arguments
+    if( dim( mXVal )[1] != nCoef ){
+      stop( "argument 'allCoef' and 'allXVal' must have the same length" )
+    }
+    if( length( allCoefSE ) != nCoef ){
+      stop( "argument 'allCoef' and 'allCoefSE' must have the same length" )
+    }  
+  } else{
+    nCoef <- length( allCoef )
+    NCoef <- length( allCoefBra )
+    mXValBra <- matrix( allXValBra, nrow = NCoef )
+    nXValBra <- dim( mXValBra )[1]
+    pXValBra <- dim( mXValBra )[2]
+    # check arguments
+    if( NCoef != nXValBra ){
+      stop( "arguments 'allCoefBra' and 'allXValBra' must have the same length")
+    }
+    O <- length( allXVal )
+    nXVal <- unlist( lapply( allXVal, function(x) dim( x )[1] ) )
+    pCoef <- unlist( lapply( allXVal, function(x) dim( x )[2] ) )
+    if( nCoef != nXVal[ yCatBra ] ){
+      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    }
+    if( nCoef != length( allCoefSE) ){
+      stop( "arguments 'allCoef' and 'allCoefSE' must have the same length" )
+    }
+  }
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
+  intBound <- elaIntBounds( intBound, 1, argName = "intBound" )
+  if( method == "binary" || method == "MNL" ){  
+    if( any( !is.na( allXVal[ xPos ] ) ) ) {
+      allXVal[ xPos ] <- NA
+      warning( "values of argument 'allXVal[ xPos ]' are ignored",
+        " (set these values to 'NA' to avoid this warning)" )
+    }
+  }else if( method == "CondL" ){
+    for( p in 1:pCoef ){
+      if( any( !is.na( mXVal[ xPos, p ] ) ) ){
+        mXVal[ xPos, p ] <- NA
+        warning( "values of argument 'allXVal[ xPos ]' are ignored",
+          " (set these values to 'NA' to avoid this warning)" )
+      }
+    }
+  }else{
+    for( p in 1:pCoef[ yCatBra ] ){
+      if( any( !is.na( allXVal[[ yCatBra ]][ xPos, p ] ) ) ){
+        mXVal[ xPos, p ] <- NA
+        warning( "values of argument 'allXVal[ xPos ]' are ignored",
+          " (set these values to 'NA' to avoid this warning)" )
+      }
+    }
+  } 
+  # calculate xBars
+  intX <- mean( intBound )
+  refX <- mean( refBound ) 
+  if( length( xPos ) == 2 ) {
+    intX <- c( intX, EXSquared( intBound[1], intBound[2] ) )
+    refX <- c( refX, EXSquared( refBound[1], refBound[2] ) )
+  }
+  if( length( intX ) != length( xPos ) || length( refX ) != length( xPos ) ) {
+    stop( "internal error: 'intX' or 'refX' does not have the expected length" )
+  }
+  # define X' * beta 
+  if( method == "binary" ){
+    intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
+    refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
+    checkXBeta( c( intXbeta, refXbeta ) )
+  } else if( method == "MNL" ){
+    intXbeta <- colSums( mCoef * replace( allXVal, xPos, intX ) )
+    refXbeta <- colSums( mCoef * replace( allXVal, xPos, refX ) )
+  } else if( method == "CondL" ){
+    mXValint <- mXValref <- mXVal
+    for( p in 1:pCoef ){
+      mXValint[ ,p] <- replace( mXValint[ ,p], xPos, intX )
+      mXValref[ ,p] <- replace( mXValref[ ,p], xPos, refX )
+    }
+    intXbeta <- colSums( allCoef * mXValint )
+    refXbeta <- colSums( allCoef * mXValref )
+  } else{
+    mCoef <- matrix( rep( allCoef, O ), nrow = nCoef, O ) %*% diag( 1/ lambda )
+    mXValint <- mXValref <- allXVal
+    for( i in 1:O ){
+      for( p in 1:pCoef[i] ){
+        mXValint[[i]][ ,p] <- replace( mXValint[[i]][ ,p], xPos, intX )
+        mXValref[[i]][ ,p] <- replace( mXValref[[i]][ ,p], xPos, refX )
+      }
+    }  
+    refXbeta <- intXbeta <- rep( list( NA ), O )
+    for( l in 1:O ){  
+      intXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValint[[ l ]] )
+      refXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValref[[ l ]] )
+    }
+    XbetaBra <- colSums( allCoefBra * mXValBra )
+  }
+  # effect E_{k,ml}
+  if( method == "binary" ){  
+    eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
+      exp( refXbeta )/( 1 + exp( refXbeta ) )
+  } else if( method == "MNL" ){
+    eff <- exp( intXbeta[ yCat ] )/( 1 + sum( exp( intXbeta ) ) ) - 
+      exp( refXbeta[ yCat ] )/( 1 + sum( exp( refXbeta ) ) )
+  } else if( method == "CondL"){
+    eff <- exp( intXbeta[ yCat ] )/( sum( exp( intXbeta ) ) ) -
+      exp( refXbeta[ yCat ] )/( sum( exp( refXbeta ) ) )    
+  } else{
+    intBranch <- refBranch <- rep( list( NA ), O )
+    for( l in 1:O ){
+      intBranch[[ l ]] <- exp( XbetaBra[ l ] + lambda[ l ] * 
+          log( sum( exp( intXbeta[[ l ]] ) ) ) ) 
+      refBranch[[ l ]] <- exp( XbetaBra[ l ] + lambda[ l ] * 
+          log( sum( exp( refXbeta[[ l ]] ) ) ) )
+    }
+    intBranch <- unlist( intBranch )
+    refBranch <- unlist( refBranch )
+    eff <- exp( intXbeta[[ yCatBra ]][ yCat ] )/( sum( exp( intXbeta[[ yCatBra ]] ) ) ) *
+      intBranch[ yCatBra ]/ sum( intBranch ) - 
+      exp( refXbeta[[ yCatBra ]][ yCat ] )/( sum( exp( refXbeta[[ yCatBra ]] ) ) ) *
+      refBranch[ yCatBra ]/ sum( refBranch )
+  }
+  # calculating approximate standard error
+  # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
+  if( method == "binary" ){
+    derivCoef <- rep( NA, nCoef )
+    derivCoef[ -xPos ] <- ( exp( intXbeta )/( 1 + exp( intXbeta ) )^2 - 
+        exp( refXbeta )/( 1 + exp( refXbeta ) )^2 ) * 
+      allXVal[ -xPos ] 
+    derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
+      exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
+  } else if( method == "MNL" ){
+    derivCoef <- matrix( NA, nrow=nCoef, ncol=pCoef )
+    for( p in 1:pCoef ){
+      if( p == yCat ){
+        derivCoef[ -xPos, p ] <- 
+          ( exp( intXbeta[ p ] ) * 
+              ( 1 + sum( exp( intXbeta[ -yCat ] ) ) )/
+              ( 1 + sum( exp( intXbeta ) ) )^2 -
+              exp( refXbeta[ p ] ) * 
+              ( 1 + sum( exp( refXbeta[ -yCat ] ) ) )/
+              ( 1 + sum( exp( refXbeta ) ) )^2 ) * allXVal[ - xPos ]
+        derivCoef[ xPos, p ] <- 
+          ( exp( intXbeta[ p ] ) * 
+              ( 1 + sum( exp( intXbeta[ -yCat ] ) ) )/
+              ( 1 + sum( exp( intXbeta ) ) )^2 ) * intX -
+          ( exp( refXbeta[ p ] ) * 
+              ( 1 + sum( exp( refXbeta[ -yCat ] ) ) )/
+              ( 1 + sum( exp( refXbeta ) ) )^2 ) * refX
+      } else{  
+        derivCoef[ -xPos, p ] <- 
+          ( ( exp( refXbeta[ yCat ] ) * exp( refXbeta[ p ] ) )/
+              ( 1 + sum( exp( refXbeta ) ) )^2 -
+              ( exp( intXbeta[ yCat ] ) * exp( intXbeta[ p ] ) )/
+              ( 1 + sum( exp( intXbeta ) ) )^2 ) * allXVal[ -xPos ]
+        derivCoef[ xPos, p ] <- 
+          ( ( exp( refXbeta[ yCat ] ) * exp( refXbeta[ p ] ) )/
+              ( 1 + sum( exp( refXbeta ) ) )^2 ) * intX -
+          ( ( exp( intXbeta[ yCat ] ) * exp( intXbeta[ p ] ) )/
+              ( 1 + sum( exp( intXbeta ) ) )^2 ) * refX
+      }     
+    }
+    derivCoef <- c( derivCoef )
+  } else if( method == "CondL" ){
+    derivCoef <- rep( NA, nCoef )
+    derivCoef[ -xPos ] <- ( exp( intXbeta[ yCat] ) * mXVal[ -xPos, yCat] * 
+        sum( exp( intXbeta ) ) -
+        exp( intXbeta[ yCat] ) * rowSums( exp( intXbeta ) * 
+            mXVal[ -xPos, ] ) )/
+      ( sum( exp( intXbeta ) ) )^2 - 
+      ( exp( refXbeta[ yCat] ) * mXVal[ -xPos, yCat] * 
+          sum( exp( refXbeta ) ) -
+          exp( refXbeta[ yCat] ) * rowSums( exp( refXbeta ) * 
+              mXVal[ -xPos, ] ) )/
+      ( sum( exp( refXbeta ) ) )^2 
+    derivCoef[ xPos ] <-  ( exp( intXbeta[ yCat] ) * intX * 
+        sum( exp( intXbeta ) ) -
+        exp( intXbeta[ yCat] ) * sum( exp( intXbeta ) * intX ) )/
+      ( sum( exp( intXbeta ) ) )^2 - 
+      ( exp( refXbeta[ yCat] ) * refX * 
+          sum( exp( refXbeta ) ) -
+          exp( refXbeta[ yCat] ) * sum( exp( refXbeta ) * refX ) )/
+      ( sum( exp( refXbeta ) ) )^2 
+  } else{
+    derivCoef <- rep( NA, nCoef ) 
+    PImp <- exp( intXbeta[[ yCatBra ]][ yCat ])/( sum( exp( intXbeta[[ yCatBra ]] ) ) )
+    PIlp <- exp( refXbeta[[ yCatBra ]][ yCat ])/( sum( exp( refXbeta[[ yCatBra ]] ) ) )
+    PImo <- intBranch[ yCatBra ]/ sum( intBranch )
+    PIlo <- refBranch[ yCatBra ]/ sum( refBranch )
+    Om <- matrix( 
+      unlist( lapply( allXVal, function(x) rowSums( x[ -xPos, , drop = FALSE ] ) ) ), 
+      ncol = O ) 
+    derivCoef[ -xPos ] <- ( ( allXVal[[ yCatBra ]][ -xPos, yCat ]/lambda[ yCatBra ] -
+        ( rowSums( 
+          ( allXVal[[ yCatBra ]][ -xPos, ]/lambda[ yCatBra ] ) %*%
+            diag( exp( intXbeta[[ yCatBra ]] ) ) ) )/
+        ( sum( exp( intXbeta[[ yCatBra ]] ) ) ) ) + 
+        ( rowSums( allXVal[[ yCatBra ]][ -xPos, ] ) -
+            ( rowSums( Om %*% diag( exp( intBranch ) ) )/
+                ( sum( intBranch ) ) ) ) ) * PImp * PImo -
+      ( ( allXVal[[ yCatBra ]][ -xPos, yCat ]/lambda[ yCatBra ] -
+          ( rowSums( 
+            ( allXVal[[ yCatBra ]][ -xPos, ]/lambda[ yCatBra ] ) %*%
+              diag( exp( refXbeta[[ yCatBra ]] ) ) ) )/
+          ( sum( exp( refXbeta[[ yCatBra ]] ) ) ) ) + 
+          ( rowSums( allXVal[[ yCatBra ]][ -xPos, ] ) -
+              ( rowSums( Om %*% diag( exp( refBranch ) ) )/
+                  ( sum( refBranch ) ) ) ) ) * PIlp * PIlo
+    derivCoef[ xPos ] <-  ( ( intX/lambda[ yCatBra ] -
+        ( sum( intX/lambda[ yCatBra ]  *
+            exp( intXbeta[[ yCatBra ]] ) ) )/
+        ( sum( exp( intXbeta[[ yCatBra ]] ) ) ) ) + 
+        ( intX * pCoef[ yCatBra ] -
+            ( sum( intX * exp( intBranch ) )/
+                ( sum( intBranch ) ) ) ) ) * PImp * PImo -
+      ( ( refX/lambda[ yCatBra ] -
+          ( sum( refX/lambda[ yCatBra ]  *
+              exp( refXbeta[[ yCatBra ]] ) ) )/
+          ( sum( exp( refXbeta[[ yCatBra ]] ) ) ) ) + 
+          ( refX * pCoef[ yCatBra ] -
+              ( sum( refX * exp( refBranch ) )/
+                  ( sum( refBranch ) ) ) ) ) * PImp * PImo  
+  }
+  # variance covariance of the coefficients (covariances set to zero)
+  vcovCoef <- diag( allCoefSE^2 )
+  # approximate standard error of the effect
+  effSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  # object to be returned
+  result <- c( effect = eff, stdEr = effSE )
+  return( result )
+}
