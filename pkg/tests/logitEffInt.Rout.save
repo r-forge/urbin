@@ -1,0 +1,149 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "urbin" )
+Loading required package: miscTools
+> 
+> # Example
+> eff6a <- urbin:::logitEffInt( allCoef = c( 0.33, 0.22, 0.05, 0.6 ),
++   allXVal = c( 1, NA, 0.16, 0.13 ),
++   xPos = 2, 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ) )
+> eff6a
+   effect     stdEr 
+0.0386895        NA 
+> 
+> eff6b <- urbin:::logitEffInt( allCoef = c( 0.33, 0.22, 0.05, 0.6 ),
++   allXVal = c( 1, NA, 0.16, 0.13 ),
++   xPos = 2, 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ), 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ) )
+> eff6b
+    effect      stdEr 
+0.03868950 0.01057185 
+> 
+> # Example
+> eff7a <- urbin:::logitEffInt( allCoef = c( 0.33, 0.022, 0.005, 0.6 ),
++   allXVal = c( 1, NA, NA, 0.0004 ),
++   xPos = c( 2, 3 ), 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ))
+> eff7a
+   effect     stdEr 
+0.0926833        NA 
+> 
+> eff7b <- urbin:::logitEffInt( allCoef = c( 0.33, 0.022, 0.005, 0.6 ),
++   allXVal = c( 1, NA, NA, 0.13 ),
++   xPos = c( 2, 3 ), 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ), 
++   allCoefSE = c( 0.003, 0.011, 0.0025, 0.009 ) )
+> eff7b
+    effect      stdEr 
+0.08853066 0.01757014 
+> 
+> #Example
+> eff8a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, NA, 0.12 ), 
++   xPos = 2, 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
++   yCat = 2, method = "MNL" )
+> eff8a
+     effect       stdEr 
+-0.02698526          NA 
+> 
+> eff8b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, NA, 0.12 ), 
++   xPos = 2, 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
++   yCat = 2, 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
++   method = "MNL" )
+> eff8b
+     effect       stdEr 
+-0.02698526  0.01805266 
+> 
+> #Example
+> eff9a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, NA, NA ), 
++   xPos = c( 2, 3 ), 
++   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
++   yCat = 2, method = "MNL" )
+> eff9a
+    effect      stdEr 
+0.04400988         NA 
+> 
+> eff9b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
++   allXVal = c( 1, NA, NA ), 
++   xPos = c( 2, 3 ), 
++   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
++   yCat = 2, 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.009 ),
++   method = "MNL" )
+> eff9b
+    effect      stdEr 
+0.04400988 0.11727964 
+> 
+> #Example
+> eff10a <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, 0.091 ), 
++   allXVal = c( 1, NA, NA, 2.45, 1, NA, NA, 0.79 ), 
++   xPos = c( 2, 3 ), 
++   refBound = c( 1, 12 ), intBound = c( 13, 15 ),
++   yCat = 2, method = "CondL" )
+> eff10a
+       effect         stdEr 
+-5.551115e-17            NA 
+> 
+> eff10b <- urbin:::logitEffInt( allCoef = c( 0.2, 0.3, 0.5, 0.091 ), 
++   allXVal = c( 1, NA, NA, 2.45, 1, NA, NA, 0.79 ), 
++   xPos = c( 2, 3 ), 
++   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.009 ),
++   yCat = 2, method = "CondL" )
+> eff10b
+      effect        stdEr 
+5.551115e-17 8.894225e-01 
+> 
+> # Example 
+> matrix1 <- matrix( c( 1, NA, 0.3, 0.09, 1, NA, 0.9, 1.8 ), nrow = 4 )
+> matrix2 <- matrix( c( 1, NA, 0.099, 0.211 ), nrow = 4 )
+> eff12a <- urbin:::logitEffInt( allCoefBra = c( 0.445, 0.03, -0.002 ), 
++   allCoef = c( 1.8, 0.005, -0.12, 0.8 ), 
++   allXValBra = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ), 
++   allXVal = list( matrix1, matrix2 ), 
++   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
++   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
++   method = "NestedL" )
+> eff12a
+      effect        stdEr 
+1.110223e-16           NA 
+> 
+> matrix1 <- matrix( c( 1, NA, 0.3, 0.09, 1, NA, 0.9, 1.8 ), nrow = 4 )
+> matrix2 <- matrix( c( 1, NA, 0.099, 0.211 ), nrow = 4 )
+> eff12b <- urbin:::logitEffInt( allCoefBra = c( 0.445, 0.03, -0.002 ), 
++   allCoef = c( 1.8, 0.005, -0.12, 0.8 ), 
++   allXValBra = c( 1, 3.3, 4.5, 1, 0.1, 0.987 ), 
++   allXVal = list( matrix1, matrix2 ), 
++   allCoefSE = c( 0.003, 0.045, 0.007, 0.0032 ),
++   refBound = c( 0.5, 1.5 ), intBound = c( 2, 3.5 ),
++   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
++   method = "NestedL" )
+> eff12b
+      effect        stdEr 
+1.110223e-16 8.904229e+16 
+> 
+> proc.time()
+   user  system elapsed 
+  0.131   0.012   0.134 
