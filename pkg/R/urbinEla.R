@@ -7,6 +7,20 @@ urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
     stop( "argument 'seSimplify' must be TRUE or FALSE" )
   }
+  if( model == "lpm" && !is.null( allCoefVcov ) && 
+      ( seSimplify == is.matrix( allCoefVcov ) ) ) {
+    warning( "argument 'seSimplify' is ignored in linear probability models" )    
+  } else if( seSimplify && is.matrix( allCoefVcov ) ) {
+    warning( "if the (full) covariance matrix is provided",
+      " via argument 'allCoefCov'", 
+      " it is NOT recommended to set argument 'seSimplify' to TRUE" )    
+  } else if( !seSimplify && !is.null( allCoefVcov) && 
+      !is.matrix( allCoefVcov ) ) {
+    warning( "the returned standard error is likely upward biased;",
+      " you can provide the full covariance matrix", 
+      " via argument 'allCoefVcov' to avoid this bias",
+      " or do NOT set argument 'seSimplify' to FALSE" )
+  }
   # number(s) of coefficients
   if( model %in% c( "lpm", "probit", "logit", "CondL" ) ){
     nCoef <- length( allCoef )
