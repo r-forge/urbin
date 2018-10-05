@@ -50,6 +50,9 @@ Loading required package: miscTools
 +   xPos = c( 2, 3 ), 
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ), 
 +   allCoefVcov = c( 0.003, 0.011, 0.0025, 0.009 ), model = "logit" )
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > eff7b
     effect      stdEr 
 0.08853066 0.01757014 
@@ -92,6 +95,9 @@ Loading required package: miscTools
 +   yCat = 2, 
 +   allCoefVcov = c( 0.03, 0.025, 0.0007, 0.009, 0.008, 0.0009 ),
 +   model = "MNL" )
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > eff9b
     effect      stdEr 
 0.15848634 0.08857847 
@@ -112,6 +118,9 @@ Loading required package: miscTools
 +   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
 +   allCoefVcov = c( 0.03, 0.025, 0.0007, 0.009 ),
 +   yCat = 2, model = "CondL" )
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > eff10b
       effect        stdEr 
 1.665335e-16 1.647465e+00 
@@ -146,4 +155,4 @@ effect  stdEr
 > 
 > proc.time()
    user  system elapsed 
-  0.098   0.016   0.109 
+  0.100   0.015   0.109 

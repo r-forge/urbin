@@ -202,11 +202,17 @@ semEla.age      stdEr
 +   sqrt( diag( vcov( estLogitQuad ) ) ), seSimplify = FALSE )
 semEla.age      stdEr 
 -0.3171501  1.9264975 
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
 +   sqrt( diag( vcov( estLogitQuad ) ) ) )
 semEla.age      stdEr 
 -0.3171501  1.4978695 
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
 > se <- sqrt( diag( vcov( estLogitQuad ) ) )
@@ -422,6 +428,9 @@ stdEr           NA          NA       NA       NA        NA
 +   model = "logit", allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ) )
     effect      stdEr 
 -0.2535377  0.7407856 
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
 > urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
@@ -490,4 +499,4 @@ stdEr        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.508   0.019   0.522 
+  0.520   0.027   0.541 

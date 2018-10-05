@@ -44,6 +44,9 @@ Loading required package: miscTools
 +   allXVal = c( 1, 3.3, 3.3^2, 2.34, 0.1, 0.987 ), 
 +   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ),
 +   xPos = c( 2, 3 ), model = "logit" )
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela7b
     semEla      stdEr 
 0.02032691 0.01349191 
@@ -78,6 +81,9 @@ Loading required package: miscTools
 +   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
 +   xPos = c( 2, 3 ), 
 +   model = "MNL", yCat = 2 )
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela9b
       semEla        stdEr 
 2.470181e-04 1.051034e-05 
@@ -114,6 +120,9 @@ Loading required package: miscTools
 +   allCoefVcov = c( 0.002, 0.003, 0.004 ),
 +   xPos = c( 2, 3 ), 
 +   model = "CondL", yCat = 2 )
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela11b
       semEla        stdEr 
 7.399937e-04 7.762021e-05 
@@ -172,4 +181,4 @@ Loading required package: miscTools
 > 
 > proc.time()
    user  system elapsed 
-  0.109   0.004   0.107 
+  0.099   0.016   0.109 

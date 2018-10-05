@@ -181,10 +181,16 @@ semEla.age      stdEr
 +   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ] )
 semEla.age      stdEr 
 -0.3122117  1.4723134 
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm",
 +   sqrt( diag( vcov( estLpmQuad ) ) ) )
 semEla.age      stdEr 
 -0.3122117  1.4723134 
+Warning message:
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
 > se <- sqrt( diag( vcov( estLpmQuad ) ) )
@@ -438,11 +444,17 @@ stdEr           NA   NA  NA       NA   NA
 +   allCoefVcov = sqrt( diag( vcov( estLpmQuad ) ) )[3:4] )
     effect      stdEr 
 -0.2374667  0.7124862 
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > urbinEffInt( coef( estLpmQuad ), NA, c( 30, 40 ), c( 50, 60 ), 
 +   xPos = 3:4, model = "lpm", 
 +   allCoefVcov = sqrt( diag( vcov( estLpmQuad ) ) ) )
     effect      stdEr 
 -0.2374667  0.7124862 
+Warning message:
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
 > urbinEffInt( coef( estLpmQuad ), NA, xPos = c( 3, 4 ),
@@ -549,4 +561,4 @@ stdEr           NA   NA           NA           NA           NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.219   0.023   0.237 
+  0.231   0.021   0.246 

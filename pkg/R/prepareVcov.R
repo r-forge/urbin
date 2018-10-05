@@ -27,7 +27,15 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd ){
         allCoefVcov <- diag( allCoefVcov^2 )
       }
     }
-    if( !is.null( xMeanSd ) ) {
+    if( is.null( xMeanSd ) ) {
+      if( length( xPos ) == 2 ) {
+        warning( "the returned standard error is likely largely upward biased",
+          " and, thus, in most cases meaningless;",
+          " you can provide the full covariance matrix", 
+          " via argument 'allCoefVcov' to avoid this bias",
+          " or use argument 'xMeanSd' to substantially reduce this bias" )
+      }
+    } else {
       if( length( xPos ) != 2 ) {
         warning( "argument 'xMeanSd' is ignored,",
           " because the model does not include a quadratic term",
