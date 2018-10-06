@@ -3,6 +3,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
   
   # number of coefficients
   nCoef <- length( allCoef )
+  # number of explanatory variables
+  nXVal <- length( allXVal )
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
@@ -12,7 +14,6 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
   } else if( model == "MNL" ){
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
     NCoef <- dim( mCoef )[2]
-    pCoef <- dim( mCoef )[1]
     xCoef <- mCoef[ xPos, ]
     xShares <- allXVal[ xPos ]
   } else{
@@ -111,7 +112,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     derivCoef[ xPos ] = exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow=pCoef, ncol=NCoef )
+    derivCoef <- matrix( NA, nrow = nXVal, ncol=NCoef )
     for( p in 1:NCoef ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
