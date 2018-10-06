@@ -287,8 +287,10 @@ predict( estLogitInt, newdata = df53.60, type = "response" ) -
   sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
   predict( estLogitInt, newdata = df38.44, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-# urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
-#  c( -1, -1, 1, 0 ), model = "logit" )
+xMeanIntSharesAttr <- xMeanIntShares
+attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
+urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
+  c( -1, -1, 1, 0 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ),
@@ -313,8 +315,8 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
   predict( estLogitInt, newdata = df45.52, type = "response" ) -
   predict( estLogitInt, newdata = df53.60, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-# urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
-#  c( 0, 1, -1, 1 ), model = "logit" )
+urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
+  c( 0, 1, -1, 1 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ), 

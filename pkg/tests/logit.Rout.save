@@ -523,8 +523,12 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
          1 
 -0.2538037 
 > # partial derivatives of the effect wrt the coefficients
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
-> #  c( -1, -1, 1, 0 ), model = "logit" )
+> xMeanIntSharesAttr <- xMeanIntShares
+> attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
+> urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
++   c( -1, -1, 1, 0 ), model = "logit" )
+[1] -0.003641672 -0.002534178 -0.241643952 -0.241643952 -0.241643952
+[6] -0.241643952 -0.044744687
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 +   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ),
@@ -563,8 +567,10 @@ stdEr           NA
         1 
 0.2236439 
 > # partial derivatives of the effect wrt the coefficients
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
-> #  c( 0, 1, -1, 1 ), model = "logit" )
+> urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
++   c( 0, 1, -1, 1 ), model = "logit" )
+[1] 0.009916771 0.006900914 0.212640630 0.212640630 0.212640630 0.212640630
+[7] 0.121845902
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 +   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ), 
@@ -589,4 +595,4 @@ stdEr         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.514   0.032   0.540 
+  0.528   0.024   0.547 
