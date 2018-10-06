@@ -1,18 +1,21 @@
 logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
   yCat = NA, allCoefSE = rep( NA, length( allCoef ) ) ){
+  
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
+    maxVal = nCoef )
   if( model == "logit" ){
-    nCoef <- length( allCoef )
     xCoef <- allCoef[ xPos ]
     xShares <- allXVal[ xPos ]
   } else if( model == "MNL" ){
-    nCoef <- length( allCoef )
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
     NCoef <- dim( mCoef )[2]
     pCoef <- dim( mCoef )[1]
     xCoef <- mCoef[ xPos, ]
     xShares <- allXVal[ xPos ]
   } else{
-    nCoef <- length( allCoef )
     xCoef <- allCoef[ xPos ]
     mXVal <- matrix( allXVal, nrow = nCoef )
     pCoef <- dim( mXVal )[2]
@@ -166,6 +169,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
   vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  # object to be returned
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
 }
