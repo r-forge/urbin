@@ -1,7 +1,7 @@
 logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
   allCoefSE = rep( NA, length( allCoef ) ), 
-  model = "binary" ){
-  if( model == "binary" ){
+  model = "logit" ){
+  if( model == "logit" ){
     nCoef <- length( allCoef )
     xCoef <- allCoef[ xPos ]
     xShares <- allXVal[ xPos ]
@@ -19,7 +19,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
     pCoef <- dim( mXVal )[2]
     xShares <- mXVal[ xPos, ]
   }
-  if( model == "binary" || model == "MNL" ){
+  if( model == "logit" || model == "MNL" ){
     if( sum( xShares ) > 1 ){
       stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
     }
@@ -30,7 +30,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
       }
     }
   }  
-  if( model == "binary" ){
+  if( model == "logit" ){
     if( length( xCoef ) != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
@@ -55,7 +55,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
   if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
-  if( model == "binary" ){
+  if( model == "logit" ){
     # D_mr  
     DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
       sum( xShares[ xGroups == -1 ] )
@@ -101,7 +101,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
       exp( XBetaRef[ yCat ] )/( sum( exp( XBetaRef ) ) )
   }
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
-  if( model == "binary" ){
+  if( model == "logit" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] = ( exp( XBetaEffect )/( 1 + exp( XBetaEffect ))^2 - 
         exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 ) * 
