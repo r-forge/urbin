@@ -8,6 +8,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     maxVal = nCoef )
   # number of categories
   nCat <- length( xPos ) + 1
+  # coefficients of the dummy variables for the categories
+  xCoef <- c( allCoef[ xPos ], 0 )
   # shares in each category
   xShares <- allXVal[ xPos ]
   if( any( xShares < 0 ) ){
@@ -32,8 +34,6 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       "% of the observations in the reference category --",
       " please check whether this is indeed the case" )
   }
-  # coefficients of the dummy variables for the categories
-  xCoef <- c( allCoef[ xPos ], 0 )
   # check argument xGroups
   if( length( xGroups ) != ( length( xPos ) + 1 ) ){
     stop( "the vector specified by argument 'xGroups' must have",
