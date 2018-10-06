@@ -376,6 +376,16 @@ stdEr           NA
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
     effect      stdEr 
 -0.1524657         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # based on predicted values
+> predict( estLogitLin, 
++   newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ), 
++   type = "response" ) -
++   predict( estLogitLin, 
++     newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ), 
++     type = "response" )
+         1 
+-0.1524657 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanLinIntAttr <- xMeanLinInt
 > attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
@@ -415,6 +425,16 @@ stdEr           NA         NA       NA        NA
 +   model = "logit" )
     effect      stdEr 
 -0.2535377         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # based on predicted values
+> predict( estLogitQuad, 
++   newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 55, 55^2 ) ) ) ), 
++   type = "response" ) -
++   predict( estLogitQuad, 
++     newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) ), 
++     type = "response" )
+         1 
+-0.2534117 
 > # partial derivatives of the effect wrt the coefficients
 > xMeanQuadIntAttr <- xMeanQuadInt
 > attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
@@ -513,4 +533,4 @@ stdEr        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.511   0.015   0.520 
+  0.501   0.029   0.523 

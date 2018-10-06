@@ -362,6 +362,16 @@ stdEr           NA   NA           NA           NA           NA   NA
 +   model = "lpm" )
     effect      stdEr 
 -0.1431039         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # based on predicted values
+> predict( estLpmLin, 
++   newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ), 
++   type = "response" ) -
++   predict( estLpmLin, 
++     newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ), 
++     type = "response" )
+         1 
+-0.1431039 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > naAttr <- NA
 > attr( naAttr, "derivOnly" ) <- 1 
@@ -412,6 +422,16 @@ stdEr           NA   NA  NA   NA
 +   c( 30, 40 ), c( 50, 60 ), xPos = 3:4, model = "lpm" )
     effect      stdEr 
 -0.2374667         NA 
+> # effects of age changing from the 30-40 interval to the 50-60 interval
+> # based on predicted values
+> predict( estLpmQuad, 
++   newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 55, 55^2 ) ) ) ), 
++   type = "response" ) -
++   predict( estLpmQuad, 
++     newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) ), 
++     type = "response" )
+         1 
+-0.2374667 
 > # partial derivatives of the effect wrt the coefficients
 > urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
@@ -561,4 +581,4 @@ stdEr           NA   NA           NA           NA           NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.231   0.021   0.246 
+  0.236   0.015   0.246 

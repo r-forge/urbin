@@ -188,6 +188,14 @@ urbinEffInt( coef( estLpmLin )[3], NA, c( 30, 40 ), c( 50, 60 ), xPos = 1,
   model = "lpm" )
 urbinEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3,
   model = "lpm" )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# based on predicted values
+predict( estLpmLin, 
+  newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ), 
+  type = "response" ) -
+  predict( estLpmLin, 
+    newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ), 
+    type = "response" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 naAttr <- NA
 attr( naAttr, "derivOnly" ) <- 1 
@@ -221,6 +229,14 @@ urbinEffInt( coef( estLpmQuad )[3:4], NA,
   c( 30, 40 ), c( 50, 60 ), xPos = 1:2, model = "lpm" )
 urbinEffInt( coef( estLpmQuad ), NA,
   c( 30, 40 ), c( 50, 60 ), xPos = 3:4, model = "lpm" )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# based on predicted values
+predict( estLpmQuad, 
+  newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 55, 55^2 ) ) ) ), 
+  type = "response" ) -
+  predict( estLpmQuad, 
+    newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) ), 
+    type = "response" )
 # partial derivatives of the effect wrt the coefficients
 urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "lpm" )

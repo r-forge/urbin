@@ -174,6 +174,14 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # without standard errors
 urbinEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# based on predicted values
+predict( estLogitLin, 
+  newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ), 
+  type = "response" ) -
+  predict( estLogitLin, 
+    newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ), 
+    type = "response" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
@@ -203,6 +211,14 @@ xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 urbinEffInt( coef( estLogitQuad ), allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
   model = "logit" )
+# effects of age changing from the 30-40 interval to the 50-60 interval
+# based on predicted values
+predict( estLogitQuad, 
+  newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 55, 55^2 ) ) ) ), 
+  type = "response" ) -
+  predict( estLogitQuad, 
+    newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) ), 
+    type = "response" )
 # partial derivatives of the effect wrt the coefficients
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
