@@ -1,6 +1,5 @@
-logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
-  allCoefSE = rep( NA, length( allCoef ) ), 
-  model = "logit" ){
+logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
+  yCat = NA, allCoefSE = rep( NA, length( allCoef ) ) ){
   if( model == "logit" ){
     nCoef <- length( allCoef )
     xCoef <- allCoef[ xPos ]
