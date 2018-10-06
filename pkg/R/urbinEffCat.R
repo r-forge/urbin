@@ -3,6 +3,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   
   # number of coefficients
   nCoef <- length( allCoef )
+  # number of explanatory variables
+  nXVal <- length( allXVal )
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
@@ -10,6 +12,9 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   nCat <- length( xPos ) + 1
   # coefficients of the dummy variables for the categories
   xCoef <- c( allCoef[ xPos ], 0 )
+  if( nXVal != nCoef ){
+    stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+  }  
   # shares in each category
   xShares <- allXVal[ xPos ]
   if( any( xShares < 0 ) ){

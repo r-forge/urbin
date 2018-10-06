@@ -11,6 +11,9 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # check allXVal and allCoef
   if( model == "logit" ){
     xCoef <- allCoef[ xPos ]
+    if( nXVal != nCoef ){
+      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    }  
   } else if( model == "MNL" ){
     # number of ???
     pCoef <- round( nCoef / nXVal )
