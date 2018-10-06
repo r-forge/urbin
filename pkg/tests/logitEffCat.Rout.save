@@ -22,7 +22,7 @@ Loading required package: miscTools
 > eff10a <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
 +   -0.005, 0.89, -1.2 ), 
 +   allXVal = c( 1, 0.1, 0.3, 0.25, 0.15, 0.2, 2.34, 10.8 ), 
-+   xPos = c( 2:6 ), Group = c( 0, -1, -1, 1, 1 ) )
++   xPos = c( 2:6 ), xGroups = c( 0, -1, -1, 1, 1 ) )
 > eff10a
        effect         stdEr 
 -5.339862e-07            NA 
@@ -30,7 +30,7 @@ Loading required package: miscTools
 > eff10b <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
 +   -0.005, 0.89, -1.2 ), 
 +   allXVal = c( 1, 0.1, 0.3, 0.25, 0.15, 0.2, 2.34, 10.8 ), 
-+   xPos = c( 2:6 ), Group = c( 0, -1, -1, 1, 1 ), 
++   xPos = c( 2:6 ), xGroups = c( 0, -1, -1, 1, 1 ), 
 +   allCoefSE = c( 0.03, 0.0001, 0.005, 0, 0.01, 
 +     0.004, 0.05, 0.8 ) )
 > eff10b
@@ -41,7 +41,7 @@ Loading required package: miscTools
 > eff11a <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
 +   -0.005, 0.89, 0, 0.005, 0.06, 1.7, 0 ),
 +   allXVal = c( 1, 0.5, 0.3, 0.2 ), xPos = c( 2:4 ), 
-+   Group = c( -1, -1, 1 ), yCat = 2, method = "MNL" )
++   xGroups = c( -1, -1, 1 ), yCat = 2, method = "MNL" )
 > eff11a
     effect      stdEr 
 -0.0131091         NA 
@@ -49,7 +49,7 @@ Loading required package: miscTools
 > eff11b <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
 +   -0.005, 0.89, 0, 0.005, 0.06, 1.7, 0 ),
 +   allXVal = c( 1, 0.5, 0.3, 0.2 ), xPos = c( 2:4 ), 
-+   Group = c( -1, -1, 1 ), yCat = 2, method = "MNL", 
++   xGroups = c( -1, -1, 1 ), yCat = 2, method = "MNL", 
 +   allCoefSE = c( 0.03, 0.0001, 0.005, 0, 0.01, 0.004, 
 +     0.05, 0, 0.004, 0.5, 0.0078, 0 ) )
 > eff11b
@@ -60,7 +60,7 @@ Loading required package: miscTools
 > eff12a <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0 ),
 +   allXVal = c( 1, 0.5, 0.3, 0.2, 1, 0.4, 0.4, 0.1 ), 
 +   xPos = c( 2:4 ), 
-+   Group = c( -1, -1, 1 ), yCat = 2, method = "CondL" )
++   xGroups = c( -1, -1, 1 ), yCat = 2, method = "CondL" )
 > eff12a
       effect        stdEr 
 -7.03125e-05           NA 
@@ -69,11 +69,11 @@ Loading required package: miscTools
 +   allXVal = c( 1, 0.5, 0.3, 0.2, 1, 0.4, 0.4, 0.1 ), 
 +   xPos = c( 2:4 ), 
 +   allCoefSE = c( 0.03, 0.0001, 0.005, 0 ),
-+   Group = c( -1, -1, 1 ), yCat = 2, method = "CondL" )
++   xGroups = c( -1, -1, 1 ), yCat = 2, method = "CondL" )
 > eff12b
       effect        stdEr 
 -7.03125e-05  1.23272e-21 
 > 
 > proc.time()
    user  system elapsed 
-  0.100   0.011   0.104 
+  0.132   0.012   0.136 

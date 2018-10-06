@@ -1,4 +1,4 @@
-logitEffCat <- function( allCoef, allXVal, xPos, Group, yCat = NA,
+logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
   allCoefSE = rep( NA, length( allCoef ) ), 
   method = "binary" ){
   if( method == "binary" ){
@@ -34,50 +34,50 @@ logitEffCat <- function( allCoef, allXVal, xPos, Group, yCat = NA,
     if( length( xCoef ) != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
-    if( length( xCoef ) != length( Group ) ){
-      stop( "arguments 'xCoef' and 'Group' must have the same length" )
+    if( length( xCoef ) != length( xGroups ) ){
+      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
   } else if( method == "MNL" ){
     if( dim( xCoef )[1] != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
-    if( dim( xCoef )[1] != length( Group ) ){
-      stop( "arguments 'xCoef' and 'Group' must have the same length" )
+    if( dim( xCoef )[1] != length( xGroups ) ){
+      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
   } else{
     if( length( xCoef ) != dim( xShares )[1] ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
-    if( length( xCoef ) != length( Group ) ){
-      stop( "arguments 'xCoef' and 'Group' must have the same length" )
+    if( length( xCoef ) != length( xGroups ) ){
+      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
   }  
-  if( !all( Group %in% c( -1, 0, 1 ) ) ){
-    stop( "all elements of argument 'Group' must be -1, 0, or 1" )
+  if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
+    stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
   if( method == "binary" ){
     # D_mr  
-    DRef <- sum( xCoef[ Group == -1 ] * xShares[ Group == -1 ]) / 
-      sum( xShares[ Group == -1 ] )
+    DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
+      sum( xShares[ xGroups == -1 ] )
     XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + DRef
     # D_ml
-    DEffect <- sum( xCoef[ Group == 1 ] * xShares[ Group == 1 ]) / 
-      sum( xShares[ Group == 1 ] )
+    DEffect <- sum( xCoef[ xGroups == 1 ] * xShares[ xGroups == 1 ]) / 
+      sum( xShares[ xGroups == 1 ] )
     XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + DEffect
     # effect
     effeG <- exp( XBetaEffect )/( 1 + exp( XBetaEffect ) ) - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ) )
   } else if( method == "MNL" ){
     # D_mr  
-    DRef <- colSums( xCoef[ Group == -1, , drop = FALSE ] * 
-        xShares[ Group == -1 ] )/ 
-      sum( xShares[ Group == -1 ] )
+    DRef <- colSums( xCoef[ xGroups == -1, , drop = FALSE ] * 
+        xShares[ xGroups == -1 ] )/ 
+      sum( xShares[ xGroups == -1 ] )
     XBetaRef <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
         allXVal[ -xPos ]) + DRef
     # D_ml
-    DEffect <- colSums( xCoef[ Group == 1, , drop = FALSE ] * 
-        xShares[ Group == 1 ] )/ 
-      sum( xShares[ Group == 1 ] )
+    DEffect <- colSums( xCoef[ xGroups == 1, , drop = FALSE ] * 
+        xShares[ xGroups == 1 ] )/ 
+      sum( xShares[ xGroups == 1 ] )
     XBetaEffect <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
         allXVal[ -xPos ]) + DEffect  
     # effect
@@ -85,15 +85,15 @@ logitEffCat <- function( allCoef, allXVal, xPos, Group, yCat = NA,
       exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
   } else{
     # D_mr
-    DRef <- colSums( xCoef[ Group == -1 ] * 
-        xShares[ Group == -1, , drop = FALSE ] )/ 
-      sum( xShares[ Group == -1, , drop = FALSE ] )
+    DRef <- colSums( xCoef[ xGroups == -1 ] * 
+        xShares[ xGroups == -1, , drop = FALSE ] )/ 
+      sum( xShares[ xGroups == -1, , drop = FALSE ] )
     XBetaRef <- colSums( allCoef[ -xPos ] * 
         mXVal[ -xPos, , drop = FALSE ] ) + DRef
     # D_ml
-    DEffect <- colSums( xCoef[ Group == 1 ] * 
-        xShares[ Group == 1, , drop = FALSE ] )/ 
-      sum( xShares[ Group == 1, , drop = FALSE ] )
+    DEffect <- colSums( xCoef[ xGroups == 1 ] * 
+        xShares[ xGroups == 1, , drop = FALSE ] )/ 
+      sum( xShares[ xGroups == 1, , drop = FALSE ] )
     XBetaEffect <- colSums( allCoef[ -xPos ] * 
         mXVal[ -xPos, , drop = FALSE ] ) + DEffect
     # effect

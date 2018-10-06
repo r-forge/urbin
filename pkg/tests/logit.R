@@ -268,7 +268,7 @@ predict( estLogitInt, newdata = df53.60, type = "response" ) -
 # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
-  allXVal = xMeanIntShares, xPos = c( 3:6 ), Group = c( -1, -1, 1, 0 ) )
+  allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ) )
 # with full covariance matrix
 vcovLogitInt <- vcov( estLogitInt )
 vcovLogitInt <- rbind( vcovLogitInt[ 1:5, ], 0, vcovLogitInt[ 6, ] )
@@ -291,7 +291,7 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
 # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
-  allXVal = xMeanIntShares, xPos = c( 3:6 ), Group = c( 0, 1, -1, 1 ) )
+  allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ) )
 # with full covariance matrix
 # urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 #   vcov( estLogitInt ) )
