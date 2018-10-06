@@ -297,8 +297,8 @@ numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 vcovLogitInt <- vcov( estLogitInt )
 vcovLogitInt <- rbind( vcovLogitInt[ 1:5, ], 0, vcovLogitInt[ 6, ] )
 vcovLogitInt <- cbind( vcovLogitInt[ , 1:5 ], 0, vcovLogitInt[ , 6 ] )
-# urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-#   vcov( estLogitInt ), model = "logit" )
+urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
+  allCoefVcov = vcovLogitInt, model = "logit" )
 # with standard errors only
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
@@ -320,8 +320,8 @@ numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ), 
   model = "logit" )
 # with full covariance matrix
-# urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-#   vcov( estLogitInt ), model = "logit" )
+urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
+  allCoefVcov = vcovLogitInt, model = "logit" )
 # with standard errors only
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )

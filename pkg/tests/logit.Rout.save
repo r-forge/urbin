@@ -539,8 +539,10 @@ stdEr           NA
 > vcovLogitInt <- vcov( estLogitInt )
 > vcovLogitInt <- rbind( vcovLogitInt[ 1:5, ], 0, vcovLogitInt[ 6, ] )
 > vcovLogitInt <- cbind( vcovLogitInt[ , 1:5 ], 0, vcovLogitInt[ , 6 ] )
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-> #   vcov( estLogitInt ), model = "logit" )
+> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
++   allCoefVcov = vcovLogitInt, model = "logit" )
+    effect      stdEr 
+-0.2538074  0.1231852 
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
 +   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
@@ -574,8 +576,10 @@ stdEr           NA          NA           NA           NA           NA        NA
 effect 0.1218459
 stdEr         NA
 > # with full covariance matrix
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-> #   vcov( estLogitInt ), model = "logit" )
+> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
++   allCoefVcov = vcovLogitInt, model = "logit" )
+   effect     stdEr 
+0.2238558 0.1076268 
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
 +   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
@@ -585,4 +589,4 @@ stdEr         NA
 > 
 > proc.time()
    user  system elapsed 
-  0.537   0.031   0.562 
+  0.514   0.032   0.540 
