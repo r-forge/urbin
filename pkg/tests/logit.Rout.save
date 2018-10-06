@@ -527,8 +527,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
 > attr( xMeanIntSharesAttr, "derivOnly" ) <- 1 
 > urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
 +   c( -1, -1, 1, 0 ), model = "logit" )
-[1] -0.003641672 -0.002534178 -0.241643952 -0.241643952 -0.241643952
-[6] -0.241643952 -0.044744687
+[1] -0.003641672 -0.002534178 -0.138528966 -0.097135849  0.232023143
+[6]  0.000000000 -0.044744687
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 +   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ),
@@ -545,13 +545,13 @@ stdEr           NA
 > vcovLogitInt <- cbind( vcovLogitInt[ , 1:5 ], 0, vcovLogitInt[ , 6 ] )
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
 +   allCoefVcov = vcovLogitInt, model = "logit" )
-    effect      stdEr 
--0.2538074  0.1231852 
+     effect       stdEr 
+-0.25380744  0.06582802 
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
 +   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
      effect       stdEr 
--0.25380744  0.09709985 
+-0.25380744  0.07119196 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ), 
@@ -569,8 +569,8 @@ stdEr           NA
 > # partial derivatives of the effect wrt the coefficients
 > urbin:::logitEffCat( coefLogitInt, xMeanIntSharesAttr, c( 3:6 ),
 +   c( 0, 1, -1, 1 ), model = "logit" )
-[1] 0.009916771 0.006900914 0.212640630 0.212640630 0.212640630 0.212640630
-[7] 0.121845902
+[1]  0.009916771  0.006900914  0.000000000  0.105139321 -0.232023143
+[6]  0.136800593  0.121845902
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 +   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ), 
@@ -584,15 +584,15 @@ stdEr         NA
 > # with full covariance matrix
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
 +   allCoefVcov = vcovLogitInt, model = "logit" )
-   effect     stdEr 
-0.2238558 0.1076268 
+    effect      stdEr 
+0.22385578 0.06109041 
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
 +   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
     effect      stdEr 
-0.22385578 0.08565987 
+0.22385578 0.06608907 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.528   0.024   0.547 
+  0.514   0.040   0.548 

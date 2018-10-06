@@ -80,13 +80,16 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   if( model == "logit" ){
     # D_mr  
-    DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
+    DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
       sum( xShares[ xGroups == -1 ] )
-    XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + DRef
     # D_ml
-    DEffect <- sum( xCoef[ xGroups == 1 ] * xShares[ xGroups == 1 ]) / 
+    DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
       sum( xShares[ xGroups == 1 ] )
-    XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + DEffect
+    # linear predictors
+    XBetaRef <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
+      sum( DRef * xCoef )
+    XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
+      sum( DEffect * xCoef )
     # effect
     effeG <- exp( XBetaEffect )/( 1 + exp( XBetaEffect ) ) - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ) )
@@ -128,10 +131,10 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
   if( model == "logit" ){
     derivCoef <- rep( NA, nCoef )
-    derivCoef[ -xPos ] = ( exp( XBetaEffect )/( 1 + exp( XBetaEffect ))^2 - 
+    derivCoef[ -xPos ] <- ( exp( XBetaEffect )/( 1 + exp( XBetaEffect ))^2 - 
         exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 ) * 
       allXVal[ -xPos ] 
-    derivCoef[ xPos ] = exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
+    derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef
   } else if( model == "MNL" ){
     derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
