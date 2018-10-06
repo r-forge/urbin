@@ -8,9 +8,9 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
+  # check allXVal and allCoef
   if( model == "logit" ){
     xCoef <- allCoef[ xPos ]
-    xShares <- allXVal[ xPos ]
   } else if( model == "MNL" ){
     # number of ???
     pCoef <- round( nCoef / nXVal )
@@ -21,7 +21,6 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
     xCoef <- mCoef[ xPos, ]
-    xShares <- allXVal[ xPos ]
   } else if( model == "CondL" ){
     # number of ???
     pCoef <- round( nXVal / nCoef )
@@ -32,15 +31,17 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
     xCoef <- allCoef[ xPos ]
-    xShares <- mXVal[ xPos, ]
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
+  # shares in each category
   if( model == "logit" || model == "MNL" ){
+    xShares <- allXVal[ xPos ]
     if( sum( xShares ) > 1 ){
       stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
     }
   } else if( model == "CondL" ){
+    xShares <- mXVal[ xPos, ]
     for( p in 1:pCoef ){
       if( sum( xShares[ , p ] ) > 1 ){
         stop( "the shares in argument 'xShares' sum up to a value larger than 1" ) 
