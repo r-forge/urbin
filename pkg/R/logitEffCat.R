@@ -12,14 +12,26 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     xCoef <- allCoef[ xPos ]
     xShares <- allXVal[ xPos ]
   } else if( model == "MNL" ){
-    mCoef <- matrix( allCoef, nrow = length( allXVal ) )
-    NCoef <- dim( mCoef )[2]
+    # number of ???
+    pCoef <- round( nCoef / nXVal )
+    if( nCoef != nXVal * pCoef ) {
+      stop( "length of argument 'allCoef' must be a multiple",
+        " of the length of argument 'allXVal'" )
+    } 
+    # create matrix of coefficients
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
     xCoef <- mCoef[ xPos, ]
     xShares <- allXVal[ xPos ]
   } else{
-    xCoef <- allCoef[ xPos ]
+    # number of ???
+    pCoef <- round( nXVal / nCoef )
+    if( nXVal != nCoef * pCoef ) {
+      stop( "length of argument 'allXVal' must be a multiple",
+        " of the length of argument 'allCoef'" )
+    } 
+    # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
-    pCoef <- dim( mXVal )[2]
+    xCoef <- allCoef[ xPos ]
     xShares <- mXVal[ xPos, ]
   }
   if( model == "logit" || model == "MNL" ){
@@ -112,8 +124,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     derivCoef[ xPos ] = exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow = nXVal, ncol=NCoef )
-    for( p in 1:NCoef ){
+    derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
+    for( p in 1:pCoef ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
           ( exp( XBetaEffect[ p ] ) * 
