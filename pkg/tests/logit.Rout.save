@@ -543,7 +543,7 @@ stdEr           NA
 > #   vcov( estLogitInt ), model = "logit" )
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
-+   allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
++   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
      effect       stdEr 
 -0.25380744  0.09709985 
 > ### effects of age changing from the 53-60 category to the 38-52 category
@@ -578,11 +578,11 @@ stdEr         NA
 > #   vcov( estLogitInt ), model = "logit" )
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
-+   allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
++   allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
     effect      stdEr 
 0.22385578 0.08565987 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.493   0.048   0.535 
+  0.537   0.031   0.562 

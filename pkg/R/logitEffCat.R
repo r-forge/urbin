@@ -1,5 +1,5 @@
 logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
-  yCat = NA, allCoefSE = rep( NA, length( allCoef ) ) ){
+  yCat = NA, allCoefVcov = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -76,6 +76,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
+  # check and prepare allCoefVcov
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
   if( model == "logit" ){
     # D_mr  
     DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
@@ -188,10 +190,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # variance covariance of the coefficients (covariances set to zero)
-  vcovCoef <- diag( allCoefSE^2 )
   # approximate standard error of the effect
-  effeGSE <- drop( sqrt( t( derivCoef ) %*% vcovCoef %*% derivCoef ) )
+  effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
   result <- c( effect = effeG, stdEr = effeGSE )
   return( result )
