@@ -66,7 +66,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, Group, yCat = NA,
     XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + DEffect
     # effect
     effeG <- exp( XBetaEffect )/( 1 + exp( XBetaEffect ) ) - 
-      exp( XBetaRef )/( 1 + exp( XBetaEffect ) )
+      exp( XBetaRef )/( 1 + exp( XBetaRef ) )
   } else if( method == "MNL" ){
     # D_mr  
     DRef <- colSums( xCoef[ Group == -1, , drop = FALSE ] * 

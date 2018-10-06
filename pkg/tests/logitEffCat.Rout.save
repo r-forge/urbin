@@ -25,7 +25,7 @@ Loading required package: miscTools
 +   xPos = c( 2:6 ), Group = c( 0, -1, -1, 1, 1 ) )
 > eff10a
        effect         stdEr 
--5.339996e-07            NA 
+-5.339862e-07            NA 
 > 
 > eff10b <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
 +   -0.005, 0.89, -1.2 ), 
@@ -35,7 +35,7 @@ Loading required package: miscTools
 +     0.004, 0.05, 0.8 ) )
 > eff10b
        effect         stdEr 
--5.339996e-07  4.613867e-06 
+-5.339862e-07  4.613867e-06 
 > 
 > # Example
 > eff11a <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
@@ -76,4 +76,4 @@ Loading required package: miscTools
 > 
 > proc.time()
    user  system elapsed 
-  0.112   0.000   0.105 
+  0.100   0.011   0.104 
