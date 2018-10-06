@@ -3,14 +3,14 @@ library( "urbin" )
 # Example
 eff10a <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
   -0.005, 0.89, -1.2 ), 
-  allXVal = c( 1, 0.1, 0.3, 0.25, 0.15, 0.2, 2.34, 10.8 ), 
+  allXVal = c( 1, 0.1, 0.3, 0.25, 0.15, 0.2, 2.34, 10.8 ), model = "logit", 
   xPos = c( 2:6 ), xGroups = c( 0, -1, -1, 1, 1 ) )
 eff10a
 
 eff10b <- urbin:::logitEffCat( allCoef = c( 0.28, 0.003, 0.0075, 0, -0.034, 
   -0.005, 0.89, -1.2 ), 
   allXVal = c( 1, 0.1, 0.3, 0.25, 0.15, 0.2, 2.34, 10.8 ), 
-  xPos = c( 2:6 ), xGroups = c( 0, -1, -1, 1, 1 ), 
+  xPos = c( 2:6 ), xGroups = c( 0, -1, -1, 1, 1 ), model = "logit",
   allCoefSE = c( 0.03, 0.0001, 0.005, 0, 0.01, 
     0.004, 0.05, 0.8 ) )
 eff10b

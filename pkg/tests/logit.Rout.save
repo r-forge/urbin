@@ -480,7 +480,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
 > coefLogitInt <- coef( estLogitInt )
 > coefLogitInt <- c( coefLogitInt[1:5], 0, coefLogitInt[6] )
 > xMeanIntShares <- c( xMeanInt[1:5], 1-sum( xMeanInt[3:5] ), xMeanInt[6] )
-> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ) )
+> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
++   model = "logit" )
     effect      stdEr 
 -0.2538074         NA 
 > # effects calculated based on predicted values
@@ -498,10 +499,12 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
          1 
 -0.2538037 
 > # partial derivatives of the effect wrt the coefficients
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
+> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
+> #  c( -1, -1, 1, 0 ), model = "logit" )
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
-+   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ) )
++   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( -1, -1, 1, 0 ),
++   model = "logit" )
         (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE   
 effect -0.003641672 -0.002534178    -0.138529  -0.09713585    0.2320231  0
 stdEr            NA           NA           NA           NA           NA NA
@@ -513,15 +516,16 @@ stdEr           NA
 > vcovLogitInt <- rbind( vcovLogitInt[ 1:5, ], 0, vcovLogitInt[ 6, ] )
 > vcovLogitInt <- cbind( vcovLogitInt[ , 1:5 ], 0, vcovLogitInt[ , 6 ] )
 > # urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
-> #   vcov( estLogitInt ) )
+> #   vcov( estLogitInt ), model = "logit" )
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
-+   allCoefSE = sqrt( diag( vcovLogitInt ) ) )
++   allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
      effect       stdEr 
 -0.25380744  0.09709985 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
-> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ) )
+> urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ), 
++   model = "logit" )
    effect     stdEr 
 0.2238558        NA 
 > # effects calculated based on predicted values
@@ -533,10 +537,12 @@ stdEr           NA
         1 
 0.2236439 
 > # partial derivatives of the effect wrt the coefficients
-> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
+> # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), 
+> #  c( 0, 1, -1, 1 ), model = "logit" )
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
-+   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ) )
++   allXVal = xMeanIntShares, xPos = c( 3:6 ), xGroups = c( 0, 1, -1, 1 ), 
++   model = "logit" )
        (Intercept)        kids age30.37TRUE age38.44TRUE age53.60TRUE          
 effect 0.009916771 0.006900914            0    0.1051393   -0.2320231 0.1368006
 stdEr           NA          NA           NA           NA           NA        NA
@@ -545,14 +551,14 @@ effect 0.1218459
 stdEr         NA
 > # with full covariance matrix
 > # urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
-> #   vcov( estLogitInt ) )
+> #   vcov( estLogitInt ), model = "logit" )
 > # with standard errors only
 > urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
-+   allCoefSE = sqrt( diag( vcovLogitInt ) ) )
++   allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
     effect      stdEr 
 0.22385578 0.08565987 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.517   0.048   0.560 
+  0.518   0.036   0.548 
