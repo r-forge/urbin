@@ -54,26 +54,22 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     if( length( xCoef ) != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
-    if( length( xCoef ) != length( xGroups ) ){
-      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
-    }
   } else if( model == "MNL" ){
     if( dim( xCoef )[1] != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
-    }
-    if( dim( xCoef )[1] != length( xGroups ) ){
-      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
   } else if( model == "CondL" ){
     if( length( xCoef ) != dim( xShares )[1] ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
-    if( length( xCoef ) != length( xGroups ) ){
-      stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
-    }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }  
+  # check argument xGroups
+  if( length( xGroups ) != length( xPos ) ){
+    stop( "the vector specified by argument 'xGroups' must have",
+      " one more element that the vector specified by argument 'xPos'" )
+  }
   if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
