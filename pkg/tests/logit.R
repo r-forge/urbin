@@ -147,6 +147,27 @@ xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ),
 # semi-elasticity of age without standard errors
 urbinElaInt( coef( estLogitInt ), xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
+# semi-elasticities based on numerical derivation
+Mroz87Lower <- Mroz87
+Mroz87Lower$age <- Mroz87$age * 0.95
+Mroz87Lower$age30.37 <- Mroz87Lower$age <= 37.5
+Mroz87Lower$age38.44 <- Mroz87Lower$age > 37.5 & Mroz87Lower$age <= 44.5
+Mroz87Lower$age45.52 <- Mroz87Lower$age > 44.5 & Mroz87Lower$age <= 52.5
+Mroz87Lower$age53.60 <- Mroz87Lower$age > 52.5 
+all.equal( 
+  Mroz87Lower$age30.37 + Mroz87Lower$age38.44 + Mroz87Lower$age45.52 + 
+    Mroz87Lower$age53.60, rep( 1, nrow( Mroz87 ) ) )
+Mroz87Upper <- Mroz87
+Mroz87Upper$age <- Mroz87$age * 1.05
+Mroz87Upper$age30.37 <- Mroz87Upper$age <= 37.5
+Mroz87Upper$age38.44 <- Mroz87Upper$age > 37.5 & Mroz87Upper$age <= 44.5
+Mroz87Upper$age45.52 <- Mroz87Upper$age > 44.5 & Mroz87Upper$age <= 52.5
+Mroz87Upper$age53.60 <- Mroz87Upper$age > 52.5 
+all.equal( 
+  Mroz87Upper$age30.37 + Mroz87Upper$age38.44 + Mroz87Upper$age45.52 + 
+    Mroz87Upper$age53.60, rep( 1, nrow( Mroz87 ) ) )
+10 * mean( predict( estLogitInt, newdata = Mroz87Upper, type = "response" ) -
+  predict( estLogitInt, newdata = Mroz87Lower, type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 

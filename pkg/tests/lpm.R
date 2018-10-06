@@ -143,6 +143,27 @@ urbinElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5],
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), model = "lpm" )
 urbinElaInt( coef( estLpmInt ), xMeanInt,
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )
+# semi-elasticities based on numerical derivation
+Mroz87Lower <- Mroz87
+Mroz87Lower$age <- Mroz87$age * 0.95
+Mroz87Lower$age30.37 <- Mroz87Lower$age <= 37.5
+Mroz87Lower$age38.44 <- Mroz87Lower$age > 37.5 & Mroz87Lower$age <= 44.5
+Mroz87Lower$age45.52 <- Mroz87Lower$age > 44.5 & Mroz87Lower$age <= 52.5
+Mroz87Lower$age53.60 <- Mroz87Lower$age > 52.5 
+all.equal( 
+  Mroz87Lower$age30.37 + Mroz87Lower$age38.44 + Mroz87Lower$age45.52 + 
+    Mroz87Lower$age53.60, rep( 1, nrow( Mroz87 ) ) )
+Mroz87Upper <- Mroz87
+Mroz87Upper$age <- Mroz87$age * 1.05
+Mroz87Upper$age30.37 <- Mroz87Upper$age <= 37.5
+Mroz87Upper$age38.44 <- Mroz87Upper$age > 37.5 & Mroz87Upper$age <= 44.5
+Mroz87Upper$age45.52 <- Mroz87Upper$age > 44.5 & Mroz87Upper$age <= 52.5
+Mroz87Upper$age53.60 <- Mroz87Upper$age > 52.5 
+all.equal( 
+  Mroz87Upper$age30.37 + Mroz87Upper$age38.44 + Mroz87Upper$age45.52 + 
+    Mroz87Upper$age53.60, rep( 1, nrow( Mroz87 ) ) )
+10 * mean( predict( estLpmInt, newdata = Mroz87Upper ) -
+    predict( estLpmInt, newdata = Mroz87Lower ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 xMeanIntShares3Attr <- xMeanInt[3:5]
 attr( xMeanIntShares3Attr, "derivOnly" ) <- 1 

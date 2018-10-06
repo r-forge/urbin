@@ -335,6 +335,30 @@ Number of Fisher Scoring iterations: 4
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
     semEla      stdEr 
 -0.4719856         NA 
+> # semi-elasticities based on numerical derivation
+> Mroz87Lower <- Mroz87
+> Mroz87Lower$age <- Mroz87$age * 0.95
+> Mroz87Lower$age30.37 <- Mroz87Lower$age <= 37.5
+> Mroz87Lower$age38.44 <- Mroz87Lower$age > 37.5 & Mroz87Lower$age <= 44.5
+> Mroz87Lower$age45.52 <- Mroz87Lower$age > 44.5 & Mroz87Lower$age <= 52.5
+> Mroz87Lower$age53.60 <- Mroz87Lower$age > 52.5 
+> all.equal( 
++   Mroz87Lower$age30.37 + Mroz87Lower$age38.44 + Mroz87Lower$age45.52 + 
++     Mroz87Lower$age53.60, rep( 1, nrow( Mroz87 ) ) )
+[1] TRUE
+> Mroz87Upper <- Mroz87
+> Mroz87Upper$age <- Mroz87$age * 1.05
+> Mroz87Upper$age30.37 <- Mroz87Upper$age <= 37.5
+> Mroz87Upper$age38.44 <- Mroz87Upper$age > 37.5 & Mroz87Upper$age <= 44.5
+> Mroz87Upper$age45.52 <- Mroz87Upper$age > 44.5 & Mroz87Upper$age <= 52.5
+> Mroz87Upper$age53.60 <- Mroz87Upper$age > 52.5 
+> all.equal( 
++   Mroz87Upper$age30.37 + Mroz87Upper$age38.44 + Mroz87Upper$age45.52 + 
++     Mroz87Upper$age53.60, rep( 1, nrow( Mroz87 ) ) )
+[1] TRUE
+> 10 * mean( predict( estProbitInt, newdata = Mroz87Upper, type = "response" ) -
++     predict( estProbitInt, newdata = Mroz87Lower, type = "response" ) )
+[1] -0.3517456
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > xMeanIntAttr <- xMeanInt
 > attr( xMeanIntAttr, "derivOnly" ) <- 1 
@@ -560,4 +584,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.512   0.031   0.537 
+  0.506   0.052   0.552 
