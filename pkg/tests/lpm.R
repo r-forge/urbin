@@ -191,11 +191,9 @@ urbinEffInt( coef( estLpmLin ), NA, c( 30, 40 ), c( 50, 60 ), xPos = 3,
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # based on predicted values
 predict( estLpmLin, 
-  newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ), 
-  type = "response" ) -
+  newdata = as.data.frame( t( replace( xMeanLin, 3, 55 ) ) ) ) -
   predict( estLpmLin, 
-    newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ), 
-    type = "response" )
+    newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 naAttr <- NA
 attr( naAttr, "derivOnly" ) <- 1 
