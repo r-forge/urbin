@@ -301,7 +301,7 @@ vcovLogitInt <- cbind( vcovLogitInt[ , 1:5 ], 0, vcovLogitInt[ , 6 ] )
 #   vcov( estLogitInt ), model = "logit" )
 # with standard errors only
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
-  allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
+  allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ), 
@@ -324,5 +324,5 @@ numericGradient( urbin:::logitEffCat, t0 = coefLogitInt,
 #   vcov( estLogitInt ), model = "logit" )
 # with standard errors only
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ),
-  allCoefSE = sqrt( diag( vcovLogitInt ) ), model = "logit" )
+  allCoefVcov = sqrt( diag( vcovLogitInt ) ), model = "logit" )
 
