@@ -1,11 +1,11 @@
 logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
   allCoefSE = rep( NA, length( allCoef ) ), 
-  method = "binary" ){
-  if( method == "binary" ){
+  model = "binary" ){
+  if( model == "binary" ){
     nCoef <- length( allCoef )
     xCoef <- allCoef[ xPos ]
     xShares <- allXVal[ xPos ]
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     nCoef <- length( allCoef )
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
     NCoef <- dim( mCoef )[2]
@@ -19,7 +19,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
     pCoef <- dim( mXVal )[2]
     xShares <- mXVal[ xPos, ]
   }
-  if( method == "binary" || method == "MNL" ){
+  if( model == "binary" || model == "MNL" ){
     if( sum( xShares ) > 1 ){
       stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
     }
@@ -30,14 +30,14 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
       }
     }
   }  
-  if( method == "binary" ){
+  if( model == "binary" ){
     if( length( xCoef ) != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
     if( length( xCoef ) != length( xGroups ) ){
       stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     if( dim( xCoef )[1] != length( xShares ) ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
@@ -55,7 +55,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
   if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
-  if( method == "binary" ){
+  if( model == "binary" ){
     # D_mr  
     DRef <- sum( xCoef[ xGroups == -1 ] * xShares[ xGroups == -1 ]) / 
       sum( xShares[ xGroups == -1 ] )
@@ -67,7 +67,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
     # effect
     effeG <- exp( XBetaEffect )/( 1 + exp( XBetaEffect ) ) - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ) )
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     # D_mr  
     DRef <- colSums( xCoef[ xGroups == -1, , drop = FALSE ] * 
         xShares[ xGroups == -1 ] )/ 
@@ -101,14 +101,14 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, yCat = NA,
       exp( XBetaRef[ yCat ] )/( sum( exp( XBetaRef ) ) )
   }
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
-  if( method == "binary" ){
+  if( model == "binary" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] = ( exp( XBetaEffect )/( 1 + exp( XBetaEffect ))^2 - 
         exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 ) * 
       allXVal[ -xPos ] 
     derivCoef[ xPos ] = exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef
-  } else if( method == "MNL" ){
+  } else if( model == "MNL" ){
     derivCoef <- matrix( NA, nrow=pCoef, ncol=NCoef )
     for( p in 1:NCoef ){
       if( p == yCat ){
