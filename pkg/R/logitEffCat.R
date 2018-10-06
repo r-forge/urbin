@@ -1,4 +1,4 @@
-logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
+logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   yCat = NA, allCoefSE = rep( NA, length( allCoef ) ) ){
   
   # number of coefficients
@@ -22,7 +22,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
     xCoef <- mCoef[ xPos, ]
     xShares <- allXVal[ xPos ]
-  } else{
+  } else if( model == "CondL" ){
     # number of ???
     pCoef <- round( nXVal / nCoef )
     if( nXVal != nCoef * pCoef ) {
@@ -33,17 +33,21 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     mXVal <- matrix( allXVal, nrow = nCoef )
     xCoef <- allCoef[ xPos ]
     xShares <- mXVal[ xPos, ]
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   if( model == "logit" || model == "MNL" ){
     if( sum( xShares ) > 1 ){
       stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
     }
-  } else{
+  } else if( model == "CondL" ){
     for( p in 1:pCoef ){
       if( sum( xShares[ , p ] ) > 1 ){
         stop( "the shares in argument 'xShares' sum up to a value larger than 1" ) 
       }
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }  
   if( model == "logit" ){
     if( length( xCoef ) != length( xShares ) ){
@@ -59,13 +63,15 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     if( dim( xCoef )[1] != length( xGroups ) ){
       stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
-  } else{
+  } else if( model == "CondL" ){
     if( length( xCoef ) != dim( xShares )[1] ){
       stop( "arguments 'xCoef' and 'xShares' must have the same length" )
     }
     if( length( xCoef ) != length( xGroups ) ){
       stop( "arguments 'xCoef' and 'xGroups' must have the same length" )
     }
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }  
   if( !all( xGroups %in% c( -1, 0, 1 ) ) ){
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
@@ -98,7 +104,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( 1 + sum( exp( XBetaEffect ) ) ) -
       exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
-  } else{
+  } else if( model == "CondL" ){
     # D_mr
     DRef <- colSums( xCoef[ xGroups == -1 ] * 
         xShares[ xGroups == -1, , drop = FALSE ] )/ 
@@ -114,6 +120,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( sum( exp( XBetaEffect ) ) ) -
       exp( XBetaRef[ yCat ] )/( sum( exp( XBetaRef ) ) )
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # partial derivative of E_{k,ml} w.r.t. all estimated coefficients
   if( model == "logit" ){
@@ -155,7 +163,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
       }     
     }
     derivCoef <- c( derivCoef )
-  } else{
+  } else if( model == "CondL" ){
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] = ( exp( XBetaEffect[ yCat ] ) * mXVal[ -xPos, yCat ] * 
         sum( exp( XBetaEffect ) ) -
@@ -177,6 +185,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model = "logit",
           exp( XBetaRef[ yCat ] ) * 
           sum( exp( XBetaRef ) * DRef[ yCat ] ) )/
       ( sum( exp( XBetaRef ) ) )^2
+  } else {
+    stop( "argument 'model' specifies an unknown type of model" )
   }
   # variance covariance of the coefficients (covariances set to zero)
   vcovCoef <- diag( allCoefSE^2 )
