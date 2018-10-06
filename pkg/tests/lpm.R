@@ -271,6 +271,18 @@ urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ),
   model = "lpm" )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ), 
   model = "lpm" )
+# effects calculated based on predicted values
+names( xMeanInt ) <- sub( "TRUE", "", names( coef( estLpmInt ) ) )
+df30.37 <- df38.44 <- df45.52 <- df53.60 <- as.data.frame( t( xMeanInt ) ) 
+df30.37[ , 3:5 ] <- c( TRUE, FALSE, FALSE )
+df38.44[ , 3:5 ] <- c( FALSE, TRUE, FALSE )
+df45.52[ , 3:5 ] <- c( FALSE, FALSE, FALSE )
+df53.60[ , 3:5 ] <- c( FALSE, FALSE, TRUE )
+predict( estLpmInt, newdata = df53.60 ) -
+  sum( Mroz87$age30.37 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estLpmInt, newdata = df30.37 ) -
+  sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estLpmInt, newdata = df38.44 )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ), 
   model = "lpm" )
@@ -297,6 +309,12 @@ urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ),
   model = "lpm" )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ), 
   model = "lpm" )
+# effects calculated based on predicted values
+sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estLpmInt, newdata = df38.44 ) +
+  sum( Mroz87$age45.52 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estLpmInt, newdata = df45.52 ) -
+  predict( estLpmInt, newdata = df53.60 )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ), 
   model = "lpm" )

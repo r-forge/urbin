@@ -252,6 +252,18 @@ coefLogitInt <- coef( estLogitInt )
 coefLogitInt <- c( coefLogitInt[1:5], 0, coefLogitInt[6] )
 xMeanIntShares <- c( xMeanInt[1:5], 1-sum( xMeanInt[3:5] ), xMeanInt[6] )
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ) )
+# effects calculated based on predicted values
+names( xMeanInt ) <- sub( "TRUE", "", names( coef( estLogitInt ) ) )
+df30.37 <- df38.44 <- df45.52 <- df53.60 <- as.data.frame( t( xMeanInt ) ) 
+df30.37[ , 3:5 ] <- c( TRUE, FALSE, FALSE )
+df38.44[ , 3:5 ] <- c( FALSE, TRUE, FALSE )
+df45.52[ , 3:5 ] <- c( FALSE, FALSE, FALSE )
+df53.60[ , 3:5 ] <- c( FALSE, FALSE, TRUE )
+predict( estLogitInt, newdata = df53.60, type = "response" ) -
+  sum( Mroz87$age30.37 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estLogitInt, newdata = df30.37, type = "response" ) -
+  sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estLogitInt, newdata = df38.44, type = "response" )
 # partial derivatives of the effect wrt the coefficients
 # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients
@@ -269,6 +281,12 @@ urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( -1, -1, 1, 0 ),
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbin:::logitEffCat( coefLogitInt, xMeanIntShares, c( 3:6 ), c( 0, 1, -1, 1 ) )
+# effects calculated based on predicted values
+sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estLogitInt, newdata = df38.44, type = "response" ) +
+  sum( Mroz87$age45.52 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estLogitInt, newdata = df45.52, type = "response" ) -
+  predict( estLogitInt, newdata = df53.60, type = "response" )
 # partial derivatives of the effect wrt the coefficients
 # urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ) )
 # numerically computed partial derivatives of the effect wrt the coefficients

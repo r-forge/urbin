@@ -250,6 +250,18 @@ urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
 # without standard errors
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
   model = "probit" )
+# effects calculated based on predicted values
+names( xMeanInt ) <- sub( "TRUE", "", names( coef( estProbitInt ) ) )
+df30.37 <- df38.44 <- df45.52 <- df53.60 <- as.data.frame( t( xMeanInt ) ) 
+df30.37[ , 3:5 ] <- c( TRUE, FALSE, FALSE )
+df38.44[ , 3:5 ] <- c( FALSE, TRUE, FALSE )
+df45.52[ , 3:5 ] <- c( FALSE, FALSE, FALSE )
+df53.60[ , 3:5 ] <- c( FALSE, FALSE, TRUE )
+predict( estProbitInt, newdata = df53.60, type = "response" ) -
+  sum( Mroz87$age30.37 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estProbitInt, newdata = df30.37, type = "response" ) -
+  sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
+  predict( estProbitInt, newdata = df38.44, type = "response" )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ), 
   model = "probit" )
@@ -267,6 +279,12 @@ urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 # without standard errors
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
   model = "probit" )
+# effects calculated based on predicted values
+sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estProbitInt, newdata = df38.44, type = "response" ) +
+  sum( Mroz87$age45.52 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
+  predict( estProbitInt, newdata = df45.52, type = "response" ) -
+  predict( estProbitInt, newdata = df53.60, type = "response" )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ), 
   model = "probit" )
