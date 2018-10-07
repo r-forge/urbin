@@ -536,12 +536,12 @@ effect -0.05705575
 stdEr           NA
 > # with full covariance matrix
 > urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
-+   model = "probit", vcov( estProbitInt ) )
++   model = "probit", allCoefVcov = vcov( estProbitInt ) )
      effect       stdEr 
 -0.25236736  0.06537938 
 > # with standard errors only
 > urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
-+   model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
++   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
      effect       stdEr 
 -0.25236736  0.07096559 
 > ### effects of age changing from the 53-60 category to the 38-52 category
@@ -572,16 +572,16 @@ effect  0.01244889 0.008662976            0    0.1689924   -0.3764257 0.1529577
 stdEr           NA          NA           NA           NA           NA        NA
 > # with full covariance matrix
 > urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
-+   model = "probit", vcov( estProbitInt ) )
++   model = "probit", allCoefVcov = vcov( estProbitInt ) )
    effect     stdEr 
 0.2228361 0.0607031 
 > # with standard errors only
 > urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
-+   model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
++   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
    effect     stdEr 
 0.2228361 0.0657191 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.506   0.052   0.552 
+  0.531   0.031   0.556 

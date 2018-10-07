@@ -7,7 +7,7 @@
   This function calculates 
   the effect of a categorical variable
   that is used as an explanatory variable
-  in a linear probability model or a probit model,
+  in a linear probability model, a probit model, or a logit model,
   particularly if one wants to change the reference category and/or
   wants to group some of the categories together to a new category.
   The calculated effect indicates
@@ -25,7 +25,8 @@
 }
 
 \usage{
-urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
+urbinEffCat( allCoef, allXVal, xPos, xGroups, model, 
+  yCat = NA, allCoefVcov = NULL )
 }
 
 \arguments{
@@ -61,7 +62,11 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model, allCoefVcov = NULL )
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
-    \code{"probit"} = binary probit model.}
+    \code{"probit"} = binary probit model,
+    \code{"logit"} = binary logit model, 
+    \code{"MNL"} = multinomial logit model, or
+    \code{"CondL"} = conditional logit model.}
+  \item{yCat}{not documented yet.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients

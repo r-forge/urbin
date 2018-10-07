@@ -292,10 +292,10 @@ numericGradient( urbinEffCat, t0 = coef( estProbitInt ),
   model = "probit" )
 # with full covariance matrix
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
-  model = "probit", vcov( estProbitInt ) )
+  model = "probit", allCoefVcov = vcov( estProbitInt ) )
 # with standard errors only
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
-  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
+  model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
@@ -315,8 +315,8 @@ numericGradient( urbinEffCat, t0 = coef( estProbitInt ),
   model = "probit" )
 # with full covariance matrix
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
-  model = "probit", vcov( estProbitInt ) )
+  model = "probit", allCoefVcov = vcov( estProbitInt ) )
 # with standard errors only
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
-  model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
+  model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
 

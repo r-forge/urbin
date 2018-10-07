@@ -272,7 +272,7 @@ urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 coefLogitInt <- coef( estLogitInt )
 coefLogitInt <- c( coefLogitInt[1:5], 0, coefLogitInt[6] )
 xMeanIntShares <- c( xMeanInt[1:5], 1-sum( xMeanInt[3:5] ), xMeanInt[6] )
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   model = "logit" )
 # effects calculated based on predicted values
 names( xMeanInt ) <- sub( "TRUE", "", names( coef( estLogitInt ) ) )
@@ -287,21 +287,21 @@ predict( estLogitInt, newdata = df53.60, type = "response" ) -
   sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
   predict( estLogitInt, newdata = df38.44, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
+urbinEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
   c( -1, -1, 1, 0 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbin:::logitEffCat, t0 = coef( estLogitInt ),
+numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
   model = "logit" )
 # with full covariance matrix
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   allCoefVcov = vcov( estLogitInt ), model = "logit" )
 # with standard errors only
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ), model = "logit" )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
   model = "logit" )
 # effects calculated based on predicted values
 sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
@@ -310,16 +310,16 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
   predict( estLogitInt, newdata = df45.52, type = "response" ) -
   predict( estLogitInt, newdata = df53.60, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-urbin:::logitEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
+urbinEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
   c( 0, 1, -1, 1 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbin:::logitEffCat, t0 = coef( estLogitInt ),
+numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
   model = "logit" )
 # with full covariance matrix
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
   allCoefVcov = vcov( estLogitInt ), model = "logit" )
 # with standard errors only
-urbin:::logitEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
+urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ), model = "logit" )
 

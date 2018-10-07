@@ -316,14 +316,14 @@ numericGradient( urbinEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
   allXVal = xMeanInt, xGroups = c( -1, -1, 1, 0 ), model = "lpm" )
 # with full covariance matrix
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ), 
-  model = "lpm", vcov( estLpmInt )[3:5, 3:5] )
+  model = "lpm", allCoefVcov = vcov( estLpmInt )[3:5, 3:5] )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ), 
-  model = "lpm", vcov( estLpmInt ) )
+  model = "lpm", allCoefVcov = vcov( estLpmInt ) )
 # with standard errors only
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ), 
-  model = "lpm", sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ), 
-  model = "lpm", sqrt( diag( vcov( estLpmInt ) ) ) )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) ) )
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 
@@ -348,12 +348,12 @@ numericGradient( urbinEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
   allXVal = xMeanInt, xGroups = c( 0, 1, -1, 1 ), model = "lpm" )
 # with full covariance matrix
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 
-  model = "lpm", vcov( estLpmInt )[3:5,3:5] )
+  model = "lpm", allCoefVcov = vcov( estLpmInt )[3:5,3:5] )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ), 
-  model = "lpm", vcov( estLpmInt ) )
+  model = "lpm", allCoefVcov = vcov( estLpmInt ) )
 # with standard errors only
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 
-  model = "lpm", sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) )[3:5] )
 urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ), 
-  model = "lpm", sqrt( diag( vcov( estLpmInt ) ) ) )
+  model = "lpm", allCoefVcov = sqrt( diag( vcov( estLpmInt ) ) ) )
 
