@@ -112,17 +112,15 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     }
   } else if( model == "MNL" ){
     # D_mr  
-    DRef <- colSums( xCoef[ xGroups == -1, , drop = FALSE ] * 
-        xShares[ xGroups == -1 ] )/ 
+    DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
       sum( xShares[ xGroups == -1 ] )
     XBetaRef <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
-        allXVal[ -xPos ]) + DRef
+        allXVal[ -xPos ] ) + colSums( DRef * xCoef )
     # D_ml
-    DEffect <- colSums( xCoef[ xGroups == 1, , drop = FALSE ] * 
-        xShares[ xGroups == 1 ] )/ 
+    DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
       sum( xShares[ xGroups == 1 ] )
     XBetaEffect <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
-        allXVal[ -xPos ]) + DEffect  
+        allXVal[ -xPos ] ) + colSums( DEffect * xCoef )
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( 1 + sum( exp( XBetaEffect ) ) ) -
       exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
