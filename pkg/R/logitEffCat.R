@@ -8,9 +8,11 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = nCoef )
+  # number of categories
+  nCat <- length( xPos ) + 1
   # check allXVal and allCoef
   if( model == "logit" ){
-    xCoef <- allCoef[ xPos ]
+    xCoef <- c( allCoef[ xPos ], 0 )
     if( nXVal != nCoef ){
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }  
@@ -23,7 +25,7 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
-    xCoef <- mCoef[ xPos, ]
+    xCoef <- rbind( mCoef[ xPos, ], 0 )
   } else if( model == "CondL" ){
     # number of ???
     pCoef <- round( nXVal / nCoef )
@@ -33,15 +35,34 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     } 
     # create matrix of explanatory variables
     mXVal <- matrix( allXVal, nrow = nCoef )
-    xCoef <- allCoef[ xPos ]
+    xCoef <- c( allCoef[ xPos ], 0 )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # shares in each category
   if( model == "logit" || model == "MNL" ){
     xShares <- allXVal[ xPos ]
+    if( any( xShares < 0 ) ){
+      stop( "the share of the observations in at least one category",
+        " is negative" )
+    }
     if( sum( xShares ) > 1 ){
-      stop( "the shares in argument 'xShares' sum up to a value larger than 1" )
+      stop( "the shares of the observations in the individual categories",
+        " (without the reference category) sum up to a value larger than 1" )
+    }
+    xShares <- c( xShares, 1 - sum( xShares ) )
+    if( length( xShares ) != nCat ) {
+      stop( "internal error: length of shares not equal to number of categories" )
+    }
+    if( xShares[ nCat ] < 0.05  ) {
+      warning( "there are only ", 100 * xShares[ length( xShares ) ],
+        "% of the observations in the reference category --",
+        " please check whether this is indeed the case" )
+    }
+    if( xShares[ nCat ] > 0.95  ) {
+      warning( "there are ", 100 * xShares[ length( xShares ) ],
+        "% of the observations in the reference category --",
+        " please check whether this is indeed the case" )
     }
   } else if( model == "CondL" ){
     xShares <- mXVal[ xPos, ]
@@ -50,26 +71,12 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
         stop( "the shares in argument 'xShares' sum up to a value larger than 1" ) 
       }
     }
-  } else {
-    stop( "argument 'model' specifies an unknown type of model" )
-  }  
-  if( model == "logit" ){
-    if( length( xCoef ) != length( xShares ) ){
-      stop( "arguments 'xCoef' and 'xShares' must have the same length" )
-    }
-  } else if( model == "MNL" ){
-    if( dim( xCoef )[1] != length( xShares ) ){
-      stop( "arguments 'xCoef' and 'xShares' must have the same length" )
-    }
-  } else if( model == "CondL" ){
-    if( length( xCoef ) != dim( xShares )[1] ){
-      stop( "arguments 'xCoef' and 'xShares' must have the same length" )
-    }
+    xShares <- rbind( xShares, 1 - colSums( xShares ) )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }  
   # check argument xGroups
-  if( length( xGroups ) != length( xPos ) ){
+  if( length( xGroups ) != ( length( xPos ) + 1 ) ){
     stop( "the vector specified by argument 'xGroups' must have",
       " one more element that the vector specified by argument 'xPos'" )
   }
@@ -134,8 +141,8 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     derivCoef[ -xPos ] <- ( exp( XBetaEffect )/( 1 + exp( XBetaEffect ))^2 - 
         exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 ) * 
       allXVal[ -xPos ] 
-    derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect - 
-      exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef
+    derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect[ -nCat ] - 
+      exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef[ -nCat ]
   } else if( model == "MNL" ){
     derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
     for( p in 1:pCoef ){
@@ -150,10 +157,10 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
         derivCoef[ xPos, p ] <- 
           ( exp( XBetaEffect[ p ] ) * 
               ( 1 + sum( exp( XBetaEffect[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect -
+              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect[-nCat] -
           ( exp( XBetaRef[ p ] ) * 
               ( 1 + sum( exp( XBetaRef[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef
+              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef[-nCat]
       } else{  
         derivCoef[ -xPos, p ] <- 
           ( ( exp( XBetaRef[ yCat ] ) * exp( XBetaRef[ p ] ) )/
@@ -162,9 +169,9 @@ logitEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
               ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * allXVal[ -xPos ]
         derivCoef[ xPos, p ] <- 
           ( ( exp( XBetaRef[ yCat ] ) * exp( XBetaRef[ p ] ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef -
+              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef[-nCat] -
           ( ( exp( XBetaEffect[ yCat ] ) * exp( XBetaEffect[ p ] ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect
+              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect[-nCat]
       }     
     }
     derivCoef <- c( derivCoef )
