@@ -269,9 +269,6 @@ urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
-coefLogitInt <- coef( estLogitInt )
-coefLogitInt <- c( coefLogitInt[1:5], 0, coefLogitInt[6] )
-xMeanIntShares <- c( xMeanInt[1:5], 1-sum( xMeanInt[3:5] ), xMeanInt[6] )
 urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   model = "logit" )
 # effects calculated based on predicted values
