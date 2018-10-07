@@ -57,23 +57,23 @@ Loading required package: miscTools
 -0.01310910  0.02623909 
 > 
 > # Example
-> eff12a <- urbinEffCat( allCoef = c( 0.28, 0.003, 0.0075 ),
-+   allXVal = c( 1, 0.5, 0.3, 1, 0.4, 0.4 ), 
+> eff12a <- urbinEffCat( allCoef = c( 0.28, 0.6, 0.0075 ),
++   allXVal = c( 1, 0.5, 0.3, 1, -0.4, 0.4 ), 
 +   xPos = c( 2:3 ), 
 +   xGroups = c( -1, -1, 1 ), yCat = 2, model = "CondL" )
 > eff12a
-      effect        stdEr 
--7.03125e-05           NA 
+   effect     stdEr 
+0.1624122        NA 
 > 
-> eff12b <- urbinEffCat( allCoef = c( 0.28, 0.003, 0.0075 ),
-+   allXVal = c( 1, 0.5, 0.3, 1, 0.4, 0.4 ), 
+> eff12b <- urbinEffCat( allCoef = c( 0.28, 0.6, 0.0075 ),
++   allXVal = c( 1, 0.5, 0.3, 1, -0.4, 0.4 ), 
 +   xPos = c( 2:3 ), 
-+   allCoefVcov = c( 0.03, 0.0001, 0.005 ),
++   allCoefVcov = c( 0.1, 0.3, 0.005 ),
 +   xGroups = c( -1, -1, 1 ), yCat = 2, model = "CondL" )
 > eff12b
-      effect        stdEr 
--7.03125e-05  1.23272e-21 
+   effect     stdEr 
+0.1624122 0.0000000 
 > 
 > proc.time()
    user  system elapsed 
-  0.098   0.016   0.108 
+  0.103   0.008   0.106 
