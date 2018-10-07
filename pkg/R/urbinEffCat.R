@@ -101,6 +101,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
         sum( DRef * xCoef )
       XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
         sum( DEffect * xCoef )
+      checkXBeta( c( XBetaRef, XBetaEffect ) )
       if( model == "probit" ) {
         # effect
         effeG <- pnorm( XBetaEffect ) - pnorm( XBetaRef )
@@ -121,6 +122,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       sum( xShares[ xGroups == 1 ] )
     XBetaEffect <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
         allXVal[ -xPos ] ) + colSums( DEffect * xCoef )
+    checkXBeta( c( XBetaRef, XBetaEffect ) )
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( 1 + sum( exp( XBetaEffect ) ) ) -
       exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
@@ -137,6 +139,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       sum( xShares[ xGroups == 1, , drop = FALSE ] )
     XBetaEffect <- colSums( allCoef[ -xPos ] * 
         mXVal[ -xPos, , drop = FALSE ] ) + DEffect
+    checkXBeta( c( XBetaRef, XBetaEffect ) )
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( sum( exp( XBetaEffect ) ) ) -
       exp( XBetaRef[ yCat ] )/( sum( exp( XBetaRef ) ) )
