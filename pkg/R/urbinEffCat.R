@@ -66,6 +66,10 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     }
   } else if( model == "CondL" ){
     xShares <- mXVal[ xPos, ]
+    if( any( xShares < 0 ) ){
+      stop( "the share of the observations in at least one category",
+        " is negative" )
+    }
     for( p in 1:pCoef ){
       if( sum( xShares[ , p ] ) > 1 ){
         stop( "the shares in argument 'xShares' sum up to a value larger than 1" ) 
