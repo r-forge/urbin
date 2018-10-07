@@ -26,7 +26,7 @@
 
 \usage{
 urbinEffCat( allCoef, allXVal, xPos, xGroups, model, 
-  yCat = NA, allCoefVcov = NULL )
+  allCoefVcov = NULL, yCat = NULL )
 }
 
 \arguments{
@@ -66,13 +66,13 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model, or
     \code{"CondL"} = conditional logit model.}
-  \item{yCat}{not documented yet.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+  \item{yCat}{not documented yet.}
 }
 
 \details{

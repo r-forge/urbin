@@ -1,7 +1,7 @@
-urbinEla <- function( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
-  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL, 
-  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL ){
+urbinEla <- function( allCoef, allXVal, xPos, model, 
+  allCoefVcov = NULL, seSimplify = !is.matrix( allCoefVcov ), 
+  xMeanSd = NULL, yCat = NULL, 
+  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL ){
   
   # check argument seSimplify
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {

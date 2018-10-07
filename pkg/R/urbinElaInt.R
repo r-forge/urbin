@@ -1,5 +1,5 @@
 urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model, 
-  allCoefVcov = NULL, yCat = NA ){
+  allCoefVcov = NULL, yCat = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )

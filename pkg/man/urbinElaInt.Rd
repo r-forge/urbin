@@ -21,7 +21,7 @@
 
 \usage{
 urbinElaInt( allCoef, allXVal, xPos, xBound, model, 
-  allCoefVcov = NULL, yCat = NA )
+  allCoefVcov = NULL, yCat = NULL )
 }
 
 \arguments{

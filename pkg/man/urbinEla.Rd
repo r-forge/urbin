@@ -21,10 +21,9 @@
 }
 
 \usage{
-urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL, 
-  allCoefBra = NULL, allXValBra = NULL, yCat = NULL, yCatBra = NULL, 
-  lambda = NULL,
-  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL )
+urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
+  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL, yCat = NULL, 
+  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
 }
 
 \arguments{
@@ -71,7 +70,7 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
-  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda}{
+  \item{yCat,allCoefBra,allXValBra,yCatBra,lambda}{
     will be documented later}
 }
 

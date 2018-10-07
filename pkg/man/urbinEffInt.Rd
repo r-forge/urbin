@@ -25,10 +25,9 @@
 }
 
 \usage{
-urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
-  allCoefBra = NULL, allXValBra = NULL, 
-  yCat = NULL, yCatBra = NULL, lambda = NULL, 
-  allCoefVcov = NULL, xMeanSd = NULL )
+urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
+  allCoefVcov = NULL, xMeanSd = NULL, yCat = NULL,
+  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
 }
 
 \arguments{
@@ -65,7 +64,6 @@ urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
     \code{"MNL"} = multinomial logit model,
     \code{"CondL"} = conditional logit model, or
     \code{"NestedL"} = nested logit model.}
-  \item{allCoefBra,allXValBra,yCat,yCatBra,lambda}{not yet documented.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -82,6 +80,7 @@ urbinEffInt( allCoef, allXVal = NA, xPos, refBound, intBound, model,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
+  \item{yCat,allCoefBra,allXValBra,yCatBra,lambda}{not yet documented.}
 }
 
 \details{
