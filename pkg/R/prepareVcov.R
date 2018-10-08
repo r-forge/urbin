@@ -4,6 +4,12 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL,
   if( !is.null( pCall ) ) {
     pCall <- paste( "In", deparse( pCall, width.cutoff = 500 ), ":\n  " )
   }
+
+  # coefficients: number of 'replications' of explanatory variables 
+  nCoefRep <- max( 1, round( nCoef / nXVal ) )
+  if( nCoef != nCoefRep * nXVal && nCoef > nXVal ) {
+    stop( "internal error: nCoef is not a multiple of nXVal" )
+  }
   
   errMsgVcov <- paste( "argument 'allCoefVcov' must be a vector of length",
     nCoef, "or a symmetric matrix with dimension", nCoef )
@@ -34,6 +40,19 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL,
         allCoefVcov <- diag( allCoefVcov^2 )
       }
     }
+    # if( nCoefRep > 1 ) {
+    #   for( xNo in 1:nXVal ) {
+    #     for( i in 1:( nCoefRep - 1 ) ) {
+    #       for( j in (i+1):nCoefRep ) {
+    #         rowNo <- (i-1) * nXVal + xNo
+    #         colNo <- (j-1) * nXVal + xNo
+    #         allCoefVcov[ rowNo, colNo ] <- allCoefVcov[ colNo, rowNo ] <-
+    #           0.35 * sqrt( allCoefVcov[ rowNo, rowNo ] ) * 
+    #           sqrt( allCoefVcov[ colNo, colNo ] ) 
+    #       }
+    #     }
+    #   }
+    # }
     if( is.null( xMeanSd ) ) {
       if( length( xPos ) == 2 ) {
         warning( pCall, "the returned standard error is likely largely upward biased",
@@ -57,10 +76,6 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL,
         x <- rnorm( 1000, xMeanSd[ 1 ], xMeanSd[ 2 ] )
         X <- cbind( 1, x, x^2 )
         XXinv <- solve( t(X) %*% X )
-        nCoefRep <- round( nCoef / nXVal )
-        if( nCoef != nCoefRep * nXVal ) {
-          stop( "internal error: nCoef is not a multiple of nXVal" )
-        }
         for( i in 1:nCoefRep ) {
           xPosRep <- (i-1) * nXVal + xPos
           sigmaSq <- sqrt( ( allCoefVcov[ xPosRep[1], xPosRep[1] ] / XXinv[2,2] ) * 
