@@ -94,8 +94,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
       checkXBeta( c( intXbeta, refXbeta ) )
     }
   } else if( model == "MNL" ){
-    intXbeta <- colSums( mCoef * replace( allXVal, xPos, intX ) )
-    refXbeta <- colSums( mCoef * replace( allXVal, xPos, refX ) )
+    intXbeta <- replace( allXVal, xPos, intX ) %*% mCoef
+    refXbeta <- replace( allXVal, xPos, refX ) %*% mCoef
     checkXBeta( c( intXbeta, refXbeta ) )
   } else if( model == "CondL" ){
     mXValint <- mXValref <- mXVal
@@ -103,8 +103,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
       mXValint[ ,p] <- replace( mXValint[ ,p], xPos, intX )
       mXValref[ ,p] <- replace( mXValref[ ,p], xPos, refX )
     }
-    intXbeta <- colSums( allCoef * mXValint )
-    refXbeta <- colSums( allCoef * mXValref )
+    intXbeta <- drop( allCoef %*% mXValint )
+    refXbeta <- drop( allCoef %*% mXValref )
     checkXBeta( c( intXbeta, refXbeta ) )
   } else if( model == "NestedL" ){
     mCoef <- matrix( rep( allCoef, O ), nrow = nCoef, O ) %*% diag( 1/ lambda )
@@ -117,10 +117,10 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     }  
     refXbeta <- intXbeta <- rep( list( NA ), O )
     for( l in 1:O ){  
-      intXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValint[[ l ]] )
-      refXbeta[[ l ]] <- colSums( mCoef[ ,l ] * mXValref[[ l ]] )
+      intXbeta[[ l ]] <- drop( mCoef[ ,l ] %*% mXValint[[ l ]] )
+      refXbeta[[ l ]] <- drop( mCoef[ ,l ] %*% mXValref[[ l ]] )
     }
-    XbetaBra <- colSums( allCoefBra * mXValBra )
+    XbetaBra <- allCoefBra %*% mXValBra
     checkXBeta( c( unlist(refXbeta), unlist(intXbeta), XbetaBra ) )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )

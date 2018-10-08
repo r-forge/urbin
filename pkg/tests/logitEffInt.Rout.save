@@ -109,8 +109,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
 +   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
 +   yCat = 2, model = "CondL" )
 > eff10a
-      effect        stdEr 
-1.665335e-16           NA 
+       effect         stdEr 
+-5.551115e-17            NA 
 > 
 > eff10b <- urbinEffInt( allCoef = c( 0.2, 0.03, 0.005, 0.091 ), 
 +   allXVal = c( 1, NA, NA, 2.45, 1, NA, NA, 0.79 ), 
@@ -122,8 +122,8 @@ Warning message:
 In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > eff10b
-      effect        stdEr 
-1.665335e-16 1.647465e+00 
+       effect         stdEr 
+-5.551115e-17  1.647465e+00 
 > 
 > # Example 
 > matrix1 <- matrix( c( 1, NA, 0.3, 0.09, 1, NA, 0.9, 1.8 ), nrow = 4 )
@@ -136,8 +136,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
 > eff12a
-effect  stdEr 
-     0     NA 
+       effect         stdEr 
+-1.110223e-16            NA 
 > 
 > matrix1 <- matrix( c( 1, NA, 0.3, 0.09, 1, NA, 0.9, 1.8 ), nrow = 4 )
 > matrix2 <- matrix( c( 1, NA, 0.099, 0.211 ), nrow = 4 )
@@ -150,9 +150,9 @@ effect  stdEr
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
 > eff12b
-  effect    stdEr 
-0.000000 9.286332 
+       effect         stdEr 
+-1.110223e-16  9.286332e+00 
 > 
 > proc.time()
    user  system elapsed 
-  0.100   0.015   0.109 
+  0.107   0.007   0.108 

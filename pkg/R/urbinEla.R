@@ -131,7 +131,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
   } else if( model == "MNL" ){     #checkXBeta missing
     xVal <- allXVal[ xPos[1] ]
-    xBeta <- colSums( mCoef * allXVal )
+    xBeta <- allXVal %*% mCoef
     pfun <- rep( NA, length( xBeta ))
     term <- 0
     for( i in 1:length( xBeta )){
@@ -148,7 +148,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     for( p in 1:pXVal ){
       xVal[p] <- mXVal[ xPos[ 1 ], p ]
     }
-    xBeta <- colSums( allCoef * mXVal )
+    xBeta <- allCoef %*% mXVal
     pfun <- exp( xBeta[ yCat ] )/( sum( exp( xBeta ) ) )
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * 
       xVal[ yCat ] * ( pfun - pfun^2 )
@@ -162,12 +162,12 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       coef[o, ] <- allCoef/lambda[o] 
     }
     xBeta <- lapply( 1:O, function( i, m, v ){ colSums( m[[i]] * v[[i]] ) }, 
-      m=allXVal, v=coef )
+      m=allXVal, v=coef )   #### v[[i]] is probably incorrect, because v=coef is not a list
     IV <- unlist( lapply( 1:O, function( i, m ){ log( sum( exp( m[[i]] ) ) ) }, 
       m=xBeta ) ) 
     pfun <- exp( xBeta[[ yCatBra ]][ yCat ] )/
       ( sum( exp( xBeta[[ yCatBra ]] ) ) )
-    xBetaBra <- colSums( allCoefBra * mXValBra )
+    xBetaBra <- allCoefBra %*% mXValBra
     pfunBra <- exp( xBetaBra[ yCatBra ] + lambda[ yCatBra ] * IV[ yCatBra ] )/
       ( sum( exp( xBetaBra + lambda * IV ) ) )
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * xVal[ yCat ] * 

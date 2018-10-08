@@ -119,13 +119,13 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     # D_mr  
     DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
       sum( xShares[ xGroups == -1 ] )
-    XBetaRef <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
-        allXVal[ -xPos ] ) + colSums( DRef * xCoef )
+    XBetaRef <- allXVal[ -xPos ] %*% mCoef[ -xPos, , drop = FALSE ] + 
+      DRef %*% xCoef
     # D_ml
     DEffect <- ifelse( xGroups == 1, xShares, 0 ) / 
       sum( xShares[ xGroups == 1 ] )
-    XBetaEffect <- colSums( mCoef[ -xPos, , drop = FALSE ] * 
-        allXVal[ -xPos ] ) + colSums( DEffect * xCoef )
+    XBetaEffect <- allXVal[ -xPos ] %*% mCoef[ -xPos, , drop = FALSE ] + 
+      DEffect %*% xCoef
     checkXBeta( c( XBetaRef, XBetaEffect ) )
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( 1 + sum( exp( XBetaEffect ) ) ) -
@@ -137,16 +137,16 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       DRef[ , p ] <- ifelse( xGroups == -1, xShares[ , p ], 0 ) /
         sum( xShares[ xGroups == -1, p ] )
     }
-    XBetaRef <- colSums( allCoef[ -xPos ] * 
-        mXVal[ -xPos, , drop = FALSE ] ) + colSums( DRef * xCoef )
+    XBetaRef <- allCoef[ -xPos ] %*% mXVal[ -xPos, , drop = FALSE ] + 
+      xCoef %*% DRef
     # D_ml
     DEffect <- matrix( NA, nrow = nCat, ncol = pCoef )
     for( p in 1:pCoef ) {
       DEffect[ , p ] <- ifelse( xGroups == 1, xShares[ , p ], 0 ) /
         sum( xShares[ xGroups == 1, p ] )
     }
-    XBetaEffect <- colSums( allCoef[ -xPos ] *
-        mXVal[ -xPos, , drop = FALSE ] ) + colSums( DEffect * xCoef )
+    XBetaEffect <- allCoef[ -xPos ] %*% mXVal[ -xPos, , drop = FALSE ] +
+      xCoef %*% DEffect
     checkXBeta( c( XBetaRef, XBetaEffect ) )
     # effect
     effeG <- exp( XBetaEffect[ yCat ] )/( sum( exp( XBetaEffect ) ) ) -
