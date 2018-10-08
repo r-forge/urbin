@@ -71,7 +71,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd,
+    nXVal = nXVal )
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )

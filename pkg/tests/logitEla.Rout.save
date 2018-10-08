@@ -45,7 +45,7 @@ Loading required package: miscTools
 +   allCoefVcov = c( 0.001, 0.02, 0.000002, 0.05, 1.2, 0.03 ),
 +   xPos = c( 2, 3 ), model = "logit" )
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela7b
     semEla      stdEr 
@@ -82,7 +82,7 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 +   xPos = c( 2, 3 ), 
 +   model = "MNL", yCat = 2 )
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela9b
        semEla         stdEr 
@@ -121,7 +121,7 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 +   xPos = c( 2, 3 ), 
 +   model = "CondL", yCat = 2 )
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela11b
       semEla        stdEr 

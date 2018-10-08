@@ -298,7 +298,7 @@ semEla.age      stdEr
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
-2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
@@ -308,7 +308,7 @@ Warning messages:
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
-2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
@@ -317,7 +317,7 @@ Warning messages:
 semEla.age      stdEr 
 -0.2691503  0.8149718 
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -325,7 +325,7 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
  semEla.age       stdEr 
 -0.04998031  0.75603171 
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
@@ -416,7 +416,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 1 )
 semEla.age      stdEr 
--0.2691503  0.5258339 
+-0.2691503  0.5135679 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -425,7 +425,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 2 )
  semEla.age       stdEr 
--0.04998031  1.54852634 
+-0.04998031  0.40196768 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -779,7 +779,7 @@ stdEr                NA          NA       NA            NA         NA
     effect      stdEr 
 -0.1752513  0.7628008 
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
 +   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
@@ -788,7 +788,7 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
      effect       stdEr 
 -0.07382308  0.82721343 
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
@@ -797,13 +797,13 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
 +   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1 )
     effect      stdEr 
--0.1752513  0.7690747 
+-0.1752513  0.4140521 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 2 )
      effect       stdEr 
--0.07382308  0.53640654 
+-0.07382308  0.28901516 
 > 
 > 
 > ### grouping and re-basing categorical variables
@@ -972,4 +972,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.458   0.044   0.497 
+  0.489   0.024   0.507 

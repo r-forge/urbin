@@ -208,7 +208,7 @@ semEla.age      stdEr
 Warning messages:
 1: In urbinEla(coef(estLogitQuad), xMeanQuad, c(3, 4), model = "logit",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
-2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
@@ -216,7 +216,7 @@ Warning messages:
 semEla.age      stdEr 
 -0.3171501  1.4978695 
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
@@ -487,7 +487,7 @@ stdEr           NA          NA       NA       NA        NA
     effect      stdEr 
 -0.2535377  0.7407856 
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd) :
+In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
@@ -584,4 +584,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.519   0.024   0.537 
+  0.543   0.028   0.565 

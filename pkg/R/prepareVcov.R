@@ -1,4 +1,4 @@
-prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd ){
+prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nCoef ){
 
   errMsgVcov <- paste( "argument 'allCoefVcov' must be a vector of length",
     nCoef, "or a symmetric matrix with dimension", nCoef )
@@ -48,10 +48,18 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd ){
         x <- rnorm( 1000, xMeanSd[ 1 ], xMeanSd[ 2 ] )
         X <- cbind( 1, x, x^2 )
         XXinv <- solve( t(X) %*% X )
-        sigmaSq <- sqrt( ( allCoefVcov[ xPos[1], xPos[1] ] / XXinv[2,2] ) * 
-            ( allCoefVcov[ xPos[2], xPos[2] ] / XXinv[3,3] ) )
-        allCoefVcov[ xPos[1], xPos[2] ] <- allCoefVcov[ xPos[2], xPos[1] ] <- 
-          sigmaSq * XXinv[2,3]
+        nCoefRep <- round( nCoef / nXVal )
+        if( nCoef != nCoefRep * nXVal ) {
+          stop( "internal error: nCoef is not a multiple of nXVal" )
+        }
+        for( i in 1:nCoefRep ) {
+          xPosRep <- (i-1) * nXVal + xPos
+          sigmaSq <- sqrt( ( allCoefVcov[ xPosRep[1], xPosRep[1] ] / XXinv[2,2] ) * 
+              ( allCoefVcov[ xPosRep[2], xPosRep[2] ] / XXinv[3,3] ) )
+          allCoefVcov[ xPosRep[1], xPosRep[2] ] <- 
+            allCoefVcov[ xPosRep[2], xPosRep[1] ] <-
+            sigmaSq * XXinv[2,3]
+        }
       }
     }
   } else {

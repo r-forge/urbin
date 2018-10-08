@@ -79,7 +79,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd,
+    nXVal = nXVal )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
     if( model %in% c( "lpm", "probit", "logit" ) ){
