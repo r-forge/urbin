@@ -147,14 +147,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     xCoefLinQuad <- xCoef[ 1, ] + 2 * xCoef[ 2, ] * xVal
     xBeta <- allXVal %*% mCoef
     pfun <- exp( xBeta ) / ( 1 + sum( exp( xBeta ) ) )
-    term <- 0
-    for( i in 1:length( xBeta )){
-      term <- term + ( ( xCoef[ 1, yCat ] + 2 * xCoef[ 2, yCat ] * xVal ) -
-          ( xCoef[ 1, i ] + 2 * xCoef[ 2, i ] * xVal ) * pfun[i] )
-    }
     semEla <- xVal * pfun[ yCat ] * 
       ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
-    dfun <- pfun[ yCat ] * ( 1/( 1 + sum( exp( xBeta ) ) ) + term )
   } else if( model == "CondL" ){    #checkXBeta missing
     xVal <- rep( NA, nYCat )
     for( p in 1:nYCat ){
@@ -220,9 +214,17 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   } else if( model == "MNL" ){
     derivCoef <- rep( 0, length( allCoef ) )
     if( seSimplify ) {
-      derivCoef[ xPos[1] ] <- dfun * xVal
+      derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] <- 
+        - pfun[ yCat ] * xVal * pfun
+      derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] <- 
+        derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] + 
+        pfun[ yCat ] * xVal
       if( length( xPos ) == 2 ) {
-        derivCoef[ xPos[2] ] <- dfun * 2 * xVal^2
+        derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] <- 
+          - pfun[ yCat ] * 2 * xVal^2 * pfun
+        derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] <- 
+          derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] +
+          pfun[ yCat ] * 2 * xVal^2
       }
     } else {
       for( p in 1:nYCat ) {

@@ -66,7 +66,7 @@ In urbinEla(allCoef = c(0.445, 0.03, 2e-05, 0.067, 0.89, 0.124), allXVal = c(1, 
 +   model = "MNL", yCat = 2 )
 > ela8b
       semEla        stdEr 
-4.508535e-04 1.150331e-05 
+0.0004508535 0.0002776620 
 > 
 > # Example
 > ela9a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -86,7 +86,7 @@ In urbinEla(allCoef = c(0.2, 0.3, 0.5, -0.2, 0.03, 0.6), allXVal = c(1, 0.04, 0.
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > ela9b
        semEla         stdEr 
--8.640351e-04  1.051034e-05 
+-8.640351e-04  5.194184e-05 
 > 
 > # Example
 > ela10a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002 ),
@@ -181,4 +181,4 @@ In urbinEla(allCoef = c(0.445, 0.03, -0.002), allXVal = c(1, 0.3, 0.09, 1, 0.1, 
 > 
 > proc.time()
    user  system elapsed 
-  0.115   0.008   0.118 
+  0.125   0.003   0.123 
