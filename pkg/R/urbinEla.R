@@ -21,22 +21,20 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       " via argument 'allCoefVcov' to avoid this bias",
       " or do NOT set argument 'seSimplify' to FALSE" )
   }
-  # number(s) of coefficients
-  if( model %in% c( "lpm", "probit", "logit", "CondL" ) ){
-    nCoef <- length( allCoef )
-  } else if( model == "MNL" ){
-    NCoef <- length( allCoef )
+  # number of coefficients
+  nCoef <- length( allCoef )
+  # number of explanatory variables
+  nXVal <- length( allXVal )
+  # prepare coefficients coefficients
+  if( model == "MNL" ){
     mCoef <- matrix( allCoef, nrow = length( allXVal ) )
-    nCoef <- dim( mCoef )[1]
     pCoef <- dim( mCoef )[2]
   } else if( model == "NestedL" ){
-    nCoef <- length( allCoef )
     NCoef <- length( allCoefBra )
-  } else {
-    stop( "argument 'model' specifies an unknown type of model" )
   }
   # Check position vector
-  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
+    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # LPM model: allXVal can be a scalar even if there is a quadratic term
   if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
     temp <- c( allXVal, allXVal^2 )
@@ -44,11 +42,17 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       attr( temp, "derivOnly" ) <- 1
     }
     allXVal <- temp
+    nXVal <- length( allXVal )
   }
   # Check x values
-  if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
-    if( nCoef != length( allXVal ) ) {
+  if( model %in% c( "lpm", "probit", "logit" ) ){
+    if( nCoef != nXVal ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    }
+  } else if( model == "MNL" ){
+    if( ( nXVal * pCoef ) != nCoef ) {
+      stop( "the length of argument 'allCoef' must be a multiple",
+        " of the length of argument 'allXVal'" )
     }
   } else if( model == "CondL" ){
     mXVal <- matrix( allXVal, nrow = nCoef )
