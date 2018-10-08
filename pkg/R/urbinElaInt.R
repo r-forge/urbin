@@ -40,7 +40,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # check 'xBound' and replace infinite values
   xBound <- elaIntBounds( xBound, nInt )
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, 
+    pCall = match.call() )
   # vector of shares of observations in each interval
   shareVec <- rep( NA, nInt )
   for( i in 1:nInt ){

@@ -51,8 +51,8 @@ Loading required package: miscTools
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ), 
 +   allCoefVcov = c( 0.003, 0.011, 0.0025, 0.009 ), model = "logit" )
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEffInt(allCoef = c(0.33, 0.022, 0.005, 0.6), allXVal = c(1, NA, NA, 0.13), xPos = c(2, 3), refBound = c(8, 12), intBound = c(13, 15), model = "logit", allCoefVcov = c(0.003, 0.011, 0.0025, 0.009)) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > eff7b
     effect      stdEr 
 0.08853066 0.01757014 
@@ -96,8 +96,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
 +   allCoefVcov = c( 0.03, 0.025, 0.0007, 0.009, 0.008, 0.0009 ),
 +   model = "MNL" )
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEffInt(allCoef = c(0.2, 0.03, 0.005, -0.2, 0.03, 0.006), allXVal = c(1, NA, NA), xPos = c(2, 3), refBound = c(1, 12), intBound = c(13, 25), model = "MNL", allCoefVcov = c(0.03, 0.025, 7e-04, 0.009, 0.008, 9e-04), yCat = 2) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > eff9b
     effect      stdEr 
 0.15848634 0.08857847 
@@ -119,8 +119,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
 +   allCoefVcov = c( 0.03, 0.025, 0.0007, 0.009 ),
 +   yCat = 2, model = "CondL" )
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEffInt(allCoef = c(0.2, 0.03, 0.005, 0.091), allXVal = c(1, NA, NA, 2.45, 1, NA, NA, 0.79), xPos = c(2, 3), refBound = c(1, 12), intBound = c(13, 25), model = "CondL", allCoefVcov = c(0.03, 0.025, 7e-04, 0.009), yCat = 2) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > eff10b
        effect         stdEr 
 -5.551115e-17  1.647465e+00 
@@ -155,4 +155,4 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
 > 
 > proc.time()
    user  system elapsed 
-  0.125   0.008   0.127 
+  0.125   0.011   0.130 

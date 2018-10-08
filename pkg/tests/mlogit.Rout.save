@@ -298,8 +298,8 @@ semEla.age      stdEr
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
-2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+2: In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad, xPos = c(3, 4), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], seSimplify = FALSE, yCat = 1) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
 +   seSimplify = FALSE, yCat = 2 )
@@ -308,8 +308,8 @@ Warning messages:
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
-2: In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+2: In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad, xPos = c(3, 4), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], seSimplify = FALSE, yCat = 2) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -317,16 +317,16 @@ Warning messages:
 semEla.age      stdEr 
 -0.2691503  0.8149718 
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad, xPos = c(3, 4), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 1) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   yCat = 2 )
  semEla.age       stdEr 
 -0.04998031  0.75603171 
 Warning message:
-In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad, xPos = c(3, 4), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 2) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # approximate covariance between the coefficient of the linear term and 
 > # the coefficient of the quadratic term based on the original data
 > se <- sqrt( diag( vcov( estMLogitQuad ) ) )
@@ -779,8 +779,8 @@ stdEr                NA          NA       NA            NA         NA
     effect      stdEr 
 -0.1752513  0.7628008 
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuadInt, xPos = c(3, 4), refBound = c(30, 40), intBound = c(50, 60), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 1) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
 +   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -788,8 +788,8 @@ In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
      effect       stdEr 
 -0.07382308  0.82721343 
 Warning message:
-In prepareVcov(allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nXVal) :
-  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
+In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuadInt, xPos = c(3, 4), refBound = c(30, 40), intBound = c(50, 60), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 2) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
@@ -972,4 +972,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.489   0.024   0.507 
+  0.528   0.024   0.548 

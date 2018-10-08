@@ -88,7 +88,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     stop( "all elements of argument 'xGroups' must be -1, 0, or 1" )
   }
   # check and prepare allCoefVcov
-  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, xMeanSd = NULL )
+  allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, 
+    pCall = match.call() )
   if( model %in% c( "lpm", "probit", "logit" ) ){
     # D_mr
     DRef <- ifelse( xGroups == -1, xShares, 0 ) / 

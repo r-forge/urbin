@@ -1,21 +1,28 @@
-prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nCoef ){
+prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL, 
+  nXVal = nCoef, pCall = NULL ){
 
+  if( !is.null( pCall ) ) {
+    pCall <- paste( "In", deparse( pCall, width.cutoff = 500 ), ":\n  " )
+  }
+  
   errMsgVcov <- paste( "argument 'allCoefVcov' must be a vector of length",
     nCoef, "or a symmetric matrix with dimension", nCoef )
   if( is.null( allCoefVcov ) ) {
     allCoefVcov <- matrix( NA, nrow = nCoef, ncol = nCoef )
     if( !is.null( xMeanSd ) ) {
-      warning( "argument 'xMeanSd' is ignored,",
-        " because argument 'allCoefVcov' has not been specified" )
+      warning( pCall, "argument 'xMeanSd' is ignored,",
+        " because argument 'allCoefVcov' has not been specified",
+        call. = is.null( pCall ) )
     }
   } else if( is.matrix( allCoefVcov ) ) {
     if( nrow( allCoefVcov ) != nCoef || ncol( allCoefVcov ) != nCoef ) {
       stop( errMsgVcov )
     }
     if( !is.null( xMeanSd ) ) {
-      warning( "argument 'xMeanSd' is ignored,",
+      warning( pCall, "argument 'xMeanSd' is ignored,",
         " the full variance-covariance matrix has been specified",
-        " by argument 'allCoefVcov'" )
+        " by argument 'allCoefVcov'",
+        call. = is.null( pCall ) )
     }
   } else if( is.vector( allCoefVcov ) ) {
     if( length( allCoefVcov ) != nCoef ) {
@@ -29,17 +36,19 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd, nXVal = nCoef ){
     }
     if( is.null( xMeanSd ) ) {
       if( length( xPos ) == 2 ) {
-        warning( "the returned standard error is likely largely upward biased",
+        warning( pCall, "the returned standard error is likely largely upward biased",
           " and, thus, in most cases meaningless;",
           " you can provide the full covariance matrix", 
           " via argument 'allCoefVcov' to avoid this bias",
-          " or use argument 'xMeanSd' to substantially reduce this bias" )
+          " or use argument 'xMeanSd' to substantially reduce this bias",
+          call. = is.null( pCall ) )
       }
     } else {
       if( length( xPos ) != 2 ) {
-        warning( "argument 'xMeanSd' is ignored,",
+        warning( pCall, "argument 'xMeanSd' is ignored,",
           " because the model does not include a quadratic term",
-          " of the explanatory variable of interest" )
+          " of the explanatory variable of interest",
+          call. = is.null( pCall ) )
       } else {
         if( length( xMeanSd ) != 2 || !is.numeric( xMeanSd ) ) {
           stop( "argument 'xMeanSd' must be a vector of two numeric values")
