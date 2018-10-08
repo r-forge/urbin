@@ -242,10 +242,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
                 sum( xCoefLinQuad * pfun ) ) * xVal
           if( length( xPos ) == 2 ) {
             derivCoef[ coefNoYCat ][ xPos[2] ] <-
-              ( 2 * pfun[ yCat ] * xVal * ( 1 - 2 * pfun[ yCat ]^2 ) +
-                  xCoefLinQuad[ yCat ] * xVal^2 * pfun[ yCat ] *
-                  ( 1 - 2 * pfun[ yCat ] ) +
-                  2 * pfun[ yCat ] * xVal^2 * ( pfun[ yCat ] - 1 ) *
+              ( pfun[ yCat ] * ( 2 * xVal * ( 1 - pfun[ yCat ] ) +
+                  xCoefLinQuad[ yCat ] * xVal^2 * ( 1 - 2 * pfun[ yCat ] ) ) +
+                  pfun[ yCat ] * xVal^2 * ( 2 * pfun[ yCat ] - 1 ) *
                   sum( xCoefLinQuad * pfun ) ) * xVal
           }
         } else {
