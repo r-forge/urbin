@@ -229,27 +229,41 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
         if( p == yCat ) {
           derivCoef[ coefNoYCat ][ -xPos ] <-
             ( xCoefLinQuad[ yCat ] * pfun[ yCat ] *
-                ( 1 - 3 * pfun[ yCat ] + 2 * pfun[ yCat ]^2 ) -
-                ( pfun[ yCat ] + 2 * pfun[ yCat ]^2 ) *
+                ( 1 - 2 * pfun[ yCat ] ) + 
+                ( 2 * pfun[ yCat ]^2 - pfun[ yCat ] ) *
                 sum( xCoefLinQuad * pfun ) ) * 
             xVal * allXVal[ -xPos ]
-          derivCoef[ coefNoYCat ][ xPos ] <-
+          derivCoef[ coefNoYCat ][ xPos[1] ] <-
             ( pfun[ yCat ] *
                 ( 1 - pfun[ yCat ] + xCoefLinQuad[ yCat ] * xVal *
                     ( 1 - 2 * pfun[ yCat ] ) ) +
                 pfun[ yCat ] * xVal * 
                 ( 2 * pfun[ yCat ] - 1 ) *
                 sum( xCoefLinQuad * pfun ) ) * xVal
+          if( length( xPos ) == 2 ) {
+            derivCoef[ coefNoYCat ][ xPos[2] ] <-
+              ( 2 * pfun[ yCat ] * xVal * ( 1 - 2 * pfun[ yCat ]^2 ) +
+                  xCoefLinQuad[ yCat ] * xVal^2 * pfun[ yCat ] *
+                  ( 1 - 2 * pfun[ yCat ] ) +
+                  2 * pfun[ yCat ] * xVal^2 * ( pfun[ yCat ] - 1 ) *
+                  sum( xCoefLinQuad * pfun ) ) * xVal
+          }
         } else {
           derivCoef[ coefNoYCat ][ -xPos ] <-
             pfun[ yCat ] * pfun[ p ] *
             ( 2 * sum( xCoefLinQuad * pfun ) -
                 xCoefLinQuad[ yCat ] - xCoefLinQuad[ p ] ) *
             xVal * allXVal[ -xPos ]
-          derivCoef[ coefNoYCat ][ xPos ] <-
+          derivCoef[ coefNoYCat ][ xPos[1] ] <-
             pfun[ yCat ] * pfun[ p ] *
             ( - xCoefLinQuad[ yCat ] * xVal - xCoefLinQuad[ p ] * xVal - 
                 1 + 2 * xVal * sum( xCoefLinQuad * pfun ) ) * xVal
+          if( length( xPos ) == 2 ) {
+            derivCoef[ coefNoYCat ][ xPos[2] ] <-
+              pfun[ yCat ] * pfun[ p ] *
+              ( - xCoefLinQuad[ yCat ] * xVal^2 - xCoefLinQuad[ p ] * xVal^2 - 
+                  2 * xVal + 2 * xVal^2 * sum( xCoefLinQuad * pfun ) ) * xVal
+          }
         }
       }
     }

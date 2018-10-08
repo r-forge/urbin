@@ -110,12 +110,12 @@ semEla.age      stdEr
 > attr( xMeanLinAttr, "derivOnly" ) <- 1 
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
 +   seSimplify = FALSE, model = "MNL", yCat = 1 )
-[1] 0.2220696 0.1545345 4.4943115 2.7285360 0.0899503 0.0625949 0.3802384
-[8] 1.1052061
+[1] -0.10351957 -0.07203752  4.49431151 -1.27192968  0.08995030  0.06259490
+[7]  0.38023843  1.10520608
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
 +   seSimplify = FALSE, model = "MNL", yCat = 2 )
-[1] 0.0899503 0.0625949 0.3802384 1.1052061 0.2257414 0.1570896 7.0991751
-[8] 2.7736511
+[1]  0.08995030  0.06259490  0.38023843  1.10520608 -0.03107974 -0.02162787
+[7]  7.09917510 -0.38187216
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 1 )
@@ -143,18 +143,18 @@ stdEr               NA       NA         NA
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 1 )
- semEla.age       stdEr 
--0.25616746  0.09944135 
+semEla.age      stdEr 
+-0.2561675  0.1064539 
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 2 )
  semEla.age       stdEr 
--0.06812753  0.07327657 
+-0.06812753  0.10334845 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
 +   yCat = 1 )
 semEla.age      stdEr 
--0.2561675  0.2494431 
+-0.2561675  0.1523216 
 Warning message:
 In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -162,7 +162,7 @@ In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
 +   yCat = 2 )
  semEla.age       stdEr 
--0.06812753  0.26981199 
+-0.06812753  0.13639902 
 Warning message:
 In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -246,12 +246,12 @@ semEla.age      stdEr
 > attr( xMeanQuadAttr, "derivOnly" ) <- 1 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
 +   model = "MNL", seSimplify = FALSE, yCat = 1 )
- [1]  0.38119030  0.26526390  5.94795276  5.94795276  4.68362907  0.09516231
- [7]  0.06622184 -0.16996612 -0.16996612  1.16924522
+ [1]   -0.08515053   -0.05925482    5.94795276 1330.10823279   -1.04623197
+ [6]    0.09516231    0.06622184   -0.16996612 -186.65318577    1.16924522
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
 +   model = "MNL", seSimplify = FALSE, yCat = 2 )
- [1]  0.09516231  0.06622184 -0.16996612 -0.16996612  1.16924522  0.30757191
- [7]  0.21403411  7.86762504  7.86762504  3.77909075
+ [1]    0.09516231    0.06622184   -0.16996612 -186.65318577    1.16924522
+ [6]   -0.02098258   -0.01460142    7.86762504 1290.25455891   -0.25780981
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 1 )
@@ -283,18 +283,18 @@ stdEr                    NA          NA       NA            NA         NA
 +   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
 +   yCat = 1 )
 semEla.age      stdEr 
--0.2691503  0.4626483 
+-0.2691503  1.0233741 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
 +   yCat = 2 )
  semEla.age       stdEr 
--0.04998031  0.29003009 
+-0.04998031  0.91661594 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
 +   seSimplify = FALSE, yCat = 1 )
 semEla.age      stdEr 
--0.2691503  1.3234079 
+-0.2691503  2.1830830 
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -304,7 +304,7 @@ Warning messages:
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
 +   seSimplify = FALSE, yCat = 2 )
  semEla.age       stdEr 
--0.04998031  1.37150933 
+-0.04998031  2.27891353 
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -347,11 +347,11 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
 semEla.age      stdEr 
--0.2691503  1.3183016 
+-0.2691503  1.3187523 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
  semEla.age       stdEr 
--0.04998031  1.36236885 
+-0.04998031  1.04167637 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 1 )
@@ -390,11 +390,11 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
 semEla.age      stdEr 
--0.2691503  1.3183226 
+-0.2691503  1.3234452 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
  semEla.age       stdEr 
--0.04998031  1.36240642 
+-0.04998031  1.04972393 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 1 )
@@ -416,7 +416,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 1 )
 semEla.age      stdEr 
--0.2691503  1.3183270 
+-0.2691503  1.3282532 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -425,7 +425,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 2 )
  semEla.age       stdEr 
--0.04998031  1.37150533 
+-0.04998031  2.27627119 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -972,4 +972,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.494   0.028   0.517 
+  0.484   0.019   0.504 
