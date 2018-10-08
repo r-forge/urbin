@@ -25,8 +25,21 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   nCoef <- length( allCoef )
   # number of explanatory variables
   nXVal <- length( allXVal )
-  # prepare coefficients coefficients
-  if( model == "MNL" ){
+  # check allXVal and allCoef
+  if( model %in% c( "lpm", "probit", "logit" ) ){
+    # LPM model: allXVal can be a scalar even if there is a quadratic term
+    if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
+      temp <- c( allXVal, allXVal^2 )
+      if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
+        attr( temp, "derivOnly" ) <- 1
+      }
+      allXVal <- temp
+      nXVal <- length( allXVal )
+    }
+    if( nXVal != nCoef ) {
+      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
+    } 
+  } else if( model == "MNL" ){
     # number of alternative categories of the dependent variable
     pCoef <- round( nCoef / nXVal )
     if( nCoef != nXVal * pCoef ) {
@@ -35,31 +48,6 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
-  } else if( model == "NestedL" ){
-    NCoef <- length( allCoefBra )
-  }
-  # Check position vector
-  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
-    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
-  # LPM model: allXVal can be a scalar even if there is a quadratic term
-  if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
-    temp <- c( allXVal, allXVal^2 )
-    if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-      attr( temp, "derivOnly" ) <- 1
-    }
-    allXVal <- temp
-    nXVal <- length( allXVal )
-  }
-  # Check x values
-  if( model %in% c( "lpm", "probit", "logit" ) ){
-    if( nCoef != nXVal ) {
-      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
-    }
-  } else if( model == "MNL" ){
-    if( ( nXVal * pCoef ) != nCoef ) {
-      stop( "the length of argument 'allCoef' must be a multiple",
-        " of the length of argument 'allXVal'" )
-    }
   } else if( model == "CondL" ){
     mXVal <- matrix( allXVal, nrow = nCoef )
     nXVal <- dim( mXVal )[1]
@@ -68,6 +56,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }
   } else if( model == "NestedL" ){
+    NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
     nXValBra <- dim( mXValBra )[1]
     pXValBra <- dim( mXValBra )[2]
@@ -83,7 +72,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
-  } 
+  }
+  # Check position vector
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
+    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd )
   # Identify coefficients of interest (kth/tth covariate)
