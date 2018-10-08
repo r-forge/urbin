@@ -139,8 +139,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
           ( xCoef[ 1, i ] + 2 * xCoef[ 2, i ] * xVal ) * pfun[i] )
     }
     semEla <- xVal * pfun[ yCat ] * 
-      ( ( xCoef[ 1, yCat ] + 2 * xCoef[ 2, yCat ] * xVal )/
-          ( 1 + sum( exp( xBeta ))) + term )
+      ( ( xCoef[ 1, yCat ] + 2 * xCoef[ 2, yCat ] * xVal ) -
+          sum( ( xCoef[ 1, ] + 2 * xCoef[ 2, ] * xVal ) * pfun ) )
     dfun <- pfun[ yCat ] * ( 1/( 1 + sum( exp( xBeta ) ) ) + term )
   } else if( model == "CondL" ){    #checkXBeta missing
     xVal <- rep( NA, pXVal )

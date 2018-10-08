@@ -87,11 +87,11 @@ Likelihood ratio test : chisq = 43.745 (p.value = 8.3055e-08)
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3, 
 +   model = "MNL", yCat = 1 )
 semEla.age      stdEr 
- -0.943771         NA 
+-0.2561675         NA 
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3, 
 +   model = "MNL", yCat = 2 )
-semEla.age      stdEr 
- -0.458723         NA 
+ semEla.age       stdEr 
+-0.06812753          NA 
 > # semi-elasticity of age based on numerical derivation
 > Mroz87Lower <- as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) )
 > Mroz87Lower$lfp3 <- factor( "no", levels = levels( Mroz87$lfp3 ) )
@@ -123,20 +123,20 @@ In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLinAttr, 3,  :
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 1 )
-           full:(intercept) full:kids full:age full:educ part:(intercept)
-semEla.age       -0.5246355 -0.365085 4.706665 -6.446119        0.3331426
-stdEr                    NA        NA       NA        NA               NA
-           part:kids part:age part:educ
-semEla.age 0.2318283 10.72512  4.093274
-stdEr             NA       NA        NA
+           full:(intercept)   full:kids full:age full:educ part:(intercept)
+semEla.age       -0.1035196 -0.07203752 4.494312  -1.27193        0.0899503
+stdEr                    NA          NA       NA        NA               NA
+           part:kids  part:age part:educ
+semEla.age 0.0625949 0.3802384  1.105206
+stdEr             NA        NA        NA
 > numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 2 )
-           full:(intercept) full:kids full:age full:educ part:(intercept)
-semEla.age        0.2413295 0.1679371 6.819584   2.96518        -0.283529
-stdEr                    NA        NA       NA        NA               NA
-            part:kids part:age part:educ
-semEla.age -0.1973031 12.90177 -3.483679
-stdEr              NA       NA        NA
+           full:(intercept) full:kids  full:age full:educ part:(intercept)
+semEla.age        0.0899503 0.0625949 0.3802384  1.105206      -0.03107974
+stdEr                    NA        NA        NA        NA               NA
+             part:kids part:age  part:educ
+semEla.age -0.02162787 7.099175 -0.3818722
+stdEr               NA       NA         NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
 +   model = "MNL", seSimplify = TRUE, yCat = 1 )
@@ -148,14 +148,14 @@ stdEr              NA       NA        NA
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 1 )
  semEla.age       stdEr 
--0.94377098  0.06268823 
+-0.25616746  0.06268823 
 Warning message:
 In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 2 )
  semEla.age       stdEr 
--0.45872304  0.06161317 
+-0.06812753  0.06161317 
 Warning message:
 In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
@@ -164,7 +164,7 @@ In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
 +   yCat = 1 )
  semEla.age       stdEr 
--0.94377098  0.06268823 
+-0.25616746  0.06268823 
 Warning messages:
 1: In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -174,7 +174,7 @@ Warning messages:
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
 +   yCat = 2 )
  semEla.age       stdEr 
--0.45872304  0.06161317 
+-0.06812753  0.06161317 
 Warning messages:
 1: In urbinEla(coef(estMLogitLin)[coefPermuteLin], xMeanLin, 3, model = "MNL",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -184,11 +184,11 @@ Warning messages:
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 1 )
  semEla.age       stdEr 
--0.94377098  0.06268823 
+-0.25616746  0.06268823 
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
 +   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 2 )
  semEla.age       stdEr 
--0.45872304  0.06161317 
+-0.06812753  0.06161317 
 > 
 > ### quadratic in age
 > estMLogitQuad <- mlogit( lfp3 ~ 0 | kids + age + I(age^2) + educ, 
@@ -235,11 +235,11 @@ Likelihood ratio test : chisq = 54.331 (p.value = 5.9544e-09)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", yCat = 1 )
 semEla.age      stdEr 
- -1.042806         NA 
+-0.2691503         NA 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", yCat = 2 )
-semEla.age      stdEr 
--0.4624401         NA 
+ semEla.age       stdEr 
+-0.04998031          NA 
 > # semi-elasticity of age based on numerical derivation
 > Mroz87Lower <- as.data.frame( 
 +   t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) )
@@ -275,12 +275,12 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuadAttr,  :
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 1 )
-           full:(intercept)  full:kids full:age full:I(age^2) full:educ
-semEla.age       -0.5232073 -0.3640911 7.206186      1559.798 -6.428571
-stdEr                    NA         NA       NA            NA        NA
-           part:(intercept) part:kids part:age part:I(age^2) part:educ
-semEla.age        0.3799777 0.2644201 11.94547      328.7113   4.66873
-stdEr                    NA        NA       NA            NA        NA
+           full:(intercept)   full:kids full:age full:I(age^2) full:educ
+semEla.age      -0.08515053 -0.05925482 5.947953      660.1033 -1.046232
+stdEr                    NA          NA       NA            NA        NA
+           part:(intercept)  part:kids   part:age part:I(age^2) part:educ
+semEla.age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
+stdEr                    NA         NA         NA            NA        NA
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
 +   model = "MNL", seSimplify = TRUE, yCat = 1 )
@@ -291,7 +291,7 @@ stdEr                    NA        NA       NA            NA        NA
 +   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
 +   yCat = 1 )
  semEla.age       stdEr 
--1.04280615  0.06128831 
+-0.26915031  0.06128831 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
@@ -300,7 +300,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
 +   seSimplify = FALSE, yCat = 1 )
 semEla.age      stdEr 
--1.0428062  0.8149718 
+-0.2691503  0.8149718 
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -313,7 +313,7 @@ Warning messages:
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   yCat = 1 )
 semEla.age      stdEr 
--1.0428062  0.8149718 
+-0.2691503  0.8149718 
 Warning message:
 In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
@@ -337,14 +337,14 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
 semEla.age      stdEr 
- -1.042806   0.052575 
+-0.2691503  0.0525750 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.04877269 
+-0.04998031  0.04877269 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
@@ -352,7 +352,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 1 )
 semEla.age      stdEr 
- -1.042806   0.052575 
+-0.2691503  0.0525750 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
@@ -360,7 +360,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.04877269 
+-0.04998031  0.04877269 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
@@ -386,14 +386,14 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
  semEla.age       stdEr 
--1.04280615  0.07398476 
+-0.26915031  0.07398476 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.06863406 
+-0.04998031  0.06863406 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   exact (non-simplified) calculation of derivatives of semi-elasticities wrt coefficients has not yet been implemented for MNL models
@@ -401,7 +401,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 1 )
  semEla.age       stdEr 
--1.04280615  0.07398476 
+-0.26915031  0.07398476 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
@@ -409,7 +409,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
 +   seSimplify = TRUE, yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.06863406 
+-0.04998031  0.06863406 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
@@ -418,7 +418,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 1 )
  semEla.age       stdEr 
--1.04280615  0.07398476 
+-0.26915031  0.07398476 
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -429,7 +429,7 @@ Warning messages:
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.06863406 
+-0.04998031  0.06863406 
 Warning messages:
 1: In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -439,12 +439,12 @@ Warning messages:
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1 )
  semEla.age       stdEr 
--1.04280615  0.07398476 
+-0.26915031  0.07398476 
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 2 )
  semEla.age       stdEr 
--0.46244015  0.06863406 
+-0.04998031  0.06863406 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 > # estMLogitQuadMfx <- logitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
@@ -978,4 +978,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.497   0.033   0.525 
+  0.481   0.020   0.495 

@@ -56,8 +56,8 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 +   allXVal = c( 1, 8.4, 0.06 ), xPos = 3,
 +   model = "MNL", yCat = 2 )
 > ela8a
-     semEla       stdEr 
-0.002792501          NA 
+      semEla        stdEr 
+0.0004508535           NA 
 > 
 > ela8b <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 8.4, 0.06 ), 
@@ -66,15 +66,15 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 +   model = "MNL", yCat = 2 )
 > ela8b
       semEla        stdEr 
-2.792501e-03 1.150331e-05 
+4.508535e-04 1.150331e-05 
 > 
 > # Example
 > ela9a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 0.04, 0.0016 ), xPos = c( 2, 3 ),
 +   model = "MNL", yCat = 2 )
 > ela9a
-      semEla        stdEr 
-0.0002470181           NA 
+       semEla         stdEr 
+-0.0008640351            NA 
 > 
 > ela9b <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 0.04, 0.0016 ), 
@@ -85,8 +85,8 @@ Warning message:
 In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias
 > ela9b
-      semEla        stdEr 
-2.470181e-04 1.051034e-05 
+       semEla         stdEr 
+-8.640351e-04  1.051034e-05 
 > 
 > # Example
 > ela10a <- urbinEla( allCoef = c( 0.445, 0.03, 0.00002 ),
@@ -181,4 +181,4 @@ In prepareVcov(allCoefVcov, length(allCoef), xPos, xMeanSd) :
 > 
 > proc.time()
    user  system elapsed 
-  0.099   0.016   0.109 
+  0.103   0.012   0.109 
