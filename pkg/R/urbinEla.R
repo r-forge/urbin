@@ -217,15 +217,41 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       derivCoef[ xPos[2] ] <- derivCoef[ xPos[2] ] + dfun * 2 * xVal^2
     }
   } else if( model == "MNL" ){
-    if( !seSimplify ) {
-      warning( "exact (non-simplified) calculation of derivatives of",
-        " semi-elasticities wrt coefficients has not yet been implemented",
-        " for MNL models" )
-    }
     derivCoef <- rep( 0, length( allCoef ) )
-    derivCoef[ xPos[1] ] <- dfun * xVal
-    if( length( xPos ) == 2 ) {
-      derivCoef[ xPos[2] ] <- dfun * 2 * xVal^2
+    if( seSimplify ) {
+      derivCoef[ xPos[1] ] <- dfun * xVal
+      if( length( xPos ) == 2 ) {
+        derivCoef[ xPos[2] ] <- dfun * 2 * xVal^2
+      }
+    } else {
+      for( p in 1:nYCat ) {
+        coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
+        if( p == yCat ) {
+          derivCoef[ coefNoYCat ][ -xPos ] <-
+            ( xCoefLinQuad[ yCat ] * pfun[ yCat ] *
+                ( 1 - 3 * pfun[ yCat ] + 2 * pfun[ yCat ]^2 ) -
+                ( pfun[ yCat ] + 2 * pfun[ yCat ]^2 ) *
+                sum( xCoefLinQuad * pfun ) ) * 
+            xVal * allXVal[ -xPos ]
+          derivCoef[ coefNoYCat ][ xPos ] <-
+            ( pfun[ yCat ] *
+                ( 1 - pfun[ yCat ] + xCoefLinQuad[ yCat ] * xVal *
+                    ( 1 - 2 * pfun[ yCat ] ) ) +
+                pfun[ yCat ] * xVal * 
+                ( 2 * pfun[ yCat ] - 1 ) *
+                sum( xCoefLinQuad * pfun ) ) * xVal
+        } else {
+          derivCoef[ coefNoYCat ][ -xPos ] <-
+            pfun[ yCat ] * pfun[ p ] *
+            ( 2 * sum( xCoefLinQuad * pfun ) -
+                xCoefLinQuad[ yCat ] - xCoefLinQuad[ p ] ) *
+            xVal * allXVal[ -xPos ]
+          derivCoef[ coefNoYCat ][ xPos ] <-
+            pfun[ yCat ] * pfun[ p ] *
+            ( - xCoefLinQuad[ yCat ] * xVal - xCoefLinQuad[ p ] * xVal - 
+                1 + 2 * xVal * sum( xCoefLinQuad * pfun ) ) * xVal
+        }
+      }
     }
   } else if( model == "CondL" ){
     if( !seSimplify ) {
