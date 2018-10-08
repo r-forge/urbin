@@ -7,7 +7,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   nXVal <- length( allXVal )
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
-    maxVal = nCoef )
+    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # number of categories
   nCat <- length( xPos ) + 1
   # check allXVal and allCoef

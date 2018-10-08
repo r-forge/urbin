@@ -68,7 +68,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   
   
   # Check position vector
-  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, maxVal = nCoef )
+  checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
+    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd )
   # check the boundaries of the intervals

@@ -33,7 +33,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef + 1, 
-    minVal = 0, maxVal = nCoef, requiredVal = 0 )
+    minVal = 0, maxVal = ifelse( model == "MNL", nXVal, nCoef ), 
+    requiredVal = 0 )
   # number of intervals
   nInt <- length( xPos ) 
   # check 'xBound' and replace infinite values
