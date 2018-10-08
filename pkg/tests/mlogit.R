@@ -112,21 +112,34 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ),
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 1 )
+numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 2 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
   model = "MNL", seSimplify = TRUE, yCat = 1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 2 )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
   yCat = 1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 2 )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
   seSimplify = FALSE, yCat = 1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
+  seSimplify = FALSE, yCat = 2 )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   yCat = 1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 2 )
 # approximate covariance between the coefficient of the linear term and 
 # the coefficient of the quadratic term based on the original data
 se <- sqrt( diag( vcov( estMLogitQuad ) ) )
