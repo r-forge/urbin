@@ -17,19 +17,19 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }  
   } else if( model == "MNL" ){
-    # number of ???
-    pCoef <- round( nCoef / nXVal )
-    if( nCoef != nXVal * pCoef ) {
+    # number of alternative categories of the dependent variable
+    nYCat <- round( nCoef / nXVal )
+    if( nCoef != nXVal * nYCat ) {
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
     # create matrix of coefficients
-    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
     xCoef <- rbind( mCoef[ xPos, ], 0 )
   } else if( model == "CondL" ){
-    # number of ???
-    pCoef <- round( nXVal / nCoef )
-    if( nXVal != nCoef * pCoef ) {
+    # number of categories of the dependent variable
+    nYCat <- round( nXVal / nCoef )
+    if( nXVal != nCoef * nYCat ) {
       stop( "length of argument 'allXVal' must be a multiple",
         " of the length of argument 'allCoef'" )
     } 
@@ -70,7 +70,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       stop( "the share of the observations in at least one category",
         " is negative" )
     }
-    for( p in 1:pCoef ){
+    for( p in 1:nYCat ){
       if( sum( xShares[ , p ] ) > 1 ){
         stop( "the shares in argument 'xShares' sum up to a value larger than 1" ) 
       }
@@ -132,16 +132,16 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
   } else if( model == "CondL" ){
     # D_mr
-    DRef <- matrix( NA, nrow = nCat, ncol = pCoef )
-    for( p in 1:pCoef ) {
+    DRef <- matrix( NA, nrow = nCat, ncol = nYCat )
+    for( p in 1:nYCat ) {
       DRef[ , p ] <- ifelse( xGroups == -1, xShares[ , p ], 0 ) /
         sum( xShares[ xGroups == -1, p ] )
     }
     XBetaRef <- allCoef[ -xPos ] %*% mXVal[ -xPos, , drop = FALSE ] + 
       xCoef %*% DRef
     # D_ml
-    DEffect <- matrix( NA, nrow = nCat, ncol = pCoef )
-    for( p in 1:pCoef ) {
+    DEffect <- matrix( NA, nrow = nCat, ncol = nYCat )
+    for( p in 1:nYCat ) {
       DEffect[ , p ] <- ifelse( xGroups == 1, xShares[ , p ], 0 ) /
         sum( xShares[ xGroups == 1, p ] )
     }
@@ -172,8 +172,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect[ -nCat ] - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef[ -nCat ]
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
-    for( p in 1:pCoef ){
+    derivCoef <- matrix( NA, nrow = nXVal, ncol = nYCat )
+    for( p in 1:nYCat ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
           ( exp( XBetaEffect[ p ] ) * 

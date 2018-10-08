@@ -11,23 +11,23 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
   } else if( model == "MNL" ){
-    # number of ???
-    pCoef <- round( nCoef / nXVal )
-    if( nCoef != nXVal * pCoef ) {
+    # number of alternative categories of the dependent variable
+    nYCat <- round( nCoef / nXVal )
+    if( nCoef != nXVal * nYCat ) {
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
     # create matrix of coefficients
-    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
   } else if( model == "CondL" ) {
-    # number of ???
-    pCoef <- round( nXVal / nCoef )
-    if( nXVal != nCoef * pCoef ) {
+    # number of categories of the dependent variable
+    nYCat <- round( nXVal / nCoef )
+    if( nXVal != nCoef * nYCat ) {
       stop( "length of argument 'allXVal' must be a multiple",
         " of the length of argument 'allCoef'" )
     } 
     # create matrix of explanatory variables
-    mXVal <- matrix( allXVal, nrow = nCoef )
+    mXVal <- matrix( allXVal, nrow = nCoef, ncol = nYCat )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -88,8 +88,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     }
     checkXBeta( xBeta )
   } else if( model == "MNL" ){
-    xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
-    for( p in 1:pCoef ){
+    xBeta <- matrix( rep( rep( NA, nInt ), nYCat ), ncol = nYCat ) 
+    for( p in 1:nYCat ){
       for( i in 1:nInt ){
         allXValTemp <- replace( allXVal, xPos, 0 )
         if( xPos[i] != 0 ) {
@@ -100,8 +100,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       checkXBeta( xBeta[,p] )
     }
   } else if( model == "CondL" ) {
-    xBeta <- matrix( rep( rep( NA, nInt ), pCoef ), ncol = pCoef ) 
-    for( p in 1:pCoef ){
+    xBeta <- matrix( rep( rep( NA, nInt ), nYCat ), ncol = nYCat ) 
+    for( p in 1:nYCat ){
       for( i in 1:nInt ){
         allXValTemp <- replace( mXVal[ ,p], xPos, 0 )
         if( xPos[i] != 0 ) {
@@ -173,11 +173,11 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
         ( xBound[m+2] - xBound[m] )
     } 
   } else if( model == "MNL" ){
-    gradM <- array( 0, c( nXVal, nInt - 1, pCoef ) )
+    gradM <- array( 0, c( nXVal, nInt - 1, nYCat ) )
     gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
         ( 1 + rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
       ( 1 + rowSums( exp( xBeta ) ) )^2 
-    for( p in 1:pCoef ){
+    for( p in 1:nYCat ){
       gradExpVecO <- ( exp( xBeta[ , yCat ] ) * exp( xBeta[ , p] ) )/
         ( 1 + rowSums( exp( xBeta ) ) )^2
       for( m in 1:( nInt - 1 ) ) {

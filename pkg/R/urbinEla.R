@@ -41,22 +41,22 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     } 
   } else if( model == "MNL" ){
     # number of alternative categories of the dependent variable
-    pCoef <- round( nCoef / nXVal )
-    if( nCoef != nXVal * pCoef ) {
+    nYCat <- round( nCoef / nXVal )
+    if( nCoef != nXVal * nYCat ) {
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
     # create matrix of coefficients
-    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
   } else if( model == "CondL" ){
     # number of categories of the dependent variable
-    pXVal <- round( nXVal / nCoef )
-    if( nXVal != nCoef * pXVal ) {
+    nYCat <- round( nXVal / nCoef )
+    if( nXVal != nCoef * nYCat ) {
       stop( "length of argument 'allXVal' must be a multiple",
         " of the length of argument 'allCoef'" )
     } 
     # create matrix of explanatory variables
-    mXVal <- matrix( allXVal, nrow = nCoef, ncol = pXVal )
+    mXVal <- matrix( allXVal, nrow = nCoef, ncol = nYCat )
   } else if( model == "NestedL" ){
     NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
@@ -94,7 +94,15 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           "to the squared value of 'allXVal[ xPos[1] ]' " ) 
       }    
-    } else if( model %in% c( "CondL", "NestedL" ) ){
+    } else if( model == "CondL" ){
+      xCoef <- allCoef[ xPos ]
+      for( p in 1:nYCat ){
+        if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
+          stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
+            " to the squared value of 'allXVal[ xPos[1] ]' " ) 
+        }  
+      }
+    } else if( model == "NestedL" ){
       xCoef <- allCoef[ xPos ]
       for( p in 1:pXVal ){
         if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
@@ -147,8 +155,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
     dfun <- pfun[ yCat ] * ( 1/( 1 + sum( exp( xBeta ) ) ) + term )
   } else if( model == "CondL" ){    #checkXBeta missing
-    xVal <- rep( NA, pXVal )
-    for( p in 1:pXVal ){
+    xVal <- rep( NA, nYCat )
+    for( p in 1:nYCat ){
       xVal[p] <- mXVal[ xPos[ 1 ], p ]
     }
     xBeta <- allCoef %*% mXVal

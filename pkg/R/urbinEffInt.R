@@ -30,18 +30,18 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     #     " (set these values to 'NA' to avoid this warning)" )
     # }
   } else if( model == "MNL" ){
-    # number of ???
-    pCoef <- round( nCoef / nXVal )
-    if( nCoef != nXVal * pCoef ) {
+    # number of alternative categories of the dependent variable
+    nYCat <- round( nCoef / nXVal )
+    if( nCoef != nXVal * nYCat ) {
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
     # create matrix of coefficients
-    mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
+    mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
   } else if( model == "CondL"){
-    # number of ???
-    pCoef <- round( nXVal / nCoef )
-    if( nXVal != nCoef * pCoef ) {
+    # number of categories of the dependent variable
+    nYCat <- round( nXVal / nCoef )
+    if( nXVal != nCoef * nYCat ) {
       stop( "length of argument 'allXVal' must be a multiple",
         " of the length of argument 'allCoef'" )
     } 
@@ -100,7 +100,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     checkXBeta( c( intXbeta, refXbeta ) )
   } else if( model == "CondL" ){
     mXValint <- mXValref <- mXVal
-    for( p in 1:pCoef ){
+    for( p in 1:nYCat ){
       mXValint[ ,p] <- replace( mXValint[ ,p], xPos, intX )
       mXValref[ ,p] <- replace( mXValref[ ,p], xPos, refX )
     }
@@ -177,8 +177,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow = nXVal, ncol = pCoef )
-    for( p in 1:pCoef ){
+    derivCoef <- matrix( NA, nrow = nXVal, ncol = nYCat )
+    for( p in 1:nYCat ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
           ( exp( intXbeta[ p ] ) * 
