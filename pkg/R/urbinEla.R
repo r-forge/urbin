@@ -49,12 +49,14 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = pCoef )
   } else if( model == "CondL" ){
-    mXVal <- matrix( allXVal, nrow = nCoef )
-    nXVal <- dim( mXVal )[1]
-    pXVal <- dim( mXVal )[2]
-    if( nCoef != dim( mXVal )[1] ) {
-      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
-    }
+    # number of categories of the dependent variable
+    pXVal <- round( nXVal / nCoef )
+    if( nXVal != nCoef * pXVal ) {
+      stop( "length of argument 'allXVal' must be a multiple",
+        " of the length of argument 'allCoef'" )
+    } 
+    # create matrix of explanatory variables
+    mXVal <- matrix( allXVal, nrow = nCoef, ncol = pXVal )
   } else if( model == "NestedL" ){
     NCoef <- length( allCoefBra )
     mXValBra <- matrix( allXValBra, nrow = NCoef )
