@@ -132,10 +132,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   } else if( model == "MNL" ){     #checkXBeta missing
     xVal <- allXVal[ xPos[1] ]
     xBeta <- allXVal %*% mCoef
-    pfun <- rep( NA, length( xBeta ))
+    pfun <- exp( xBeta ) / ( 1 + sum( exp( xBeta ) ) )
     term <- 0
     for( i in 1:length( xBeta )){
-      pfun[i] <- exp( xBeta[i] )/( 1 + sum( exp( xBeta ) ) )
       term <- term + ( ( xCoef[ 1, yCat ] + 2 * xCoef[ 2, yCat ] * xVal ) -
           ( xCoef[ 1, i ] + 2 * xCoef[ 2, i ] * xVal ) * pfun[i] )
     }
