@@ -118,8 +118,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     if( model %in% c( "lpm", "probit", "logit", "CondL", "NestedL" ) ){
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( model == "MNL" ){
-      xCoef <- matrix( c( mCoef[ xPos, ], rep( 0, dim( mCoef )[ 2 ] ) ), 
-        nrow = 2, byrow = TRUE  ) 
+      xCoef <- rbind( mCoef[ xPos, ], 0 ) 
     } else {
       stop( "argument 'model' specifies an unknown type of model" )
     }    
