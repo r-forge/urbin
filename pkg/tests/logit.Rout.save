@@ -130,6 +130,11 @@ semEla.age      stdEr
 > estLogitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
      dF/dx  Std. Err. 
 -0.3236826  0.1183349 
+> urbinEla( estLogitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, 
++   model = "lpm", estLogitLinMfx$mfxest[ "age", 2 ] )
+semEla.age      stdEr 
+-0.3236826  0.1183349 
+> 
 > 
 > ### quadratic in age
 > estLogitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -241,6 +246,21 @@ semEla.age      stdEr
 +   2 * estLogitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanQuad[ "age" ]^2
      dF/dx  Std. Err. 
 -0.3347451  2.2359259 
+> urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
++   xMeanQuad["age"], 1:2, 
++   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+semEla.age      stdEr 
+-0.3347451  1.5810384 
+Warning message:
+In urbinEla(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = xMeanQuad["age"], xPos = 1:2, model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
+> urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
++   xMeanQuad["age"], 1:2, 
++   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+semEla.age      stdEr 
+-0.3347451  0.1435284 
+> 
 > 
 > ### age is interval-coded (age is in the range 30-60)
 > # create dummy variables for age intervals
@@ -346,6 +366,14 @@ stdEr           NA
 +   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
     semEla      stdEr 
 -0.4749991  0.1671207 
+> # semi-elasticity of age based on partial derivatives calculated by the mfx package
+> estLogitIntMfx <- logitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
++   data = Mroz87 )
+> urbinElaInt( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], 
++   c( 1, 2, 0, 3 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
++   estLogitIntMfx$mfxest[ 2:4, 2 ] )
+   semEla     stdEr 
+-0.477814  0.171646 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -394,6 +422,12 @@ stdEr           NA         NA       NA        NA
 +   allCoefVcov = sqrt( diag( vcov( estLogitLin ) ) ) )
      effect       stdEr 
 -0.15246566  0.06446329 
+> # semi-elasticity of age based on partial derivative calculated by the mfx package
+> urbinEffInt( estLogitLinMfx$mfxest[ "age", 1 ], NA, 1, 
++   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
++   estLogitLinMfx$mfxest[ "age", 2 ] )
+     effect       stdEr 
+-0.15218571  0.05563745 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -455,6 +489,22 @@ In urbinEffInt(allCoef = coef(estLogitQuad), allXVal = xMeanQuadInt, xPos = c(3,
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
 -0.25353772  0.07205095 
+> # semi-elasticity of age based on partial derivative calculated by the mfx package
+> urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
++   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
++   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+    effect      stdEr 
+-0.2537726  0.7651708 
+Warning message:
+In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = NA, xPos = 1:2, refBound = c(30, 40), intBound = c(50, 60), model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
+> urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
++   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
++   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+     effect       stdEr 
+-0.25377263  0.07577325 
+> 
 > 
 > ### grouping and re-basing categorical variables
 > ### effects of age changing from the 30-44 category to the 53-60 category
@@ -502,6 +552,12 @@ stdEr           NA
 +   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ), model = "logit" )
      effect       stdEr 
 -0.25380744  0.07119196 
+> # semi-elasticity of age based on partial derivative calculated by the mfx package
+> urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
++   c( -1, -1, 1, 0 ), model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
+     effect       stdEr 
+-0.25514364  0.07315018 
+> 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
 > urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
@@ -538,8 +594,13 @@ stdEr           NA          NA           NA           NA           NA        NA
 +   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ), model = "logit" )
     effect      stdEr 
 0.22385578 0.06608907 
+> # semi-elasticity of age based on partial derivative calculated by the mfx package
+> urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
++   c( 0, 1, -1, 1 ), model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
+    effect      stdEr 
+0.22465561 0.06745489 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.535   0.024   0.554 
+  0.535   0.044   0.571 

@@ -47,6 +47,9 @@ urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit",
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 estProbitLinMfx <- probitmfx( lfp ~ kids + age + educ, data = Mroz87 )
 estProbitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
+urbinEla( estProbitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, 
+  model = "lpm", estProbitLinMfx$mfxest[ "age", 2 ] )
+
 
 ### quadratic in age
 estProbitQuad <- glm( lfp ~ kids + age + I(age^2) + educ, 
@@ -98,6 +101,14 @@ urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit",
 estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
 estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanQuad[ "age" ] +
   2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanQuad[ "age" ]^2
+urbinEla( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
+  xMeanQuad["age"], 1:2, 
+  model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+urbinEla( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
+  xMeanQuad["age"], 1:2, 
+  model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+
 
 ### age is interval-coded (age is in the range 30-60)
 # create dummy variables for age intervals
@@ -157,6 +168,12 @@ urbinElaInt( coef( estProbitInt ), xMeanInt,
 urbinElaInt( coef( estProbitInt ), xMeanInt, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), 
   model = "probit", sqrt( diag( vcov( estProbitInt ) ) ) )
+# semi-elasticity of age based on partial derivatives calculated by the mfx package
+estProbitIntMfx <- probitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
+  data = Mroz87 )
+urbinElaInt( estProbitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], 
+  c( 1, 2, 0, 3 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
+  estProbitIntMfx$mfxest[ 2:4, 2 ] )
 
 
 ### effect of age changing between discrete intervals 
@@ -194,6 +211,10 @@ urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
 urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
   allCoefVcov = sqrt( diag( vcov( estProbitLin ) ) ) )
+# semi-elasticity of age based on partial derivative calculated by the mfx package
+urbinEffInt( estProbitLinMfx$mfxest[ "age", 1 ], NA, 1, 
+  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estProbitLinMfx$mfxest[ "age", 2 ] )
 
 
 ### effect of age changing between discrete intervals 
@@ -237,6 +258,15 @@ urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
   allCoefVcov = sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+# semi-elasticity of age based on partial derivative calculated by the mfx package
+urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
+  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
+  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+
 
 ### grouping and re-basing categorical variables
 ### effects of age changing from the 30-44 category to the 53-60 category
@@ -268,6 +298,11 @@ urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 # with standard errors only
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
+# semi-elasticity of age based on partial derivative calculated by the mfx package
+urbinEffCat( estProbitIntMfx$mfxest[ 2:4, 1 ], 
+  xMeanInt[ 3:5 ], c(1:3), c( -1, -1, 1, 0 ), model = "lpm", 
+  estProbitIntMfx$mfxest[ 2:4, 2 ] )
+
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
@@ -291,4 +326,7 @@ urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 # with standard errors only
 urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
+# semi-elasticity of age based on partial derivative calculated by the mfx package
+urbinEffCat( estProbitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
+  c( 0, 1, -1, 1 ), model = "lpm", estProbitIntMfx$mfxest[ 2:4, 2 ] )
 
