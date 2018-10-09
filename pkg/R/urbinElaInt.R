@@ -17,8 +17,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
-    # check argument yCat
-    checkYCat( yCat, nYCat ) 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
   } else if( model == "CondL" ) {
@@ -32,6 +30,12 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     mXVal <- matrix( allXVal, nrow = nCoef, ncol = nYCat )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
+  }
+  # check argument yCat
+  if( model %in% c( "MNL", "CondL" ) ) {
+    checkYCat( yCat, nYCat ) 
+  } else if( model != "NestedL" && !is.null( yCat ) ) {
+    warning( "argument 'yCat' is ignored" )
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef + 1, 

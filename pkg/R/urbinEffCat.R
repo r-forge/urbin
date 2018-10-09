@@ -23,8 +23,6 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       stop( "length of argument 'allCoef' must be a multiple",
         " of the length of argument 'allXVal'" )
     } 
-    # check argument yCat
-    checkYCat( yCat, nYCat ) 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
     xCoef <- rbind( mCoef[ xPos, ], 0 )
@@ -40,6 +38,12 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     xCoef <- c( allCoef[ xPos ], 0 )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
+  }
+  # check argument yCat
+  if( model %in% c( "MNL", "CondL" ) ) {
+    checkYCat( yCat, nYCat ) 
+  } else if( model != "NestedL" && !is.null( yCat ) ) {
+    warning( "argument 'yCat' is ignored" )
   }
   # shares in each category
   if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
