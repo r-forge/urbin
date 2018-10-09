@@ -95,7 +95,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     }
     checkXBeta( xBeta )
   } else if( model == "MNL" ){
-    xBeta <- matrix( rep( rep( NA, nInt ), nYCat ), ncol = nYCat ) 
+    xBeta <- matrix( NA, nrow = nInt, ncol = nYCat ) 
     for( p in 1:nYCat ){
       for( i in 1:nInt ){
         allXValTemp <- replace( allXVal, xPos, 0 )
