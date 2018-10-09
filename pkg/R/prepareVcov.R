@@ -83,6 +83,15 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL,
           allCoefVcov[ xPosRep[1], xPosRep[2] ] <- 
             allCoefVcov[ xPosRep[2], xPosRep[1] ] <-
             sigmaSq * XXinv[2,3]
+          if( all( xPos != 1 ) ) {
+            xPosIntercept <- (i-1) * nXVal + 1
+            allCoefVcov[ xPosIntercept, xPosRep[1] ] <- 
+              allCoefVcov[ xPosRep[1], xPosIntercept ] <-
+              sigmaSq * XXinv[1,2]
+            allCoefVcov[ xPosIntercept, xPosRep[2] ] <- 
+              allCoefVcov[ xPosRep[2], xPosIntercept ] <-
+              sigmaSq * XXinv[1,3]
+          }
         }
       }
     }

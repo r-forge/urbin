@@ -266,8 +266,8 @@ In urbinEla(coef(estLogitQuad), xMeanQuad, c(3, 4), model = "logit",  :
 +   sqrt( diag( vcov( estLogitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE )
-semEla.age      stdEr 
--0.3171501  0.3273720 
+ semEla.age       stdEr 
+-0.31715014  0.09912969 
 Warning message:
 In urbinEla(coef(estLogitQuad), xMeanQuad, c(3, 4), model = "logit",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -496,7 +496,7 @@ In urbinEffInt(allCoef = coef(estLogitQuad), allXVal = xMeanQuadInt, xPos = c(3,
 +   allCoefVcov = sqrt( diag( vcov( estLogitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
--0.25353772  0.07189688 
+-0.25353772  0.07205095 
 > 
 > ### grouping and re-basing categorical variables
 > ### effects of age changing from the 30-44 category to the 53-60 category
@@ -584,4 +584,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.607   0.036   0.636 
+  0.540   0.052   0.586 

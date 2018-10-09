@@ -418,7 +418,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 1 )
 semEla.age      stdEr 
--0.2691503  0.5135679 
+-0.2691503  0.1988943 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -427,7 +427,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE, yCat = 2 )
  semEla.age       stdEr 
--0.04998031  0.40196768 
+-0.04998031  0.17817886 
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
@@ -798,14 +798,14 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1 )
-    effect      stdEr 
--0.1752513  0.4140521 
+     effect       stdEr 
+-0.17525132  0.05352258 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 2 )
      effect       stdEr 
--0.07382308  0.28901516 
+-0.07382308  0.06745470 
 > 
 > 
 > ### grouping and re-basing categorical variables
@@ -974,4 +974,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.509   0.037   0.539 
+  0.528   0.016   0.538 
