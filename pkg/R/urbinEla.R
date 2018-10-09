@@ -48,6 +48,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
+    # add column for coefficients of the reference category
+    mCoef <- cbind( mCoef, 0 )
   } else if( model == "CondL" ){
     # number of categories of the dependent variable
     nYCat <- round( nXVal / nCoef )
@@ -78,6 +80,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   # check argument yCat
   if( model %in% c( "MNL", "CondL" ) ) {
     checkYCat( yCat, nYCat ) 
+    if( model == "MNL" ) {
+      yCat[ yCat == 0 ] <- nYCat + 1
+    }
   } else if( model != "NestedL" && !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
@@ -152,7 +157,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     xCoefLinQuad <- xCoef[ 1, ] + 2 * xCoef[ 2, ] * xVal
     xBeta <- allXVal %*% mCoef
     checkXBeta( xBeta )
-    pfun <- exp( xBeta ) / ( 1 + sum( exp( xBeta ) ) )
+    pfun <- exp( xBeta ) / sum( exp( xBeta ) )
     semEla <- xVal * pfun[ yCat ] * 
       ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
   } else if( model == "CondL" ){
@@ -223,16 +228,20 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     derivCoef <- rep( 0, length( allCoef ) )
     if( seSimplify ) {
       derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] <- 
-        - pfun[ yCat ] * xVal * pfun
-      derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] <- 
-        derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] + 
-        pfun[ yCat ] * xVal
+        - pfun[ yCat ] * xVal * pfun[ 1:nYCat ]
+      if( yCat <= nYCat ) {
+        derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] <- 
+          derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] + 
+          pfun[ yCat ] * xVal
+      }
       if( length( xPos ) == 2 ) {
         derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] <- 
-          - pfun[ yCat ] * 2 * xVal^2 * pfun
-        derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] <- 
-          derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] +
-          pfun[ yCat ] * 2 * xVal^2
+          - pfun[ yCat ] * 2 * xVal^2 * pfun[ 1:nYCat ]
+        if( yCat <= nYCat ) {
+          derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] <- 
+            derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] +
+            pfun[ yCat ] * 2 * xVal^2
+        }
       }
     } else {
       for( p in 1:nYCat ) {
