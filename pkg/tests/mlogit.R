@@ -140,62 +140,7 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   yCat = 2 )
-# approximate covariance between the coefficient of the linear term and 
-# the coefficient of the quadratic term based on the original data
-se <- sqrt( diag( vcov( estMLogitQuad ) ) )
-X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
-XXinv <- solve( t(X) %*% X )
-sigmaSq1 <- sqrt( ( se["full:age"]^2 / XXinv[1,1] ) * 
-    ( se["full:I(age^2)"]^2 / XXinv[2,2] ) )
-sigmaSq2 <- sqrt( ( se["part:age"]^2 / XXinv[1,1] ) * 
-    ( se["part:I(age^2)"]^2 / XXinv[2,2] ) )
-vcovApp <- diag( se^2 )
-rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-vcovApp[ "full:age", "full:I(age^2)" ] <- 
-  vcovApp[ "full:I(age^2)", "full:age" ] <- 
-  sigmaSq1 * XXinv[1,2]
-vcovApp[ "part:age", "part:I(age^2)" ] <- 
-  vcovApp[ "part:I(age^2)", "part:age" ] <- 
-  sigmaSq2 * XXinv[1,2]
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-  seSimplify = TRUE, yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-  seSimplify = TRUE, yCat = 2 )
-# approximate covariance between the coefficient of the linear term and 
-# the coefficient of the quadratic term based on simulated data
-se <- sqrt( diag( vcov( estMLogitQuad ) ) )
-set.seed( 123 )
-x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-X <- cbind( x, x^2, 1 )
-XXinv <- solve( t(X) %*% X )
-sigmaSq1 <- sqrt( ( se["full:age"]^2 / XXinv[1,1] ) * 
-    ( se["full:I(age^2)"]^2 / XXinv[2,2] ) )
-sigmaSq2 <- sqrt( ( se["part:age"]^2 / XXinv[1,1] ) * 
-    ( se["part:I(age^2)"]^2 / XXinv[2,2] ) )
-vcovApp <- diag( se^2 )
-rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-vcovApp[ "full:age", "full:I(age^2)" ] <- 
-  vcovApp[ "full:I(age^2)", "full:age" ] <- 
-  sigmaSq1 * XXinv[1,2]
-vcovApp[ "part:age", "part:I(age^2)" ] <- 
-  vcovApp[ "part:I(age^2)", "part:age" ] <- 
-  sigmaSq2 * XXinv[1,2]
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-  seSimplify = TRUE, yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-  model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-  seSimplify = TRUE, yCat = 2 )
+# semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
@@ -204,6 +149,7 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE, yCat = 2 )
+# semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1 )

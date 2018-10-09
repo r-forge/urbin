@@ -93,6 +93,11 @@ stdEr            NA
            (Intercept) kids      age educ
 semEla.age           0    0 42.53785    0
 stdEr               NA   NA       NA   NA
+> # semi-elasticity of age with standard errors (full covariance matrix)
+> urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm",
++   vcov( estLpmLin ) )
+semEla.age      stdEr 
+-0.3043666  0.1113584 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinEla( coef( estLpmLin )["age"], xMeanLin["age"], xPos = 1, model = "lpm",
 +   sqrt( diag( vcov( estLpmLin ) ) )["age"] )
@@ -191,46 +196,7 @@ semEla.age      stdEr
 Warning message:
 In urbinEla(allCoef = coef(estLpmQuad), allXVal = xMeanQuad, xPos = c(3, 4), model = "lpm", allCoefVcov = sqrt(diag(vcov(estLpmQuad)))) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on the original data
-> se <- sqrt( diag( vcov( estLpmQuad ) ) )
-> X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-+   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
-+   xPos = c( 1, 2 ), model = "lpm", 
-+   vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
- semEla.age       stdEr 
--0.31221166  0.09504131 
-> urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm", 
-+   vcovApp )
- semEla.age       stdEr 
--0.31221166  0.09504131 
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on simulated data
-> se <- sqrt( diag( vcov( estLpmQuad ) ) )
-> set.seed( 123 )
-> x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-> X <- cbind( x, x^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-+   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
-+   xPos = c( 1, 2 ), model = "lpm", 
-+   vcovApp[ c( "age", "I(age^2)" ), c( "age", "I(age^2)" ) ] )
-semEla.age      stdEr 
--0.3122117  0.1337022 
-> urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm", 
-+   vcovApp )
-semEla.age      stdEr 
--0.3122117  0.1337022 
+> # semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 > urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
 +   xPos = c( 1, 2 ), model = "lpm",
 +   sqrt( diag( vcov( estLpmQuad ) ) )[ c( "age", "I(age^2)" ) ],
@@ -625,4 +591,4 @@ stdEr           NA   NA           NA           NA           NA   NA
 > 
 > proc.time()
    user  system elapsed 
-  0.254   0.028   0.276 
+  0.257   0.007   0.259 

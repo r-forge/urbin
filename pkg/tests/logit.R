@@ -84,40 +84,12 @@ urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
   sqrt( diag( vcov( estLogitQuad ) ) ) )
-# approximate covariance between the coefficient of the linear term and 
-# the coefficient of the quadratic term based on the original data
-se <- sqrt( diag( vcov( estLogitQuad ) ) )
-X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
-XXinv <- solve( t(X) %*% X )
-sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-vcovApp <- diag( se^2 )
-rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-  sigmaSq * XXinv[1,2]
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
-  vcovApp )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
-  vcovApp, seSimplify = TRUE )
-# approximate covariance between the coefficient of the linear term and 
-# the coefficient of the quadratic term based on simulated data
-se <- sqrt( diag( vcov( estLogitQuad ) ) )
-set.seed( 123 )
-x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-X <- cbind( x, x^2, 1 )
-XXinv <- solve( t(X) %*% X )
-sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-vcovApp <- diag( se^2 )
-rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-  sigmaSq * XXinv[1,2]
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
-  vcovApp )
-urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit", 
-  vcovApp, seSimplify = TRUE )
+# semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
   sqrt( diag( vcov( estLogitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE )
+# semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 urbinEla( coef( estLogitQuad ), xMeanQuad, c( 3, 4 ), model = "logit",
   sqrt( diag( vcov( estLogitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )

@@ -218,50 +218,7 @@ semEla.age      stdEr
 Warning message:
 In urbinEla(allCoef = coef(estProbitQuad), allXVal = xMeanQuad, xPos = c(3, 4), model = "probit", allCoefVcov = sqrt(diag(vcov(estProbitQuad)))) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on the original data
-> se <- sqrt( diag( vcov( estProbitQuad ) ) )
-> X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-+   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-+   vcovApp )
-semEla.age      stdEr 
--0.3193114  0.2492290 
-> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-+   vcovApp, seSimplify = TRUE )
- semEla.age       stdEr 
--0.31931141  0.09609747 
-Warning message:
-In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on simulated data
-> se <- sqrt( diag( vcov( estProbitQuad ) ) )
-> set.seed( 123 )
-> x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-> X <- cbind( x, x^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq <- sqrt( ( se["age"]^2 / XXinv[1,1] ) * ( se["I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "age", "I(age^2)" ] <- vcovApp[ "I(age^2)", "age" ] <- 
-+   sigmaSq * XXinv[1,2]
-> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-+   vcovApp )
-semEla.age      stdEr 
--0.3193114  0.2747928 
-> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-+   vcovApp, seSimplify = TRUE )
-semEla.age      stdEr 
--0.3193114  0.1352247 
-Warning message:
-In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
+> # semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), 
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
@@ -271,6 +228,7 @@ semEla.age      stdEr
 Warning message:
 In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+> # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
@@ -584,4 +542,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.559   0.040   0.593 
+  0.510   0.048   0.553 

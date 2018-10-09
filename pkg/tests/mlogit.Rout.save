@@ -329,90 +329,7 @@ In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad,
 Warning message:
 In urbinEla(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuad, xPos = c(3, 4), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 2) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on the original data
-> se <- sqrt( diag( vcov( estMLogitQuad ) ) )
-> X <- cbind( Mroz87$age, Mroz87$age^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq1 <- sqrt( ( se["full:age"]^2 / XXinv[1,1] ) * 
-+     ( se["full:I(age^2)"]^2 / XXinv[2,2] ) )
-> sigmaSq2 <- sqrt( ( se["part:age"]^2 / XXinv[1,1] ) * 
-+     ( se["part:I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "full:age", "full:I(age^2)" ] <- 
-+   vcovApp[ "full:I(age^2)", "full:age" ] <- 
-+   sigmaSq1 * XXinv[1,2]
-> vcovApp[ "part:age", "part:I(age^2)" ] <- 
-+   vcovApp[ "part:I(age^2)", "part:age" ] <- 
-+   sigmaSq2 * XXinv[1,2]
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
-semEla.age      stdEr 
--0.2691503  0.5075154 
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
- semEla.age       stdEr 
--0.04998031  0.39029368 
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-+   seSimplify = TRUE, yCat = 1 )
-semEla.age      stdEr 
--0.2691503  0.1223183 
-Warning message:
-In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-+   seSimplify = TRUE, yCat = 2 )
- semEla.age       stdEr 
--0.04998031  0.11592062 
-Warning message:
-In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
-> # approximate covariance between the coefficient of the linear term and 
-> # the coefficient of the quadratic term based on simulated data
-> se <- sqrt( diag( vcov( estMLogitQuad ) ) )
-> set.seed( 123 )
-> x <- rnorm( 1000, xMeanQuad[ "age" ], sd( Mroz87$age ) )
-> X <- cbind( x, x^2, 1 )
-> XXinv <- solve( t(X) %*% X )
-> sigmaSq1 <- sqrt( ( se["full:age"]^2 / XXinv[1,1] ) * 
-+     ( se["full:I(age^2)"]^2 / XXinv[2,2] ) )
-> sigmaSq2 <- sqrt( ( se["part:age"]^2 / XXinv[1,1] ) * 
-+     ( se["part:I(age^2)"]^2 / XXinv[2,2] ) )
-> vcovApp <- diag( se^2 )
-> rownames( vcovApp ) <- colnames( vcovApp ) <- names( se )
-> vcovApp[ "full:age", "full:I(age^2)" ] <- 
-+   vcovApp[ "full:I(age^2)", "full:age" ] <- 
-+   sigmaSq1 * XXinv[1,2]
-> vcovApp[ "part:age", "part:I(age^2)" ] <- 
-+   vcovApp[ "part:I(age^2)", "part:age" ] <- 
-+   sigmaSq2 * XXinv[1,2]
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 1 )
-semEla.age      stdEr 
--0.2691503  0.5135679 
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], yCat = 2 )
- semEla.age       stdEr 
--0.04998031  0.40196768 
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-+   seSimplify = TRUE, yCat = 1 )
-semEla.age      stdEr 
--0.2691503  0.1721173 
-Warning message:
-In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
-+   model = "MNL", vcovApp[ coefPermuteQuad, coefPermuteQuad ], 
-+   seSimplify = TRUE, yCat = 2 )
- semEla.age       stdEr 
--0.04998031  0.16307252 
-Warning message:
-In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
-  if the (full) covariance matrix is provided via argument 'allCoefCov' it is NOT recommended to set argument 'seSimplify' to TRUE
+> # semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
@@ -431,6 +348,7 @@ In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
 Warning message:
 In urbinEla(coef(estMLogitQuad)[coefPermuteQuad], xMeanQuad, c(3,  :
   the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+> # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1 )
@@ -974,4 +892,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.528   0.016   0.538 
+  0.495   0.027   0.516 
