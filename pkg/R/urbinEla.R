@@ -141,23 +141,25 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     checkXBeta( xBeta )
     dfun <- exp( xBeta )/( 1 + exp( xBeta ) )^2
     semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  } else if( model == "MNL" ){     #checkXBeta missing
+  } else if( model == "MNL" ){
     xVal <- allXVal[ xPos[1] ]
     xCoefLinQuad <- xCoef[ 1, ] + 2 * xCoef[ 2, ] * xVal
     xBeta <- allXVal %*% mCoef
+    checkXBeta( xBeta )
     pfun <- exp( xBeta ) / ( 1 + sum( exp( xBeta ) ) )
     semEla <- xVal * pfun[ yCat ] * 
       ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
-  } else if( model == "CondL" ){    #checkXBeta missing
+  } else if( model == "CondL" ){
     xVal <- rep( NA, nYCat )
     for( p in 1:nYCat ){
       xVal[p] <- mXVal[ xPos[ 1 ], p ]
     }
     xBeta <- allCoef %*% mXVal
+    checkXBeta( xBeta )
     pfun <- exp( xBeta[ yCat ] )/( sum( exp( xBeta ) ) )
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * 
       xVal[ yCat ] * ( pfun - pfun^2 )
-  } else if( model == "NestedL" ){                            #checkXBeta missing
+  } else if( model == "NestedL" ){
     xVal <- rep( NA, pXVal )
     for( p in 1:pXVal ){
       xVal[p] <- mXVal[ xPos[ 1 ], p ]
@@ -168,6 +170,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     }
     xBeta <- lapply( 1:O, function( i, m, v ){ colSums( m[[i]] * v[[i]] ) }, 
       m=allXVal, v=coef )   #### v[[i]] is probably incorrect, because v=coef is not a list
+    checkXBeta( unlist( xBeta ) )
     IV <- unlist( lapply( 1:O, function( i, m ){ log( sum( exp( m[[i]] ) ) ) }, 
       m=xBeta ) ) 
     pfun <- exp( xBeta[[ yCatBra ]][ yCat ] )/

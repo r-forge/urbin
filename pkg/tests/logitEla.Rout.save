@@ -136,6 +136,9 @@ In urbinEla(allCoef = c(0.445, 0.03, -0.002), allXVal = c(1, 0.3, 0.09, 1, 0.1, 
 +   allXVal = list( matrix1, matrix2 ), 
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(unlist(xBeta)) :
+  At least one x'beta has an implausible value: 8.7525, 9.0675, 7.398
 > ela12a
      semEla       stdEr 
 0.001321595          NA 
@@ -148,6 +151,9 @@ In urbinEla(allCoef = c(0.445, 0.03, -0.002), allXVal = c(1, 0.3, 0.09, 1, 0.1, 
 +   allXVal = list( matrix1, matrix2 ), 
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(unlist(xBeta)) :
+  At least one x'beta has an implausible value: 3.33, 7.287525, 2.916
 > ela12b
      semEla       stdEr 
 0.000448864          NA 
@@ -162,6 +168,9 @@ In urbinEla(allCoef = c(0.445, 0.03, -0.002), allXVal = c(1, 0.3, 0.09, 1, 0.1, 
 +   allCoefVcov = c( 0.001, 0.089, 0.0003, 0.12 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(unlist(xBeta)) :
+  At least one x'beta has an implausible value: 8.7525, 9.0675, 7.398
 > ela13a
      semEla       stdEr 
 0.001321595 0.023524389 
@@ -175,10 +184,13 @@ In urbinEla(allCoef = c(0.445, 0.03, -0.002), allXVal = c(1, 0.3, 0.09, 1, 0.1, 
 +   allCoefVcov = c( 0.001, 0.089, 0.0003, 0.12 ),
 +   xPos = 2, yCatBra = 1, yCat = 2, lambda = c( 0.8, 1 ), 
 +   model = "NestedL" )
+Warning message:
+In checkXBeta(unlist(xBeta)) :
+  At least one x'beta has an implausible value: 3.33, 7.287525, 2.916
 > ela13b
      semEla       stdEr 
 0.000448864 0.007989780 
 > 
 > proc.time()
    user  system elapsed 
-  0.125   0.003   0.123 
+  0.113   0.012   0.119 
