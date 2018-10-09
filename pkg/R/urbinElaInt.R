@@ -19,6 +19,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
+    # add column for coefficients of the reference category
+    mCoef <- cbind( mCoef, 0 )
   } else if( model == "CondL" ) {
     # number of categories of the dependent variable
     nYCat <- round( nXVal / nCoef )
@@ -34,6 +36,9 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # check argument yCat
   if( model %in% c( "MNL", "CondL" ) ) {
     checkYCat( yCat, nYCat ) 
+    if( model == "MNL" ) {
+      yCat[ yCat == 0 ] <- nYCat + 1
+    }
   } else if( model != "NestedL" && !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
@@ -95,8 +100,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     }
     checkXBeta( xBeta )
   } else if( model == "MNL" ){
-    xBeta <- matrix( NA, nrow = nInt, ncol = nYCat ) 
-    for( p in 1:nYCat ){
+    xBeta <- matrix( NA, nrow = nInt, ncol = nYCat + 1 ) 
+    for( p in 1:( nYCat + 1 ) ){
       for( i in 1:nInt ){
         allXValTemp <- replace( allXVal, xPos, 0 )
         if( xPos[i] != 0 ) {
@@ -127,7 +132,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else if( model == "logit" ){
     xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
-    xCoef <- as.vector( exp( xBeta[ , yCat ])/( 1 + rowSums( exp( xBeta ) ) ) )
+    xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   } else if( model == "CondL" ){
     xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   } else if( model != "lpm" ) {
@@ -182,11 +187,11 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else if( model == "MNL" ){
     gradM <- array( 0, c( nXVal, nInt - 1, nYCat ) )
     gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
-        ( 1 + rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
-      ( 1 + rowSums( exp( xBeta ) ) )^2 
+        ( rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
+      ( rowSums( exp( xBeta ) ) )^2 
     for( p in 1:nYCat ){
       gradExpVecO <- ( exp( xBeta[ , yCat ] ) * exp( xBeta[ , p] ) )/
-        ( 1 + rowSums( exp( xBeta ) ) )^2
+        ( rowSums( exp( xBeta ) ) )^2
       for( m in 1:( nInt - 1 ) ) {
         if( p == yCat ){
           gradM[ -xPos, m, p ] <- 2 * ( gradExpVecP[m+1] - gradExpVecP[m] ) *
