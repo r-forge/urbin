@@ -7,7 +7,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # number of explanatory variables
   nXVal <- length( allXVal )
   # check allXVal and allCoef
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     if( nXVal != nCoef ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
@@ -60,7 +60,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   shareVec <- rep( NA, nInt )
   for( i in 1:nInt ){
     if( xPos[i] != 0 ) {
-      if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
+      if( model %in% c( "lpm", "probit", "oprobit", "logit", "MNL" ) ){
         shareVec[ i ] <- allXVal[ xPos[i] ] 
       } else if( model == "CondL" ) {
         shareVec[ i ] <- mXVal[ xPos[i], yCat ]
@@ -92,7 +92,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
         xCoef[i] <- allCoef[ xPos[i] ]
       }
     }
-  } else if( model %in% c( "probit", "logit" ) ){
+  } else if( model %in% c( "probit", "oprobit", "logit" ) ){
     xBeta <- rep( NA, nInt )
     for( i in 1:nInt ){
       allXValTemp <- replace( allXVal, xPos, 0 )
@@ -130,7 +130,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # vector of probabilities of y=1 for each interval
-  if( model == "probit" ){
+  if( model %in% c( "probit", "oprobit" ) ){
     xCoef <- pnorm( xBeta )
   } else if( model == "logit" ){
     xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
@@ -163,7 +163,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
           2 * weights[n]   * xBound[n+1] / ( xBound[n+2] - xBound[n] )
       }
     }
-  } else if( model == "probit" ) {
+  } else if( model %in% c( "probit", "oprobit" ) ) {
     # partial derivatives of each semi-elasticity around each boundary
     # w.r.t. all estimated coefficients
     gradM <- matrix( 0, nCoef, nInt - 1 )

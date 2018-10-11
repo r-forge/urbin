@@ -26,7 +26,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   # number of explanatory variables
   nXVal <- length( allXVal )
   # check allXVal and allCoef
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     # LPM model: allXVal can be a scalar even if there is a quadratic term
     if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
       temp <- c( allXVal, allXVal^2 )
@@ -96,7 +96,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     nXVal = nXVal, iPos = iPos, pCall = match.call() )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
-    if( model %in% c( "lpm", "probit", "logit" ) ){
+    if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
       xCoef <- allCoef[ xPos ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
@@ -128,7 +128,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       stop( "argument 'model' specifies an unknown type of model" )
     }
   } else if( length( xPos ) == 1 ) {
-    if( model %in% c( "lpm", "probit", "logit", "CondL", "NestedL" ) ){
+    if( model %in% c( "lpm", "probit", "oprobit", "logit", "CondL", "NestedL" ) ){
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( model == "MNL" ){
       xCoef <- rbind( mCoef[ xPos, ], 0 ) 
@@ -142,7 +142,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   if( model == "lpm" ) {
     xVal <- allXVal[ xPos[ 1 ] ]
     semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal ) * xVal
-  } else if( model == "probit" ) {
+  } else if( model %in% c( "probit", "oprobit" ) ){
     xVal <- allXVal[ xPos[ 1 ] ]
     xBeta <- sum( allCoef * allXVal )
     checkXBeta( xBeta )
@@ -204,7 +204,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     if( length( xPos ) == 2 ) {
       derivCoef[ xPos[2] ] <- 2 * xVal^2
     }
-  } else if( model == "probit" ){
+  } else if( model %in% c( "probit", "oprobit" ) ){
     if( seSimplify ) {
       derivCoef <- rep( 0, length( allCoef ) )
     } else {

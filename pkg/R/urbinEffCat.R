@@ -14,7 +14,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # number of categories
   nCat <- length( xPos ) + 1
   # check allXVal and allCoef
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     xCoef <- c( allCoef[ xPos ], 0 )
     if( nXVal != nCoef ){
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
@@ -49,7 +49,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     warning( "argument 'yCat' is ignored" )
   }
   # shares in each category
-  if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit", "MNL" ) ){
     xShares <- allXVal[ xPos ]
     if( any( xShares < 0 ) ){
       stop( "the share of the observations in at least one category",
@@ -99,7 +99,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos = NA, 
     pCall = match.call() )
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     # D_mr
     DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
       sum( xShares[ xGroups == -1 ] )
@@ -116,7 +116,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       XBetaEffect <- sum( allCoef[ -xPos ] * allXVal[ -xPos ]) + 
         sum( DEffect * xCoef )
       checkXBeta( c( XBetaRef, XBetaEffect ) )
-      if( model == "probit" ) {
+      if( model %in% c( "probit", "oprobit" ) ) {
         # effect
         effeG <- pnorm( XBetaEffect ) - pnorm( XBetaRef )
       } else if( model == "logit" ) {
@@ -168,7 +168,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   if( model == "lpm" ) {
     derivCoef <- rep( 0, nCoef )
     derivCoef[ xPos ] <- DEffect[ -nCat ] - DRef[ -nCat ]
-  } else if( model == "probit" ) {
+  } else if( model %in% c( "probit", "oprobit" ) ) {
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] = ( dnorm( XBetaEffect ) - dnorm( XBetaRef ) ) * 
       allXVal[ -xPos ] 

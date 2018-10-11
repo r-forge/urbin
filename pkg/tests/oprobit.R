@@ -23,9 +23,9 @@ summary( estOProbitLin )
 xMeanLin <- c( colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ), -1, 0 )
 # semi-elasticity of age without standard errors
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, xPos = 2, 
-  iPos = 4, model = "probit" )
+  iPos = 4, model = "oprobit" )
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], xPos = 2, 
-  iPos = 4, model = "probit" )
+  iPos = 4, model = "oprobit" )
 # semi-elasticity of age based on numerical derivation
 Mroz87Lower <- as.data.frame( t( xMeanLin * c( 1, 0.995, 1, 1, 1 ) ) )
 Mroz87Upper <- as.data.frame( t( xMeanLin * c( 1, 1.005, 1, 1, 1 ) ) )
@@ -38,39 +38,39 @@ print( sum( elaLinNum[ c( "part", "full" ) ] ) )
 xMeanLinAttr <- xMeanLin
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
-  iPos = 4, seSimplify = FALSE, model = "probit" )
+  iPos = 4, seSimplify = FALSE, model = "oprobit" )
 xMeanLin4Attr <- xMeanLin[-5]
 attr( xMeanLin4Attr, "derivOnly" ) <- 1 
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin4Attr, xPos = 2, 
-  iPos = 4, seSimplify = FALSE, model = "probit" )
+  iPos = 4, seSimplify = FALSE, model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[,1], 
-  allXVal = xMeanLin, xPos = 2, iPos = 4, model = "probit" )
+  allXVal = xMeanLin, xPos = 2, iPos = 4, model = "oprobit" )
 numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[-5,1], 
-  allXVal = xMeanLin[-5], xPos = 2, iPos = 4, model = "probit" )
+  allXVal = xMeanLin[-5], xPos = 2, iPos = 4, model = "oprobit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
-  iPos = 4, model = "probit", seSimplify = TRUE )
+  iPos = 4, model = "oprobit", seSimplify = TRUE )
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin4Attr, xPos = 2, 
-  iPos = 4, model = "probit", seSimplify = TRUE )
+  iPos = 4, model = "oprobit", seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, xPos = 2, 
-  iPos = 4, model = "probit", vcov( estOProbitLin ) )
+  iPos = 4, model = "oprobit", vcov( estOProbitLin ) )
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], xPos = 2, 
-  iPos = 4, model = "probit", vcov( estOProbitLin )[-5,-5] )
+  iPos = 4, model = "oprobit", vcov( estOProbitLin )[-5,-5] )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, 
-  xPos = 2, iPos = 4, model = "probit", 
+  xPos = 2, iPos = 4, model = "oprobit", 
   sqrt( diag( vcov( estOProbitLin ) ) ), seSimplify = FALSE )
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], 
-  xPos = 2, iPos = 4, model = "probit", 
+  xPos = 2, iPos = 4, model = "oprobit", 
   sqrt( diag( vcov( estOProbitLin ) ) )[-5], seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, 
-  xPos = 2, iPos = 4, model = "probit", 
+  xPos = 2, iPos = 4, model = "oprobit", 
   sqrt( diag( vcov( estOProbitLin ) ) ) )
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], 
-  xPos = 2, iPos = 4, model = "probit", 
+  xPos = 2, iPos = 4, model = "oprobit", 
   sqrt( diag( vcov( estOProbitLin ) ) )[-5] )
 
 
@@ -82,9 +82,9 @@ summary( estOProbitQuad )
 xMeanQuad <- c( xMeanLin[ 1:2 ], xMeanLin[2]^2, xMeanLin[3:5] )
 # semi-elasticity of age without standard errors
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit" )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit" )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
 # semi-elasticity of age based on numerical derivation
 Mroz87Lower <- as.data.frame( 
   t( xMeanQuad * c( 1, 0.995, 0.995^2, 1, 1, 1 ) ) )
@@ -99,60 +99,60 @@ print( sum( elaQuadNum[ c( "part", "full" ) ] ) )
 xMeanQuadAttr <- xMeanQuad
 attr( xMeanQuadAttr, "derivOnly" ) <- 1 
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", seSimplify = FALSE )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )
 xMeanQuad5Attr <- xMeanQuad[-6]
 attr( xMeanQuad5Attr, "derivOnly" ) <- 1 
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad5Attr, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", seSimplify = FALSE )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[,1], 
-  allXVal = xMeanQuad, xPos = c( 2, 3 ), iPos = 5, model = "probit" )
+  allXVal = xMeanQuad, xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
 numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[-6,1], 
-  allXVal = xMeanQuad[-6], xPos = c( 2, 3 ), iPos = 5, model = "probit" )
+  allXVal = xMeanQuad[-6], xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", seSimplify = TRUE )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad5Attr, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", seSimplify = TRUE )
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   vcov( estOProbitQuad ) )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   vcov( estOProbitQuad )[-6,-6] )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) ), seSimplify = FALSE )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) )[-6], seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ),iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ),iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) ) )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ),iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ),iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) )[-6] )
 # semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) )[-6],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
-  xPos = c( 2, 3 ), iPos = 5, model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
   sqrt( diag( vcov( estOProbitQuad ) ) )[-6],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
@@ -175,9 +175,9 @@ xMeanInt <- c( xMeanLin[1], mean( Mroz87$age30.37 ),
   mean( Mroz87$age38.44 ), mean( Mroz87$age53.60 ), xMeanLin[3:5] )
 # semi-elasticity of age without standard errors
 urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 # semi-elasticities based on numerical derivation
 Mroz87Lower <- Mroz87
 Mroz87Lower$age <- Mroz87$age * 0.95
@@ -207,31 +207,31 @@ print( sum( elaIntNum[ c( "part", "full" ) ] ) )
 xMeanIntAttr <- xMeanInt
 attr( xMeanIntAttr, "derivOnly" ) <- 1 
 urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr,
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 xMeanInt6Attr <- xMeanInt[-7]
 attr( xMeanInt6Attr, "derivOnly" ) <- 1 
 urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr,
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[,1], 
   allXVal = xMeanInt, xPos = c( 2, 3, 0, 4 ), iPos = 6, 
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[-7,1], 
   allXVal = xMeanInt[-7], xPos = c( 2, 3, 0, 4 ), iPos = 6, 
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit",
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
   allCoefVcov = vcov( estOProbitInt ) )
 urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit",
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
   allCoefVcov = vcov( estOProbitInt )[-7,-7] )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit",
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) ) )
 urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
-  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit",
+  c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) )[-7] )
 
 
@@ -243,10 +243,10 @@ xMeanLinInt <- c( xMeanLin[ 1 ], NA, xMeanLin[3:5] )
 # without standard errors
 urbinEffInt( coef( summary( estOProbitLin ) )[,1], allXVal = xMeanLinInt, 
   xPos = 2, iPos = 4, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], allXVal = xMeanLinInt[-5], 
   xPos = 2, iPos = 4, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit" )
+  model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # based on predicted values
 Mroz87Ref <- as.data.frame( t( replace( xMeanLin, 2, 35 ) ) )
@@ -259,34 +259,34 @@ print( sum( effIntNum[ c( "part", "full" ) ] ) )
 xMeanLinIntAttr <- xMeanLinInt
 attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
 urbinEffInt( coef( summary( estOProbitLin ) )[,1], xMeanLinIntAttr, 
-  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "probit" )
+  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 xMeanLinInt4Attr <- xMeanLinInt[-5]
 attr( xMeanLinInt4Attr, "derivOnly" ) <- 1 
 urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], xMeanLinInt4Attr, 
-  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "probit" )
+  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[,1],
   allXVal = xMeanLinInt, xPos = 2, iPos = 4,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[-5,1],
   allXVal = xMeanLinInt[-5], xPos = 2, iPos = 4,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( summary( estOProbitLin ) )[,1], xMeanLinInt, 
-  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = vcov( estOProbitLin ) )
 urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], xMeanLinInt[-5], 
-  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = vcov( estOProbitLin )[-5,-5] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( summary( estOProbitLin ) )[,1], allXVal = xMeanLinInt, 
   xPos = 2, iPos = 4, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit", allCoefVcov = sqrt( diag( vcov( estOProbitLin ) ) ) )
+  model = "oprobit", allCoefVcov = sqrt( diag( vcov( estOProbitLin ) ) ) )
 urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], allXVal = xMeanLinInt[-5], 
   xPos = 2, iPos = 4, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit", allCoefVcov = sqrt( diag( vcov( estOProbitLin ) ) )[-5] )
+  model = "oprobit", allCoefVcov = sqrt( diag( vcov( estOProbitLin ) ) )[-5] )
 
 
 ### effect of age changing between discrete intervals 
@@ -297,10 +297,10 @@ xMeanQuadInt <- c( xMeanLin[1], NA, NA, xMeanLin[3:5] )
 # without standard errors
 urbinEffInt( coef( summary( estOProbitQuad ) )[,1], allXVal = xMeanQuadInt, 
   xPos = c( 2, 3 ), iPos = 5, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], allXVal = xMeanQuadInt[-6], 
   xPos = c( 2, 3 ), iPos = 5, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit" )
+  model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # based on predicted values
 Mroz87Ref <- as.data.frame( t( replace( xMeanQuad, 2:3, c( 35, 35^2 ) ) ) )
@@ -313,42 +313,42 @@ print( sum( effIntQuadNum[ c( "part", "full" ) ] ) )
 xMeanQuadIntAttr <- xMeanQuadInt
 attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
 urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadIntAttr, 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit" )
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 xMeanQuadInt5Attr <- xMeanQuadInt[-6]
 attr( xMeanQuadInt5Attr, "derivOnly" ) <- 1 
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt5Attr, 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit" )
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[,1],
   allXVal = xMeanQuadInt, xPos = c( 2, 3 ), iPos = 5,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[-6,1],
   allXVal = xMeanQuadInt[-6], xPos = c( 2, 3 ), iPos = 5,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadInt, 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = vcov( estOProbitQuad ) )
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt[-6], 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = vcov( estOProbitQuad )[-6,-6] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( summary( estOProbitQuad ) )[,1], allXVal = xMeanQuadInt, 
   xPos = c( 2, 3 ), iPos = 5, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit", sqrt( diag( vcov( estOProbitQuad ) ) ) )
+  model = "oprobit", sqrt( diag( vcov( estOProbitQuad ) ) ) )
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], allXVal = xMeanQuadInt[-6], 
   xPos = c( 2, 3 ), iPos = 5, refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
-  model = "probit", sqrt( diag( vcov( estOProbitQuad ) ) )[-6] )
+  model = "oprobit", sqrt( diag( vcov( estOProbitQuad ) ) )[-6] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadInt, 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = sqrt( diag( vcov( estOProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt[-6], 
-  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "probit", 
+  xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit", 
   allCoefVcov = sqrt( diag( vcov( estOProbitQuad ) ) )[-6],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
@@ -357,9 +357,9 @@ urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt[-6],
 ### effects of age changing from the 30-44 category to the 53-60 category
 # without standard errors
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, 
-  xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ), model = "probit" )
+  xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ), model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], 
-  xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ), model = "probit" )
+  xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ), model = "oprobit" )
 # effects calculated based on predicted values
 names( xMeanInt ) <- 
   gsub( "TRUE|full:", "", rownames( coef( summary( estOProbitInt ) ) ) )
@@ -377,37 +377,37 @@ print( effCatNum )
 print( sum( effCatNum[ c( "part", "full" ) ] ) )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr, 
-  c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "probit" )
+  c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
-  c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "probit" )
+  c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
-  model = "probit" )
+  model = "oprobit" )
 numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
-  model = "probit" )
+  model = "oprobit" )
 # with full covariance matrix
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
   iPos = 6, c( -1, -1, 1, 0 ), vcov( estOProbitInt ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], c( 2:4 ), 
   iPos = 6, c( -1, -1, 1, 0 ), vcov( estOProbitInt )[-7,-7], 
-  model = "probit" )
+  model = "oprobit" )
 # with standard errors only
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
   iPos = 6, c( -1, -1, 1, 0 ), sqrt( diag( vcov( estOProbitInt ) ) ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], c( 2:4 ), 
   iPos = 6, c( -1, -1, 1, 0 ), sqrt( diag( vcov( estOProbitInt ) ) )[-7], 
-  model = "probit" )
+  model = "oprobit" )
 
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
-  iPos = 6, c( 0, 1, -1, 1 ), model = "probit" )
+  iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], c( 2:4 ), 
-  iPos = 6, c( 0, 1, -1, 1 ), model = "probit" )
+  iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
 # effects calculated based on predicted values
 effCat2Num <- sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
   predict( estOProbitInt, newdata = df38.44, type = "probs" ) +
@@ -418,27 +418,27 @@ print( effCat2Num )
 print( sum( effCat2Num[ c( "part", "full" ) ] ) )
 # partial derivatives of the effect wrt the coefficients
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr, 
-  c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "probit" )
+  c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
-  c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "probit" )
+  c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
-  model = "probit" )
+  model = "oprobit" )
 numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
-  model = "probit" )
+  model = "oprobit" )
 # with full covariance matrix
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
   iPos = 6, c( 0, 1, -1, 1 ), vcov( estOProbitInt ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], c( 2:4 ), 
   iPos = 6, c( 0, 1, -1, 1 ), vcov( estOProbitInt )[-7,-7], 
-  model = "probit" )
+  model = "oprobit" )
 # with standard errors only
 urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
   iPos = 6, c( 0, 1, -1, 1 ), sqrt( diag( vcov( estOProbitInt ) ) ), 
-  model = "probit" )
+  model = "oprobit" )
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], c( 2:4 ), 
   iPos = 6, c( 0, 1, -1, 1 ), sqrt( diag( vcov( estOProbitInt ) ) )[-7], 
-  model = "probit" )
+  model = "oprobit" )

@@ -61,8 +61,8 @@ urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
-    \code{"probit"} = binary or ordered probit model
-    (for ordered probit models see \bold{Details} section below), 
+    \code{"probit"} = binary probit model,
+    \code{"oprobit"} = ordered probit model (see \bold{Details} section below), 
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,
     \code{"CondL"} = conditional logit model, or
@@ -116,7 +116,7 @@ An ordered probit model does not have an intercept
 but it has \eqn{P-1} thresholds between the \eqn{P} ordered categories.
 If a user wants to calculate the semi-elasticity 
 based on an ordered probit model 
-using \code{urbinEla( ..., model = "probit")},
+using \code{urbinEla( ..., model = "oprobit")},
 argument \code{allCoef} must include 
 both the coefficients and the thresholds.
 Consequently, argument \code{allCoefVcov} 

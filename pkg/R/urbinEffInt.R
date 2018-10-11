@@ -8,7 +8,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # number of explanatory variables
   nXVal <- length( allXVal )
   # check allXVal and allCoef
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     if( model == "lpm" ) {
       if( any( !is.na( allXVal ) ) ) {
         warning( "argument allXVal is ignored for lpm models",
@@ -80,7 +80,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # Check value of quadratic term in argument allXVal
   if( length( xPos ) == 2 ){
-    if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
+    if( model %in% c( "lpm", "probit", "oprobit", "logit", "MNL" ) ){
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           " to the squared value of 'allXVal[ xPos[1] ]'" )
@@ -115,7 +115,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     stop( "internal error: 'intX' or 'refX' does not have the expected length" )
   }
   # define X' * beta 
-  if( model %in% c( "lpm", "probit", "logit" ) ){
+  if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     intXbeta <- sum( allCoef * replace( allXVal, xPos, intX ) )
     refXbeta <- sum( allCoef * replace( allXVal, xPos, refX ) )
     if( model != "lpm" ) {
@@ -157,7 +157,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # calculate the effect
   if( model == "lpm" ) {
     eff <- intXbeta - refXbeta
-  } else if( model == "probit" ) {
+  } else if( model %in% c( "probit", "oprobit" ) ) {
     eff <- pnorm( intXbeta ) - pnorm( refXbeta )
   } else   if( model == "logit" ){  
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
@@ -190,7 +190,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   if( model == "lpm" ) {
     derivCoef <- rep( 0, nCoef ) 
     derivCoef[ xPos ] <- intX - refX
-  } else if( model == "probit" ) {
+  } else if( model %in% c( "probit", "oprobit" ) ) {
     derivCoef <- rep( NA, nCoef )
     derivCoef[ -xPos ] = ( dnorm( intXbeta ) - dnorm( refXbeta ) ) * 
       allXVal[ -xPos ] 
