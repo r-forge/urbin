@@ -132,8 +132,16 @@ must be adjusted accordingly.
 \value{
 \code{urbinElaInt()} returns a list of class \code{"urbin"} 
 that contains the following components:
+\item{call}{the matched call.}
 \item{effect}{the calculated effect.}
 \item{stdEr}{the approximate standard error of the calculated effect.}
+\item{allCoefVcov}{the variance covariance matrix 
+  that was used to calculate the approximate standard error 
+  of the calculated effect.}
+\item{derivCoef}{the partial derivatives of the effect 
+  with respect to the coefficients 
+  that was used to calculate the approximate standard error 
+  of the calculated effect.}
 }
 
 \examples{

@@ -126,8 +126,16 @@ must be adjusted accordingly.
 \value{
 \code{urbinElaInt()} returns a list of class \code{"urbin"} 
 that contains the following components:
+\item{call}{the matched call.}
 \item{semEla}{the calculated semi-elasticity.}
 \item{stdEr}{the approximate standard error of the calculated semi-elasticity.}
+\item{allCoefVcov}{the variance covariance matrix 
+  that was used to calculate the approximate standard error 
+  of the calculated semi-elasticity.}
+\item{derivCoef}{the partial derivatives of the effect 
+  with respect to the coefficients 
+  that was used to calculate the approximate standard error 
+  of the calculated semi-elasticity.}
 }
 
 \examples{

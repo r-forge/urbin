@@ -309,6 +309,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   
   # object to be returned
   result <- list()
+  result$call <- match.call()
+  result$allCoefVcov <- allCoefVcov
+  result$derivCoef <- derivCoef
   result$effect <- eff
   result$stdEr <- effSE
   class( result ) <- "urbin"

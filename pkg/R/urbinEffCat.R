@@ -247,6 +247,9 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
   result <- list()
+  result$call <- match.call()
+  result$allCoefVcov <- allCoefVcov
+  result$derivCoef <- derivCoef
   result$effect <- effeG
   result$stdEr <- effeGSE
   class( result ) <- "urbin"
