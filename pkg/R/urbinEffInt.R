@@ -78,6 +78,22 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+  # Check value of quadratic term in argument allXVal
+  if( length( xPos ) == 2 ){
+    if( model %in% c( "lpm", "probit", "logit", "MNL" ) ){
+      if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
+        stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
+          " to the squared value of 'allXVal[ xPos[1] ]'" )
+      }
+    } else if( model == "CondL" ){
+      for( p in 1:nYCat ){
+        if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
+          stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
+            " to the squared value of 'allXVal[ xPos[1] ]'" ) 
+        }  
+      }
+    }
+  } 
   # check position of the intercept
   checkIPos( iPos, xPos, allXVal ) 
   # check and prepare allCoefVcov

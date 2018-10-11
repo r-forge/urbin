@@ -100,20 +100,20 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       xCoef <- allCoef[ xPos ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
-          "to the squared value of 'allXVal[ xPos[1] ]' " )
+          " to the squared value of 'allXVal[ xPos[1] ]'" )
       }
     } else if( model == "MNL" ){
       xCoef <- mCoef[ xPos, ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
-          "to the squared value of 'allXVal[ xPos[1] ]' " ) 
+          " to the squared value of 'allXVal[ xPos[1] ]'" ) 
       }    
     } else if( model == "CondL" ){
       xCoef <- allCoef[ xPos ]
       for( p in 1:nYCat ){
         if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
           stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
-            " to the squared value of 'allXVal[ xPos[1] ]' " ) 
+            " to the squared value of 'allXVal[ xPos[1] ]'" ) 
         }  
       }
     } else if( model == "NestedL" ){
