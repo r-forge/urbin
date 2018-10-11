@@ -8,7 +8,8 @@
   the effect of a continuous variable
   that is used as a linear explanatory variable
   or as a linear and quadratic explanatory variable
-  in a linear probability model, a probit model, or a logit model
+  in a linear probability model, a binary probit model,
+  an ordered probit model, or a binary logit model
   if this variable changes between discrete intervals.
   The calculated effect indicates
   by how much the probability
@@ -60,7 +61,8 @@ urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
-    \code{"probit"} = binary probit model,
+    \code{"probit"} = binary or ordered probit model
+    (for ordered probit models see \bold{Details} section below), 
     \code{"logit"} = binary logit model, 
     \code{"MNL"} = multinomial logit model,
     \code{"CondL"} = conditional logit model, or
@@ -93,7 +95,7 @@ urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
 Linear Probability Model:
 If a user wants to calculate the effect of a variable of interest
 based on a linear probability model 
-(\code{urbinEffInt( ..., model = "lpm")}),
+using \code{urbinEffInt( ..., model = "lpm")},
 he/she can include only the coefficient(s)
 of the explanatory variable of interest in argument \code{allCoef}
 and omit all other coefficients.
@@ -102,6 +104,37 @@ must be adjusted accordingly.
 This simplified use of \code{urbinEffInt()}
 is only unsuitable for linear probability models
 and unsuitable for all other types of models.
+
+Ordered Probit Model:
+The dependent variable has \eqn{P>2} distinct and strictly ordered categories.
+A user needs to choose a number \eqn{p \in \{1,\ldots, P-1\}}
+that separates the \eqn{P} ordered categories 
+into two mutually exclusive combined categories,
+where the lower \eqn{p} categories indicate a binary variable with value zero
+and the upper \eqn{P-p} categories indicate a binary variable with value one.
+An ordered probit model does not have an intercept
+but it has \eqn{P-1} thresholds between the \eqn{P} ordered categories.
+If a user wants to calculate the semi-elasticity 
+based on an ordered probit model 
+using \code{urbinEla( ..., model = "probit")},
+argument \code{allCoef} must include 
+both the coefficients and the thresholds.
+Consequently, argument \code{allCoefVcov} 
+must also include the variences and covariances
+or the standard arrors of both the coefficients and the thresholds.
+The vector specified by argument \code{allXVal} 
+must include elements that correspond to the thresholds,
+where the element that corresponds to the \eqn{p}'s threshold
+must be equal to \eqn{-1}, 
+while the elements that correspond to the other thresholds
+must be equal to \eqn{0}.
+Argument \code{iPos} must specify the position of the \eqn{p}'s threshold
+in arguments \code{allCoef}, \code{allXVal}, 
+and eventually \code{allCoefVcov}.
+While the \eqn{p}'s threshold must be specified in argument \code{allCoef}, 
+all other thresholds can be omitted.
+In this case, arguments \code{allXVal} and \code{allCoefVcov}
+must be adjusted accordingly.
 }
 
 \value{
