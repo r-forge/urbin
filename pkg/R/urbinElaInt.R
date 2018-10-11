@@ -243,13 +243,10 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       derivCoef <- derivCoef + weights[m] * gradM[ , m ]
     }
   }
-  # if argument allXVal has attribute 'derivOnly',
-  # return partial derivatives only (for testing partial derivatives)
-  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-    return( derivCoef )
-  }
+
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  
   # create object that will be returned
   result <- list()
   result$call <- match.call()

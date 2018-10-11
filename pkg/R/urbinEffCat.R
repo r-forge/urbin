@@ -238,13 +238,10 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # if argument allXVal has attribute 'derivOnly',
-  # return partial derivatives only (for testing partial derivatives)
-  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-    return( derivCoef )
-  }
+
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  
   # object to be returned
   result <- list()
   result$call <- match.call()

@@ -29,11 +29,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     # LPM model: allXVal can be a scalar even if there is a quadratic term
     if( model == "lpm" && length( xPos ) == 2 && length( allXVal ) == 1 ){
-      temp <- c( allXVal, allXVal^2 )
-      if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-        attr( temp, "derivOnly" ) <- 1
-      }
-      allXVal <- temp
+      allXVal <- c( allXVal, allXVal^2 )
       nXVal <- length( allXVal )
     }
     if( nXVal != nCoef ) {
@@ -321,13 +317,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }   
-  # if argument allXVal has attribute 'derivOnly',
-  # return partial derivatives only (for testing partial derivatives)
-  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-    return( c( derivCoef ) )
-  }
+  
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
+  
   # create object that will be returned
   result <- list()
   result$call <- match.call()

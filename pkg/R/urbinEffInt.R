@@ -14,15 +14,11 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
         warning( "argument allXVal is ignored for lpm models",
           " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
       }
-      temp <- rep( 0, nCoef )
+      allXVal <- rep( 0, nCoef )
       if( iPos != 0 ){
-        temp[ iPos ] <- 1
+        allXVal[ iPos ] <- 1
       }
-      temp[ xPos ] <- NA
-      if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-        attr( temp, "derivOnly" ) <-1
-      }
-      allXVal <- temp
+      allXVal[ xPos ] <- NA
       nXVal <- length( allXVal )
     }  
     if( nXVal != nCoef ){
@@ -296,12 +292,6 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
                   ( sum( refBranch ) ) ) ) ) * PImp * PImo  
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
-  }
-  
-  # if argument allXVal has attribute 'derivOnly',
-  # return partial derivatives only (for testing partial derivatives)
-  if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
-    return( derivCoef )
   }
   
   # approximate standard error of the effect
