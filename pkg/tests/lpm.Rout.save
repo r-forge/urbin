@@ -357,12 +357,12 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 [1]  0  0 20  0
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
-+   t0 = coef( estLpmLin )[3], allXVal = NA,
++   t0 = coef( estLpmLin )[3], allXVal = NULL,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1, model = "lpm" )
      age
 [1,]  20
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
-+   t0 = coef( estLpmLin ), allXVal = NA,
++   t0 = coef( estLpmLin ), allXVal = NULL,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3, model = "lpm" )
      (Intercept) kids age educ
 [1,]           0    0  20    0
@@ -415,7 +415,7 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 [1]    0    0   20 1800    0
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
-+   t0 = coef( estLpmQuad )[3:4], allXVal = NA,
++   t0 = coef( estLpmQuad )[3:4], allXVal = NULL,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2, model = "lpm" )
      age I(age^2)
 [1,]  20     1800
@@ -580,4 +580,4 @@ In urbinEffInt(allCoef = coef(estLpmQuad), allXVal = NULL, xPos = 3:4, refBound 
 > 
 > proc.time()
    user  system elapsed 
-  0.273   0.011   0.278 
+  0.266   0.032   0.293 

@@ -413,7 +413,7 @@ Number of Fisher Scoring iterations: 4
      effect       stdEr 
 -0.15061666  0.06132438 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
-> urbinEffInt( estProbitLinMfx$mfxest[ "age", 1 ], NA, 1, 
+> urbinEffInt( estProbitLinMfx$mfxest[ "age", 1 ], NULL, 1, 
 +   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estProbitLinMfx$mfxest[ "age", 2 ] )
      effect       stdEr 
@@ -477,15 +477,15 @@ In urbinEffInt(allCoef = coef(estProbitQuad), allXVal = xMeanQuadInt, xPos = c(3
      effect       stdEr 
 -0.25282386  0.07137401 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
-> urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
+> urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
 +   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
     effect      stdEr 
 -0.2530294  0.7522707 
 Warning message:
-In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = NA, xPos = 1:2, refBound = c(30, 40), intBound = c(50, 60), model = "lpm", allCoefVcov = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
+In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = NULL, xPos = 1:2, refBound = c(30, 40), intBound = c(50, 60), model = "lpm", allCoefVcov = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
-> urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NA, 1:2, 
+> urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
 +   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
@@ -590,4 +590,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXV
 > 
 > proc.time()
    user  system elapsed 
-  0.571   0.048   0.613 
+  0.538   0.040   0.573 
