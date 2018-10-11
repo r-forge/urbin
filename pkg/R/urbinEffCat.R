@@ -1,5 +1,6 @@
 urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
-  allCoefVcov = NULL, yCat = NULL ){
+  allCoefVcov = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
+  yCat = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -8,6 +9,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+  # check position of the intercept
+  checkIPos( iPos, xPos, allXVal ) 
   # number of categories
   nCat <- length( xPos ) + 1
   # check allXVal and allCoef

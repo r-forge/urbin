@@ -1,5 +1,6 @@
 urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model, 
-  allCoefVcov = NULL, yCat = NULL ){
+  allCoefVcov = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
+  yCat = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
@@ -46,6 +47,8 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   checkXPos( xPos, minLength = 2, maxLength = nCoef + 1, 
     minVal = 0, maxVal = ifelse( model == "MNL", nXVal, nCoef ), 
     requiredVal = 0 )
+  # check position of the intercept
+  checkIPos( iPos, xPos, allXVal ) 
   # number of intervals
   nInt <- length( xPos ) 
   # check 'xBound' and replace infinite values

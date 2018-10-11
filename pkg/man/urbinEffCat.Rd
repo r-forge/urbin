@@ -27,7 +27,8 @@
 
 \usage{
 urbinEffCat( allCoef, allXVal, xPos, xGroups, model, 
-  allCoefVcov = NULL, yCat = NULL )
+  allCoefVcov = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
+  yCat = NULL )
 }
 
 \arguments{
@@ -74,6 +75,11 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     (including intercept; the order of these values must be the same
     as the order of the corresponding coefficients in argument 
     \code{allCoef}).}
+  \item{iPos}{a posivite integer 
+    indicating the position of the intercept
+    in arguments \code{allCoef}, \code{allXVal}, 
+    and eventually \code{allCoefVcov}.
+    A value of zero indicates that the model does not have an intercept.}
   \item{yCat}{not documented yet.}
 }
 
@@ -114,6 +120,9 @@ where the element that corresponds to the \eqn{p}'s threshold
 must be equal to \eqn{-1}, 
 while the elements that correspond to the other thresholds
 must be equal to \eqn{0}.
+Argument \code{iPos} must specify the position of the \eqn{p}'s threshold
+in arguments \code{allCoef}, \code{allXVal}, 
+and eventually \code{allCoefVcov}.
 While the \eqn{p}'s threshold must be specified in argument \code{allCoef}, 
 all other thresholds can be omitted.
 In this case, arguments \code{allXVal} and \code{allCoefVcov}
