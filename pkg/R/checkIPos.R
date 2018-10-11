@@ -1,4 +1,4 @@
-checkIPos <- function( iPos, xPos, allXVal ) {
+checkIPos <- function( iPos, xPos, allXVal, model ) {
   if( length( iPos ) != 1 ) {
     stop( "argument 'iPos' must be a single integer value" )
   }
@@ -13,10 +13,17 @@ checkIPos <- function( iPos, xPos, allXVal ) {
       length( allXVal ) )
   }
   if( iPos > 0 & !is.null( allXVal ) & !is.list( allXVal ) ) {
-    if( ! allXVal[ iPos ] %in% c( 1, -1 ) ) {
-      stop( "the value of argument 'allXVal' indicated by argument 'iPos',",
-        " i.e., allXVal[iPos], must be one",
-        " (or minus one for ordered probit models)" )
+    if( model == "oprobit" ) {
+      if( allXVal[ iPos ] != -1 ) {
+        stop( "the value of argument 'allXVal' indicated by argument 'iPos',",
+          " i.e., allXVal[iPos], must be minus one (-1)",
+          " for ordered probit models" )
+      }
+    } else {
+      if( allXVal[ iPos ] != 1 ) {
+        stop( "the value of argument 'allXVal' indicated by argument 'iPos',",
+          " i.e., allXVal[iPos], must be one (1)" )
+      }
     }
   }
 }

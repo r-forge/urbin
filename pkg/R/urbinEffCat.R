@@ -10,7 +10,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check position of the intercept
-  checkIPos( iPos, xPos, allXVal ) 
+  checkIPos( iPos, xPos, allXVal, model ) 
   # number of categories
   nCat <- length( xPos ) + 1
   # check allXVal and allCoef

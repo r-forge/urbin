@@ -48,7 +48,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     minVal = 0, maxVal = ifelse( model == "MNL", nXVal, nCoef ), 
     requiredVal = 0 )
   # check position of the intercept
-  checkIPos( iPos, xPos, allXVal ) 
+  checkIPos( iPos, xPos, allXVal, model ) 
   # number of intervals
   nInt <- length( xPos ) 
   # check 'xBound' and replace infinite values

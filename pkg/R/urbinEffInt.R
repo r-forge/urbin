@@ -95,7 +95,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     }
   } 
   # check position of the intercept
-  checkIPos( iPos, xPos, allXVal ) 
+  checkIPos( iPos, xPos, allXVal, model ) 
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd,
     nXVal = nXVal, iPos = iPos, pCall = match.call() )
