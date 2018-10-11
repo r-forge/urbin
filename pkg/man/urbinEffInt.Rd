@@ -84,12 +84,18 @@ urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
 }
 
 \details{
-If \code{urbinEffInt()} calculates the effect of a variable of interest 
-based on a linear probability model (\code{model = "lpm"}),
-argument \code{allCoef} can only include the coefficient(s)
-of the explanatory variable of interest.
+Linear Probability Model:
+If a user wants to calculate the effect of a variable of interest
+based on a linear probability model 
+(\code{urbinEffInt( ..., model = "lpm")}),
+he/she can include only the coefficient(s)
+of the explanatory variable of interest in argument \code{allCoef}
+and omit all other coefficients.
 In this case, argument \code{allCoefVcov}
 must be adjusted accordingly.
+This simplified use of \code{urbinEffInt()}
+is only unsuitable for linear probability models
+and unsuitable for all other types of models.
 }
 
 \value{

@@ -75,15 +75,21 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
 }
 
 \details{
-If \code{urbinEla()} calculates the semi-elasticity 
-based on a linear probability model (\code{model = "lpm"}),
-argument \code{allCoef} can only include the coefficient(s)
-of the explanatory variable of interest.
+Linear Probability Model:
+If a user wants to calculate the semi-elasticity 
+based on a linear probability model 
+(\code{urbinEla( ..., model = "lpm")}),
+he/she can include only the coefficient(s)
+of the explanatory variable of interest in argument \code{allCoef}
+and omit all other coefficients.
 In this case, arguments \code{allXVal} and \code{allCoefVcov}
-must be adjusted accordingly,
-whereas argument \code{allXVal} can be a scalar 
+must be adjusted accordingly.
+Argument \code{allXVal} can be a scalar 
 with the value of the variable of interest
 even if the model includes both a linear and a quadratic term.
+This simplified use of \code{urbinEla()}
+is only unsuitable for linear probability models
+and unsuitable for all other types of models.
 }
 
 \value{

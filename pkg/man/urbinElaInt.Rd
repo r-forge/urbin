@@ -70,12 +70,18 @@ urbinElaInt( allCoef, allXVal, xPos, xBound, model,
 }
 
 \details{
-If \code{urbinElaInt()} calculates the semi-elasticity 
-based on a linear probability model (\code{model = "lpm"}),
-argument \code{allCoef} can only include the coefficient(s)
-of the explanatory variable of interest.
+Linear Probability Model:
+If a user wants to calculate the semi-elasticity 
+based on a linear probability model 
+(\code{urbinElaInt( ..., model = "lpm")}),
+he/she can include only the coefficient(s)
+of the explanatory variable of interest in argument \code{allCoef}
+and omit all other coefficients.
 In this case, arguments \code{allXVal} and \code{allCoefVcov}
 must be adjusted accordingly.
+This simplified use of \code{urbinElaInt()}
+is only unsuitable for linear probability models
+and unsuitable for all other types of models.
 }
 
 \value{
