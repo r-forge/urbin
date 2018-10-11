@@ -98,11 +98,11 @@ semEla.age      stdEr
                    kids         age        educ 
  0.04658311  0.03241640 12.39574832  0.57235977 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( estLogitLin ), 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estLogitLin ), 
 +   allXVal = xMeanLin, xPos = 3, model = "logit" )
-           (Intercept)      kids      age      educ
-semEla.age  0.04658311 0.0324164 12.39575 0.5723598
-stdEr               NA        NA       NA        NA
+    (Intercept)      kids      age      educ
+age  0.04658311 0.0324164 12.39575 0.5723598
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, model = "logit", 
 +   seSimplify = TRUE )
@@ -191,11 +191,11 @@ semEla.age      stdEr
                      kids          age          age         educ 
   0.08534662   0.05939127  13.49480379 993.64781746   1.04864132 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( estLogitQuad ), 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estLogitQuad ), 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "logit" )
-           (Intercept)       kids     age I(age^2)     educ
-semEla.age  0.08534662 0.05939127 13.4948 993.6476 1.048641
-stdEr               NA         NA      NA       NA       NA
+    (Intercept)       kids     age I(age^2)     educ
+age  0.08534662 0.05939127 13.4948 993.6476 1.048641
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "logit",
 +   seSimplify = TRUE )
@@ -345,15 +345,14 @@ Number of Fisher Scoring iterations: 4
 [1] -0.008028212 -0.005586697 -0.547491063  0.173305967  0.441473157
 [6] -0.098641458
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( estLogitInt ), allXVal = xMeanInt,
 +   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ),
 +   model = "logit" )
-        (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
-semEla -0.008028212 -0.005586697   -0.5474911     0.173306    0.4414732
-stdEr            NA           NA           NA           NA           NA
-              educ
-semEla -0.09864146
-stdEr           NA
+      (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
+[1,] -0.008028212 -0.005586697   -0.5474911     0.173306    0.4414732
+            educ
+[1,] -0.09864146
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( estLogitInt ), xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
@@ -403,12 +402,12 @@ stdEr           NA
 +   c( 30, 40 ), c( 50, 60 ), model = "logit" )
 [1] 0.01581969 0.01100865 5.54182737 0.19437417
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( estLogitLin ),
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estLogitLin ),
 +   allXVal = xMeanLinInt, xPos = 3,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
-       (Intercept)       kids      age      educ
-effect  0.01581969 0.01100865 5.541827 0.1943742
-stdEr           NA         NA       NA        NA
+     (Intercept)       kids      age      educ
+[1,]  0.01581969 0.01100865 5.541827 0.1943742
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estLogitLin ), xMeanLinInt, 3,
@@ -458,12 +457,12 @@ stdEr           NA         NA       NA        NA
 +   c( 30, 40 ), c( 50, 60 ), model = "logit" )
 [1] 1.806166e-03 1.256881e-03 4.759617e+00 4.249037e+02 2.219210e-02
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( estLogitQuad ),
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estLogitQuad ),
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
-       (Intercept)        kids      age I(age^2)      educ
-effect 0.001806166 0.001256881 4.759617 424.9036 0.0221921
-stdEr           NA          NA       NA       NA        NA
+     (Intercept)        kids      age I(age^2)      educ
+[1,] 0.001806166 0.001256881 4.759617 424.9036 0.0221921
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
@@ -533,15 +532,14 @@ In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVa
 [1] -0.003641672 -0.002534178 -0.138528966 -0.097135849  0.232023143
 [6] -0.044744687
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estLogitInt ),
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
 +   model = "logit" )
-        (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
-effect -0.003641672 -0.002534178    -0.138529  -0.09713585    0.2320231
-stdEr            NA           NA           NA           NA           NA
-              educ
-effect -0.04474469
-stdEr           NA
+      (Intercept)         kids age30.37TRUE age38.44TRUE age53.60TRUE
+[1,] -0.003641672 -0.002534178    -0.138529  -0.09713585    0.2320231
+            educ
+[1,] -0.04474469
 > # with full covariance matrix
 > urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 +   allCoefVcov = vcov( estLogitInt ), model = "logit" )
@@ -578,12 +576,12 @@ stdEr           NA
 [1]  0.009916771  0.006900914  0.000000000  0.105139321 -0.232023143
 [6]  0.121845902
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estLogitInt ),
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
 +   model = "logit" )
-       (Intercept)        kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
-effect 0.009916771 0.006900914            0    0.1051393   -0.2320231 0.1218459
-stdEr           NA          NA           NA           NA           NA        NA
+     (Intercept)        kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
+[1,] 0.009916771 0.006900914            0    0.1051393   -0.2320231 0.1218459
 > # with full covariance matrix
 > urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 +   allCoefVcov = vcov( estLogitInt ), model = "logit" )
@@ -603,4 +601,4 @@ stdEr           NA          NA           NA           NA           NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.535   0.044   0.571 
+  0.563   0.024   0.580 

@@ -246,6 +246,9 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # approximate standard error of the effect
   effeGSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # object to be returned
-  result <- c( effect = effeG, stdEr = effeGSE )
+  result <- list()
+  result$effect <- effeG
+  result$stdEr <- effeGSE
+  class( result ) <- "urbin"
   return( result )
 }

@@ -7,3 +7,5 @@ importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )
 importFrom( "stats", "pnorm" )
 importFrom( "stats", "rnorm" )
+
+S3method( "print", "urbin" )

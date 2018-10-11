@@ -100,16 +100,16 @@ semEla.age      stdEr
        kids         age        educ             
  0.03776701 19.02029626  0.66683279 -0.05427206 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[,1], 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitLin ) )[,1], 
 +   allXVal = xMeanLin, xPos = 2, iPos = 4, model = "oprobit" )
-                 kids     age      educ     no|part part|full
-semEla.age 0.03776701 19.0203 0.6668328 -0.05427206         0
-stdEr              NA      NA        NA          NA        NA
-> numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[-5,1], 
+          kids     age      educ     no|part part|full
+age 0.03776701 19.0203 0.6668328 -0.05427206         0
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitLin ) )[-5,1], 
 +   allXVal = xMeanLin[-5], xPos = 2, iPos = 4, model = "oprobit" )
-                 kids     age      educ     no|part
-semEla.age 0.03776701 19.0203 0.6668328 -0.05427206
-stdEr              NA      NA        NA          NA
+          kids     age      educ     no|part
+age 0.03776701 19.0203 0.6668328 -0.05427206
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
 +   iPos = 4, model = "oprobit", seSimplify = TRUE )
@@ -218,16 +218,16 @@ semEla.age      stdEr
          kids           age           age          educ               
    0.07047985   20.41189743 1553.29134185    1.24442660   -0.10128115 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[,1], 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitQuad ) )[,1], 
 +   allXVal = xMeanQuad, xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
-                 kids     age I(age^2)     educ    no|part part|full
-semEla.age 0.07047985 20.4119 1553.291 1.244427 -0.1012812         0
-stdEr              NA      NA       NA       NA         NA        NA
-> numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[-6,1], 
+          kids     age I(age^2)     educ    no|part part|full
+age 0.07047985 20.4119 1553.291 1.244427 -0.1012812         0
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitQuad ) )[-6,1], 
 +   allXVal = xMeanQuad[-6], xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
-                 kids     age I(age^2)     educ    no|part
-semEla.age 0.07047985 20.4119 1553.291 1.244427 -0.1012812
-stdEr              NA      NA       NA       NA         NA
+          kids     age I(age^2)     educ    no|part
+age 0.07047985 20.4119 1553.291 1.244427 -0.1012812
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
 +   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )
@@ -409,24 +409,22 @@ AIC: 1597.811
 [1] -0.001369020 -0.886735879  0.279945927  0.726109373 -0.024172078
 [6]  0.001967312
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[,1], 
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitInt ) )[,1], 
 +   allXVal = xMeanInt, xPos = c( 2, 3, 0, 4 ), iPos = 6, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-               kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
-semEla -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
-stdEr            NA           NA           NA           NA          NA
-           no|part part|full
-semEla 0.001967312         0
-stdEr           NA        NA
-> numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[-7,1], 
+             kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
+[1,] -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
+         no|part part|full
+[1,] 0.001967312         0
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( summary( estOProbitInt ) )[-7,1], 
 +   allXVal = xMeanInt[-7], xPos = c( 2, 3, 0, 4 ), iPos = 6, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-               kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
-semEla -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
-stdEr            NA           NA           NA           NA          NA
-           no|part
-semEla 0.001967312
-stdEr           NA
+             kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
+[1,] -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
+         no|part
+[1,] 0.001967312
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
@@ -490,18 +488,18 @@ stdEr           NA
 +   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 [1]  0.01299905  8.62023229  0.22951751 -0.01867993
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[,1],
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitLin ) )[,1],
 +   allXVal = xMeanLinInt, xPos = 2, iPos = 4,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-             kids      age      educ     no|part part|full
-effect 0.01299905 8.620232 0.2295175 -0.01867993         0
-stdEr          NA       NA        NA          NA        NA
-> numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[-5,1],
+           kids      age      educ     no|part part|full
+[1,] 0.01299905 8.620232 0.2295175 -0.01867993         0
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitLin ) )[-5,1],
 +   allXVal = xMeanLinInt[-5], xPos = 2, iPos = 4,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-             kids      age      educ     no|part
-effect 0.01299905 8.620232 0.2295175 -0.01867993
-stdEr          NA       NA        NA          NA
+           kids      age      educ     no|part
+[1,] 0.01299905 8.620232 0.2295175 -0.01867993
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( summary( estOProbitLin ) )[,1], xMeanLinInt, 
@@ -568,18 +566,18 @@ stdEr          NA       NA        NA          NA
 +   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 [1]   0.002692085   7.787302113 693.442395620   0.047532776  -0.003868588
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[,1],
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitQuad ) )[,1],
 +   allXVal = xMeanQuadInt, xPos = c( 2, 3 ), iPos = 5,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-              kids      age I(age^2)       educ      no|part part|full
-effect 0.002692085 7.787302  693.442 0.04753278 -0.003868588         0
-stdEr           NA       NA       NA         NA           NA        NA
-> numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[-6,1],
+            kids      age I(age^2)       educ      no|part part|full
+[1,] 0.002692085 7.787302  693.442 0.04753278 -0.003868588         0
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitQuad ) )[-6,1],
 +   allXVal = xMeanQuadInt[-6], xPos = c( 2, 3 ), iPos = 5,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-              kids      age I(age^2)       educ      no|part
-effect 0.002692085 7.787302  693.442 0.04753278 -0.003868588
-stdEr           NA       NA       NA         NA           NA
+            kids      age I(age^2)       educ      no|part
+[1,] 0.002692085 7.787302  693.442 0.04753278 -0.003868588
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadInt, 
@@ -665,24 +663,22 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 [1]  0.0002459577 -0.2241157983 -0.1571489263  0.3816181715  0.0043427500
 [6] -0.0003534469
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitInt ) )[,1],
 +   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
 +   model = "oprobit" )
-               kids age30.37TRUE age38.44TRUE age53.60TRUE       educ
-effect 0.0002459578   -0.2241158   -0.1571489    0.3816182 0.00434275
-stdEr            NA           NA           NA           NA         NA
-             no|part part|full
-effect -0.0003534469         0
-stdEr             NA        NA
-> numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
+             kids age30.37TRUE age38.44TRUE age53.60TRUE       educ
+[1,] 0.0002459578   -0.2241158   -0.1571489    0.3816182 0.00434275
+           no|part part|full
+[1,] -0.0003534469         0
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitInt ) )[-7,1],
 +   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
 +   model = "oprobit" )
-               kids age30.37TRUE age38.44TRUE age53.60TRUE       educ
-effect 0.0002459578   -0.2241158   -0.1571489    0.3816182 0.00434275
-stdEr            NA           NA           NA           NA         NA
-             no|part
-effect -0.0003534469
-stdEr             NA
+             kids age30.37TRUE age38.44TRUE age53.60TRUE       educ
+[1,] 0.0002459578   -0.2241158   -0.1571489    0.3816182 0.00434275
+           no|part
+[1,] -0.0003534469
 > # with full covariance matrix
 > urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
 +   iPos = 6, c( -1, -1, 1, 0 ), vcov( estOProbitInt ), 
@@ -737,24 +733,20 @@ stdEr             NA
 [1]  0.006084175  0.000000000  0.169638478 -0.381618171  0.107425164
 [6] -0.008743099
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitInt ) )[,1],
 +   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
 +   model = "oprobit" )
-              kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
-effect 0.006084175            0    0.1696385   -0.3816182 0.1074252
-stdEr           NA           NA           NA           NA        NA
-            no|part part|full
-effect -0.008743099         0
-stdEr            NA        NA
-> numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
+            kids age30.37TRUE age38.44TRUE age53.60TRUE      educ      no|part
+[1,] 0.006084175            0    0.1696385   -0.3816182 0.1074252 -0.008743099
+     part|full
+[1,]         0
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( summary( estOProbitInt ) )[-7,1],
 +   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
 +   model = "oprobit" )
-              kids age30.37TRUE age38.44TRUE age53.60TRUE      educ
-effect 0.006084175            0    0.1696385   -0.3816182 0.1074252
-stdEr           NA           NA           NA           NA        NA
-            no|part
-effect -0.008743099
-stdEr            NA
+            kids age30.37TRUE age38.44TRUE age53.60TRUE      educ      no|part
+[1,] 0.006084175            0    0.1696385   -0.3816182 0.1074252 -0.008743099
 > # with full covariance matrix
 > urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, c( 2:4 ), 
 +   iPos = 6, c( 0, 1, -1, 1 ), vcov( estOProbitInt ), 
@@ -780,4 +772,4 @@ stdEr            NA
 > 
 > proc.time()
    user  system elapsed 
-  0.371   0.016   0.382 
+  0.388   0.020   0.401 

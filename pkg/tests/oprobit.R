@@ -44,9 +44,11 @@ attr( xMeanLin4Attr, "derivOnly" ) <- 1
 urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin4Attr, xPos = 2, 
   iPos = 4, seSimplify = FALSE, model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[,1], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitLin ) )[,1], 
   allXVal = xMeanLin, xPos = 2, iPos = 4, model = "oprobit" )
-numericGradient( urbinEla, t0 = coef( summary( estOProbitLin ) )[-5,1], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitLin ) )[-5,1], 
   allXVal = xMeanLin[-5], xPos = 2, iPos = 4, model = "oprobit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
@@ -105,9 +107,11 @@ attr( xMeanQuad5Attr, "derivOnly" ) <- 1
 urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad5Attr, 
   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[,1], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitQuad ) )[,1], 
   allXVal = xMeanQuad, xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
-numericGradient( urbinEla, t0 = coef( summary( estOProbitQuad ) )[-6,1], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitQuad ) )[-6,1], 
   allXVal = xMeanQuad[-6], xPos = c( 2, 3 ), iPos = 5, model = "oprobit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
@@ -213,10 +217,12 @@ attr( xMeanInt6Attr, "derivOnly" ) <- 1
 urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr,
   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[,1], 
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitInt ) )[,1], 
   allXVal = xMeanInt, xPos = c( 2, 3, 0, 4 ), iPos = 6, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-numericGradient( urbinElaInt, t0 = coef( summary( estOProbitInt ) )[-7,1], 
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( summary( estOProbitInt ) )[-7,1], 
   allXVal = xMeanInt[-7], xPos = c( 2, 3, 0, 4 ), iPos = 6, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
 # semi-elasticity of age with standard errors (full covariance matrix)
@@ -265,10 +271,12 @@ attr( xMeanLinInt4Attr, "derivOnly" ) <- 1
 urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], xMeanLinInt4Attr, 
   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[,1],
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitLin ) )[,1],
   allXVal = xMeanLinInt, xPos = 2, iPos = 4,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-numericGradient( urbinEffInt, t0 = coef( summary( estOProbitLin ) )[-5,1],
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitLin ) )[-5,1],
   allXVal = xMeanLinInt[-5], xPos = 2, iPos = 4,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -319,10 +327,12 @@ attr( xMeanQuadInt5Attr, "derivOnly" ) <- 1
 urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt5Attr, 
   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[,1],
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitQuad ) )[,1],
   allXVal = xMeanQuadInt, xPos = c( 2, 3 ), iPos = 5,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
-numericGradient( urbinEffInt, t0 = coef( summary( estOProbitQuad ) )[-6,1],
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitQuad ) )[-6,1],
   allXVal = xMeanQuadInt[-6], xPos = c( 2, 3 ), iPos = 5,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "oprobit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -381,10 +391,12 @@ urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr,
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
   c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitInt ) )[,1],
   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
   model = "oprobit" )
-numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitInt ) )[-7,1],
   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( -1, -1, 1, 0 ),
   model = "oprobit" )
 # with full covariance matrix
@@ -422,10 +434,12 @@ urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr,
 urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
   c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[,1],
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitInt ) )[,1],
   allXVal = xMeanInt, xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
   model = "oprobit" )
-numericGradient( urbinEffCat, t0 = coef( summary( estOProbitInt ) )[-7,1],
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( summary( estOProbitInt ) )[-7,1],
   allXVal = xMeanInt[-7], xPos = c( 2:4 ), iPos = 6, xGroups = c( 0, 1, -1, 1 ), 
   model = "oprobit" )
 # with full covariance matrix

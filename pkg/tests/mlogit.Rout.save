@@ -125,30 +125,27 @@ semEla.age      stdEr
 [1]  0.08995030  0.06259490  0.38023843  1.10520608 -0.03107974 -0.02162787
 [7]  7.09917510 -0.38187216
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 0 )
-           full:(intercept)   full:kids full:age full:educ part:(intercept)
-semEla.age       0.01356927 0.009442625 -4.87455 0.1667236      -0.05887056
-stdEr                    NA          NA       NA        NA               NA
-             part:kids  part:age  part:educ
-semEla.age -0.04096703 -7.479414 -0.7233339
-stdEr               NA        NA         NA
-> numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+    full:(intercept)   full:kids full:age full:educ part:(intercept)
+age       0.01356927 0.009442625 -4.87455 0.1667236      -0.05887056
+      part:kids  part:age  part:educ
+age -0.04096703 -7.479414 -0.7233339
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 1 )
-           full:(intercept)   full:kids full:age full:educ part:(intercept)
-semEla.age       -0.1035196 -0.07203752 4.494312  -1.27193        0.0899503
-stdEr                    NA          NA       NA        NA               NA
-           part:kids  part:age part:educ
-semEla.age 0.0625949 0.3802384  1.105206
-stdEr             NA        NA        NA
-> numericGradient( urbinEla, t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+    full:(intercept)   full:kids full:age full:educ part:(intercept) part:kids
+age       -0.1035196 -0.07203752 4.494312  -1.27193        0.0899503 0.0625949
+     part:age part:educ
+age 0.3802384  1.105206
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
++   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
 +   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 2 )
-           full:(intercept) full:kids  full:age full:educ part:(intercept)
-semEla.age        0.0899503 0.0625949 0.3802384  1.105206      -0.03107974
-stdEr                    NA        NA        NA        NA               NA
-             part:kids part:age  part:educ
-semEla.age -0.02162787 7.099175 -0.3818722
-stdEr               NA       NA         NA
+    full:(intercept) full:kids  full:age full:educ part:(intercept)   part:kids
+age        0.0899503 0.0625949 0.3802384  1.105206      -0.03107974 -0.02162787
+    part:age  part:educ
+age 7.099175 -0.3818722
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
 +   model = "MNL", seSimplify = TRUE, yCat = 0 )
@@ -299,30 +296,27 @@ semEla.age      stdEr
  [1]    0.09516231    0.06622184   -0.16996612 -186.65318577    1.16924522
  [6]   -0.02098258   -0.01460142    7.86762504  707.31099651   -0.25780981
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 0 )
-           full:(intercept)    full:kids  full:age full:I(age^2)  full:educ
-semEla.age      -0.01001178 -0.006967028 -5.777987     -473.4502 -0.1230132
-stdEr                    NA           NA        NA            NA         NA
-           part:(intercept)   part:kids  part:age part:I(age^2)  part:educ
-semEla.age      -0.07417973 -0.05162042 -7.697659     -520.6578 -0.9114354
-stdEr                    NA          NA        NA            NA         NA
-> numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+    full:(intercept)    full:kids  full:age full:I(age^2)  full:educ
+age      -0.01001178 -0.006967028 -5.777987     -473.4502 -0.1230132
+    part:(intercept)   part:kids  part:age part:I(age^2)  part:educ
+age      -0.07417973 -0.05162042 -7.697659     -520.6578 -0.9114354
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 1 )
-           full:(intercept)   full:kids full:age full:I(age^2) full:educ
-semEla.age      -0.08515053 -0.05925482 5.947953      660.1033 -1.046232
-stdEr                    NA          NA       NA            NA        NA
-           part:(intercept)  part:kids   part:age part:I(age^2) part:educ
-semEla.age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
-stdEr                    NA         NA         NA            NA        NA
-> numericGradient( urbinEla, t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+    full:(intercept)   full:kids full:age full:I(age^2) full:educ
+age      -0.08515053 -0.05925482 5.947953      660.1033 -1.046232
+    part:(intercept)  part:kids   part:age part:I(age^2) part:educ
+age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
+> numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 2 )
-           full:(intercept)  full:kids   full:age full:I(age^2) full:educ
-semEla.age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
-stdEr                    NA         NA         NA            NA        NA
-           part:(intercept)   part:kids part:age part:I(age^2)  part:educ
-semEla.age      -0.02098258 -0.01460142 7.867625      707.3109 -0.2578098
-stdEr                    NA          NA       NA            NA         NA
+    full:(intercept)  full:kids   full:age full:I(age^2) full:educ
+age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
+    part:(intercept)   part:kids part:age part:I(age^2)  part:educ
+age      -0.02098258 -0.01460142 7.867625      707.3109 -0.2578098
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
 +   model = "MNL", seSimplify = TRUE, yCat = 0 )
@@ -575,42 +569,36 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
  [1]  0.11486282  0.07993110  0.22205517 -0.06848645 -0.06329786  1.41130249
  [7] -0.09346688 -0.06504203 -0.46822636  0.14549102  0.29274452 -1.14841380
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinElaInt, t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )
-       full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
-semEla        0.0304168 0.02116654          0.301984       -0.09651127
-stdEr                NA         NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept)   part:kids
-semEla         -0.211598 0.3737268      -0.02139593 -0.01488907
-stdEr                 NA        NA               NA          NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE  part:educ
-semEla         0.2461712       -0.07700457        -0.2294467 -0.2628887
-stdEr                 NA                NA                NA         NA
-> numericGradient( urbinElaInt, t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]        0.0304168 0.02116654          0.301984       -0.09651127
+     full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
+[1,]         -0.211598 0.3737268      -0.02139593 -0.01488907         0.2461712
+     part:age38.44TRUE part:age53.60TRUE  part:educ
+[1,]       -0.07700457        -0.2294467 -0.2628887
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
-       full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
-semEla       -0.1452796 -0.1010976        -0.5240392         0.1649977
-stdEr                NA         NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept) part:kids part:age30.37TRUE
-semEla         0.2748958 -1.785029        0.1148628 0.0799311         0.2220552
-stdEr                 NA        NA               NA        NA                NA
-       part:age38.44TRUE part:age53.60TRUE part:educ
-semEla       -0.06848645       -0.06329786  1.411302
-stdEr                 NA                NA        NA
-> numericGradient( urbinElaInt, t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       -0.1452796 -0.1010976        -0.5240392         0.1649977
+     full:age53.60TRUE full:educ part:(intercept) part:kids part:age30.37TRUE
+[1,]         0.2748958 -1.785029        0.1148628 0.0799311         0.2220552
+     part:age38.44TRUE part:age53.60TRUE part:educ
+[1,]       -0.06848645       -0.06329786  1.411302
+> numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
-       full:(intercept) full:kids full:age30.37TRUE full:age38.44TRUE
-semEla        0.1148628 0.0799311         0.2220552       -0.06848645
-stdEr                NA        NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept)   part:kids
-semEla       -0.06329786  1.411302      -0.09346688 -0.06504203
-stdEr                 NA        NA               NA          NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE part:educ
-semEla        -0.4682264          0.145491         0.2927445 -1.148414
-stdEr                 NA                NA                NA        NA
+     full:(intercept) full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]        0.1148628 0.0799311         0.2220552       -0.06848645
+     full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
+[1,]       -0.06329786  1.411302      -0.09346688 -0.06504203        -0.4682264
+     part:age38.44TRUE part:age53.60TRUE part:educ
+[1,]          0.145491         0.2927445 -1.148414
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
@@ -693,24 +681,22 @@ stdEr                 NA                NA                NA        NA
 [1]  0.04098445  0.02852039  3.37740996  0.50356991 -0.01626528 -0.01131874
 [7]  3.15584284 -0.19984914
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( estMLogitLin )[ coefPermuteLin ],
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitLin )[ coefPermuteLin ],
 +   allXVal = xMeanLinInt, xPos = 3,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 1 )
-       full:(intercept)   full:kids full:age  full:educ part:(intercept)
-effect      -0.05036251 -0.03504642 1.745633 -0.6187967       0.04098445
-stdEr                NA          NA       NA         NA               NA
-        part:kids  part:age part:educ
-effect 0.02852039 0.3111907 0.5035699
-stdEr          NA        NA        NA
-> numericGradient( urbinEffInt, t0 = coef( estMLogitLin )[ coefPermuteLin ],
+     full:(intercept)   full:kids full:age  full:educ part:(intercept)
+[1,]      -0.05036251 -0.03504642 1.745633 -0.6187967       0.04098445
+      part:kids  part:age part:educ
+[1,] 0.02852039 0.3111907 0.5035699
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitLin )[ coefPermuteLin ],
 +   allXVal = xMeanLinInt, xPos = 3,
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 2 )
-       full:(intercept)  full:kids  full:age full:educ part:(intercept)
-effect       0.04098445 0.02852039 0.3111907 0.5035699      -0.01626528
-stdEr                NA         NA        NA        NA               NA
-         part:kids part:age  part:educ
-effect -0.01131874 3.155843 -0.1998491
-stdEr           NA       NA         NA
+     full:(intercept)  full:kids  full:age full:educ part:(intercept)
+[1,]       0.04098445 0.02852039 0.3111907 0.5035699      -0.01626528
+       part:kids part:age  part:educ
+[1,] -0.01131874 3.155843 -0.1998491
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
@@ -783,24 +769,22 @@ stdEr           NA       NA         NA
  [1]   0.06224584   0.04331583   4.13449840 252.80033163   0.76480544
  [6]  -0.03735647  -0.02599574   2.01139265 252.62524861  -0.45899350
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffInt, t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 1 )
-       full:(intercept)   full:kids   full:age full:I(age^2) full:educ
-effect      -0.08522627 -0.05930752 -0.1712288      147.9398 -1.047163
-stdEr                NA          NA         NA            NA        NA
-       part:(intercept)  part:kids part:age part:I(age^2) part:educ
-effect       0.06224584 0.04331583 1.467627      12.78191 0.7648054
-stdEr                NA         NA       NA            NA        NA
-> numericGradient( urbinEffInt, t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+     full:(intercept)   full:kids   full:age full:I(age^2) full:educ
+[1,]      -0.08522627 -0.05930752 -0.1712288      147.9398 -1.047163
+     part:(intercept)  part:kids part:age part:I(age^2) part:educ
+[1,]       0.06224584 0.04331583 1.467627      12.78191 0.7648054
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
 +   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 2 )
-       full:(intercept)  full:kids full:age full:I(age^2) full:educ
-effect       0.06224584 0.04331583 1.467627       12.7819 0.7648054
-stdEr                NA         NA       NA            NA        NA
-       part:(intercept)   part:kids part:age part:I(age^2)  part:educ
-effect      -0.03735647 -0.02599574 2.011393      252.6253 -0.4589935
-stdEr                NA          NA       NA            NA         NA
+     full:(intercept)  full:kids full:age full:I(age^2) full:educ
+[1,]       0.06224584 0.04331583 1.467627       12.7819 0.7648054
+     part:(intercept)   part:kids part:age part:I(age^2)  part:educ
+[1,]      -0.03735647 -0.02599574 2.011393      252.6253 -0.4589935
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (full covariance matrix) 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
@@ -893,30 +877,26 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
  [1]  0.06129809  0.04265631  0.05558755  0.03897772 -0.03326718  0.75316064
  [7] -0.04615646 -0.03211950 -0.11757200 -0.08244093  0.15385647 -0.56711760
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( estMLogitInt )[ coefPermuteInt ],
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
 +   model = "MNL", yCat = 1 )
-       full:(intercept)   full:kids full:age30.37TRUE full:age38.44TRUE
-effect      -0.08059322 -0.05608346        -0.1323005        -0.0927685
-stdEr                NA          NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept)  part:kids
-effect         0.1444758 -0.990237       0.06129809 0.04265631
-stdEr                 NA        NA               NA         NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE part:educ
-effect        0.05558755        0.03897772       -0.03326718 0.7531606
-stdEr                 NA                NA                NA        NA
-> numericGradient( urbinEffCat, t0 = coef( estMLogitInt )[ coefPermuteInt ],
+     full:(intercept)   full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]      -0.08059322 -0.05608346        -0.1323005        -0.0927685
+     full:age53.60TRUE full:educ part:(intercept)  part:kids part:age30.37TRUE
+[1,]         0.1444758 -0.990237       0.06129809 0.04265631        0.05558755
+     part:age38.44TRUE part:age53.60TRUE part:educ
+[1,]        0.03897772       -0.03326718 0.7531606
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
 +   model = "MNL", yCat = 2 )
-       full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
-effect       0.06129809 0.04265631        0.05558755        0.03897772
-stdEr                NA         NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept)  part:kids
-effect       -0.03326718 0.7531606      -0.04615646 -0.0321195
-stdEr                 NA        NA               NA         NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE  part:educ
-effect         -0.117572       -0.08244093         0.1538565 -0.5671176
-stdEr                 NA                NA                NA         NA
+     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       0.06129809 0.04265631        0.05558755        0.03897772
+     full:age53.60TRUE full:educ part:(intercept)  part:kids part:age30.37TRUE
+[1,]       -0.03326718 0.7531606      -0.04615646 -0.0321195         -0.117572
+     part:age38.44TRUE part:age53.60TRUE  part:educ
+[1,]       -0.08244093         0.1538565 -0.5671176
 > # with full covariance matrix
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( -1, -1, 1, 0 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
@@ -967,30 +947,26 @@ stdEr                 NA                NA                NA         NA
  [1] -0.05282959 -0.03676322  0.00000000 -0.03741489  0.03326718 -0.64910941
  [7]  0.04962748  0.03453492  0.00000000  0.08842759 -0.15385647  0.60976548
 > # numerically computed partial derivatives of the effect wrt the coefficients
-> numericGradient( urbinEffCat, t0 = coef( estMLogitInt )[ coefPermuteInt ],
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
 +   model = "MNL", yCat = 1 )
-       full:(intercept) full:kids full:age30.37TRUE full:age38.44TRUE
-effect       0.06664107 0.0463744                 0        0.09174462
-stdEr                NA        NA                NA                NA
-       full:age53.60TRUE full:educ part:(intercept)   part:kids
-effect        -0.1444758  0.818809      -0.05282959 -0.03676322
-stdEr                 NA        NA               NA          NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE  part:educ
-effect                 0       -0.03741489        0.03326718 -0.6491094
-stdEr                 NA                NA                NA         NA
-> numericGradient( urbinEffCat, t0 = coef( estMLogitInt )[ coefPermuteInt ],
+     full:(intercept) full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       0.06664107 0.0463744                 0        0.09174462
+     full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
+[1,]        -0.1444758  0.818809      -0.05282959 -0.03676322                 0
+     part:age38.44TRUE part:age53.60TRUE  part:educ
+[1,]       -0.03741489        0.03326718 -0.6491094
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
 +   model = "MNL", yCat = 2 )
-       full:(intercept)   full:kids full:age30.37TRUE full:age38.44TRUE
-effect      -0.05282959 -0.03676322                 0       -0.03741489
-stdEr                NA          NA                NA                NA
-       full:age53.60TRUE  full:educ part:(intercept)  part:kids
-effect        0.03326718 -0.6491094       0.04962748 0.03453492
-stdEr                 NA         NA               NA         NA
-       part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE part:educ
-effect                 0        0.08842759        -0.1538565 0.6097655
-stdEr                 NA                NA                NA        NA
+     full:(intercept)   full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]      -0.05282959 -0.03676322                 0       -0.03741489
+     full:age53.60TRUE  full:educ part:(intercept)  part:kids part:age30.37TRUE
+[1,]        0.03326718 -0.6491094       0.04962748 0.03453492                 0
+     part:age38.44TRUE part:age53.60TRUE part:educ
+[1,]        0.08842759        -0.1538565 0.6097655
 > # with full covariance matrix
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( 0, 1, -1, 1 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
@@ -1017,4 +993,4 @@ stdEr                 NA                NA                NA        NA
 > 
 > proc.time()
    user  system elapsed 
-  0.583   0.036   0.612 
+  0.649   0.016   0.659 

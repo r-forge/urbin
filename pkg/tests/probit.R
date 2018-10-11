@@ -30,7 +30,8 @@ attr( xMeanLinAttr, "derivOnly" ) <- 1
 urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
   seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estProbitLin ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estProbitLin ), 
   allXVal = xMeanLin, xPos = 3, model = "probit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
@@ -73,7 +74,8 @@ attr( xMeanQuadAttr, "derivOnly" ) <- 1
 urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit",
   seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estProbitQuad ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "probit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit", 
@@ -157,7 +159,8 @@ attr( xMeanIntAttr, "derivOnly" ) <- 1
 urbinElaInt( coef( estProbitInt ), xMeanIntAttr, 
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinElaInt, t0 = coef( estProbitInt ), allXVal = xMeanInt, 
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estProbitInt ), allXVal = xMeanInt, 
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ), 
   model = "probit" )
 # semi-elasticity of age with standard errors (full covariance matrix)
@@ -198,7 +201,8 @@ attr( xMeanLinIntAttr, "derivOnly" ) <- 1
 urbinEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
   c( 30, 40 ), c( 50, 60 ), model = "probit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estProbitLin ), 
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estProbitLin ), 
   allXVal = xMeanLinInt, xPos = 3, 
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -239,7 +243,8 @@ attr( xMeanQuadIntAttr, "derivOnly" ) <- 1
 urbinEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
   c( 30, 40 ), c( 50, 60 ), model = "probit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estProbitQuad ), 
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estProbitQuad ), 
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ), 
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "probit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -289,7 +294,8 @@ predict( estProbitInt, newdata = df53.60, type = "response" ) -
 urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ), 
   model = "probit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estProbitInt ), 
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ), 
   model = "probit" )
 # with full covariance matrix
@@ -317,7 +323,8 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
 urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ), 
   model = "probit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estProbitInt ), 
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estProbitInt ), 
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
   model = "probit" )
 # with full covariance matrix

@@ -138,8 +138,10 @@ must be adjusted accordingly.
 }
 
 \value{
-  A numeric vector with two elements: 
-  the effect and its approximate standard error.
+\code{urbinElaInt()} returns a list of class \code{"urbin"} 
+that contains the following components:
+\item{effect}{the calculated effect.}
+\item{stdEr}{the approximate standard error of the calculated effect.}
 }
 
 \examples{

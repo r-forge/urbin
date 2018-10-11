@@ -30,9 +30,11 @@ xMeanLinAttr <- xMeanLin
 attr( xMeanLinAttr, "derivOnly" ) <- 1 
 urbinEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3, model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estLpmLin )["age"], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+  t0 = coef( estLpmLin )["age"], 
   allXVal = xMeanLin["age"], xPos = 1, model = "lpm" )
-numericGradient( urbinEla, t0 = coef( estLpmLin ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estLpmLin ), 
   allXVal = xMeanLin, xPos = 3, model = "lpm" )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm",
@@ -65,9 +67,11 @@ xMeanQuadAttr <- xMeanQuad
 attr( xMeanQuadAttr, "derivOnly" ) <- 1 
 urbinEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ), model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
   allXVal = xMeanQuad[ "age" ], xPos = c( 1, 2 ), model = "lpm" )
-numericGradient( urbinEla, t0 = coef( estLpmQuad ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estLpmQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad["age"], 
@@ -146,10 +150,12 @@ attr( xMeanIntAttr, "derivOnly" ) <- 1
 urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinElaInt, t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), 
   model = "lpm" )
-numericGradient( urbinElaInt, t0 = coef( estLpmInt ), allXVal = xMeanInt, 
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estLpmInt ), allXVal = xMeanInt, 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), 
   model = "lpm" )
 # semi-elasticity of age with standard errors (full covariance matrix)
@@ -193,9 +199,11 @@ attr( naAttr, "derivOnly" ) <- 1
 urbinEffInt( coef( estLpmLin ), naAttr, xPos = 3,
   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estLpmLin )[3], allXVal = NA,
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLpmLin )[3], allXVal = NA,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1, model = "lpm" )
-numericGradient( urbinEffInt, t0 = coef( estLpmLin ), allXVal = NA,
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLpmLin ), allXVal = NA,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3, model = "lpm" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
@@ -232,9 +240,11 @@ predict( estLpmQuad,
 urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estLpmQuad )[3:4], allXVal = NA,
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLpmQuad )[3:4], allXVal = NA,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 1:2, model = "lpm" )
-numericGradient( urbinEffInt, t0 = coef( estLpmQuad ),
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLpmQuad ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), xPos = 3:4, model = "lpm" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
@@ -282,9 +292,11 @@ urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 )
 urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( -1, -1, 1, 0 ), 
   model = "lpm" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLpmInt )[3:5], xPos = 1:3,
   allXVal = xMeanInt[3:5], xGroups = c( -1, -1, 1, 0 ), model = "lpm" )
-numericGradient( urbinEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLpmInt ), xPos = 3:5,
   allXVal = xMeanInt, xGroups = c( -1, -1, 1, 0 ), model = "lpm" )
 # with full covariance matrix
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ), 
@@ -314,9 +326,11 @@ urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ),
 urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( 0, 1, -1, 1 ), 
   model = "lpm" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estLpmInt )[3:5], xPos = 1:3,
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLpmInt )[3:5], xPos = 1:3,
   allXVal = xMeanInt[3:5], xGroups = c( 0, 1, -1, 1 ), model = "lpm" )
-numericGradient( urbinEffCat, t0 = coef( estLpmInt ), xPos = 3:5,
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLpmInt ), xPos = 3:5,
   allXVal = xMeanInt, xGroups = c( 0, 1, -1, 1 ), model = "lpm" )
 # with full covariance matrix
 urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 

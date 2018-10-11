@@ -329,6 +329,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   # approximate standard error of the semi-elasticity
   semElaSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   # create object that will be returned
-  result <- c( semEla = semEla, stdEr = semElaSE )
+  result <- list()
+  result$semEla <- semEla
+  result$stdEr <- semElaSE
+  class( result ) <- "urbin"
   return( result )
 } 

@@ -30,7 +30,8 @@ attr( xMeanLinAttr, "derivOnly" ) <- 1
 urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, seSimplify = FALSE, 
   model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estLogitLin ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estLogitLin ), 
   allXVal = xMeanLin, xPos = 3, model = "logit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estLogitLin ), xMeanLinAttr, 3, model = "logit", 
@@ -73,7 +74,8 @@ attr( xMeanQuadAttr, "derivOnly" ) <- 1
 urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "logit",
   seSimplify = FALSE )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEla, t0 = coef( estLogitQuad ), 
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estLogitQuad ), 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "logit" )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estLogitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "logit",
@@ -157,7 +159,8 @@ attr( xMeanIntAttr, "derivOnly" ) <- 1
 urbinElaInt( coef( estLogitInt ), xMeanIntAttr,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinElaInt, t0 = coef( estLogitInt ), allXVal = xMeanInt,
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estLogitInt ), allXVal = xMeanInt,
   xPos = c( 3, 4, 0, 5 ), xBound = c( 30, 37.5, 44.5, 52.5, 60 ),
   model = "logit" )
 # semi-elasticity of age with standard errors (full covariance matrix)
@@ -198,7 +201,8 @@ attr( xMeanLinIntAttr, "derivOnly" ) <- 1
 urbinEffInt( coef( estLogitLin ), xMeanLinIntAttr, 3,
   c( 30, 40 ), c( 50, 60 ), model = "logit" )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estLogitLin ),
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLogitLin ),
   allXVal = xMeanLinInt, xPos = 3,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -239,7 +243,8 @@ attr( xMeanQuadIntAttr, "derivOnly" ) <- 1
 urbinEffInt( coef( estLogitQuad ), xMeanQuadIntAttr, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffInt, t0 = coef( estLogitQuad ),
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estLogitQuad ),
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "logit" )
 # effects of age changing from the 30-40 interval to the 50-60 interval
@@ -289,7 +294,8 @@ predict( estLogitInt, newdata = df53.60, type = "response" ) -
 urbinEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
   c( -1, -1, 1, 0 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLogitInt ),
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
   model = "logit" )
 # with full covariance matrix
@@ -316,7 +322,8 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
 urbinEffCat( coef( estLogitInt ), xMeanIntAttr, c( 3:5 ),
   c( 0, 1, -1, 1 ), model = "logit" )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( urbinEffCat, t0 = coef( estLogitInt ),
+numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
+  t0 = coef( estLogitInt ),
   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
   model = "logit" )
 # with full covariance matrix

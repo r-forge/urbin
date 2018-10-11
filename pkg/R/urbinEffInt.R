@@ -308,6 +308,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   effSE <- drop( sqrt( t( derivCoef ) %*% allCoefVcov %*% derivCoef ) )
   
   # object to be returned
-  result <- c( effect = eff, stdEr = effSE )
+  result <- list()
+  result$effect <- eff
+  result$stdEr <- effSE
+  class( result ) <- "urbin"
   return( result )
 }
