@@ -10,9 +10,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # check allXVal and allCoef
   if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
     if( model == "lpm" ) {
-      if( any( !is.na( allXVal ) ) ) {
+      if( !is.null( allXVal ) ) {
         warning( "argument allXVal is ignored for lpm models",
-          " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
+          " (set this argument to 'NULL' to avoid this warning)" )
       }
       allXVal <- rep( 0, nCoef )
       if( iPos != 0 ){
