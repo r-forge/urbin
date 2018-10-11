@@ -89,6 +89,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+  # check position of the intercept
+  checkIPos( iPos, xPos, allXVal ) 
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd,
     nXVal = nXVal, iPos = iPos, pCall = match.call() )

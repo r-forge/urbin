@@ -15,6 +15,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
           " (set this argument to 'NULL' or 'NA' to avoid this warning)" )
       }
       temp <- rep( 0, nCoef )
+      if( iPos != 0 ){
+        temp[ iPos ] <- 1
+      }
       temp[ xPos ] <- NA
       if( "derivOnly" %in% names( attributes( allXVal ) ) ) {
         attr( temp, "derivOnly" ) <-1
@@ -75,6 +78,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+  # check position of the intercept
+  checkIPos( iPos, xPos, allXVal ) 
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd,
     nXVal = nXVal, iPos = iPos, pCall = match.call() )
