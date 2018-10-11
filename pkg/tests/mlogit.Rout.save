@@ -110,18 +110,16 @@ semEla.age      stdEr
          no        full        part 
  0.32429382 -0.25616669 -0.06812713 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinAttr <- xMeanLin
-> attr( xMeanLinAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   seSimplify = FALSE, model = "MNL", yCat = 0 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   seSimplify = FALSE, model = "MNL", yCat = 0 )$derivCoef
 [1]  0.013569269  0.009442625 -4.874549936  0.166723607 -0.058870562
 [6] -0.040967031 -7.479413527 -0.723333916
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   seSimplify = FALSE, model = "MNL", yCat = 1 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   seSimplify = FALSE, model = "MNL", yCat = 1 )$derivCoef
 [1] -0.10351957 -0.07203752  4.49431151 -1.27192968  0.08995030  0.06259490
 [7]  0.38023843  1.10520608
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   seSimplify = FALSE, model = "MNL", yCat = 2 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   seSimplify = FALSE, model = "MNL", yCat = 2 )$derivCoef
 [1]  0.08995030  0.06259490  0.38023843  1.10520608 -0.03107974 -0.02162787
 [7]  7.09917510 -0.38187216
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -147,16 +145,16 @@ age        0.0899503 0.0625949 0.3802384  1.105206      -0.03107974 -0.02162787
     part:age  part:educ
 age 7.099175 -0.3818722
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   model = "MNL", seSimplify = TRUE, yCat = 0 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
 [1]  0.000000  0.000000 -5.451757  0.000000  0.000000  0.000000 -4.975186
 [8]  0.000000
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   model = "MNL", seSimplify = TRUE, yCat = 1 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
 [1]  0.000000  0.000000  8.897811  0.000000  0.000000  0.000000 -3.446054
 [8]  0.000000
-> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-+   model = "MNL", seSimplify = TRUE, yCat = 2 )
+> urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
++   model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
 [1]  0.000000  0.000000 -3.446054  0.000000  0.000000  0.000000  8.421240
 [8]  0.000000
 > # semi-elasticity of age with standard errors (full covariance matrix)
@@ -281,18 +279,16 @@ semEla.age      stdEr
          no        full        part 
  0.31914266 -0.26914621 -0.04999644 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanQuadAttr <- xMeanQuad
-> attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = FALSE, yCat = 0 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = FALSE, yCat = 0 )$derivCoef
  [1] -1.001178e-02 -6.967028e-03 -5.777987e+00 -4.734502e+02 -1.230132e-01
  [6] -7.417973e-02 -5.162042e-02 -7.697659e+00 -5.206578e+02 -9.114354e-01
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = FALSE, yCat = 1 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = FALSE, yCat = 1 )$derivCoef
  [1]   -0.08515053   -0.05925482    5.94795276  660.10342942   -1.04623197
  [6]    0.09516231    0.06622184   -0.16996612 -186.65318577    1.16924522
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = FALSE, yCat = 2 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = FALSE, yCat = 2 )$derivCoef
  [1]    0.09516231    0.06622184   -0.16996612 -186.65318577    1.16924522
  [6]   -0.02098258   -0.01460142    7.86762504  707.31099651   -0.25780981
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -318,16 +314,16 @@ age       0.09516231 0.06622184 -0.1699661     -186.6532  1.169245
     part:(intercept)   part:kids part:age part:I(age^2)  part:educ
 age      -0.02098258 -0.01460142 7.867625      707.3109 -0.2578098
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = TRUE, yCat = 0 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
  [1]    0.000000    0.000000   -5.352107 -455.334245    0.000000    0.000000
  [7]    0.000000   -4.542213 -386.431922    0.000000
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = TRUE, yCat = 1 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
  [1]    0.000000    0.000000    9.570073  814.180631    0.000000    0.000000
  [7]    0.000000   -4.217966 -358.846385    0.000000
-> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-+   model = "MNL", seSimplify = TRUE, yCat = 2 )
+> urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
++   model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
  [1]    0.000000    0.000000   -4.217966 -358.846385    0.000000    0.000000
  [7]    0.000000    8.760179  745.278307    0.000000
 > # semi-elasticity of age with standard errors (full covariance matrix)
@@ -554,18 +550,16 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
          no        full        part 
  0.35009151 -0.25792475 -0.09216676 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanIntAttr <- xMeanInt
-> attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )
+> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )$derivCoef
  [1]  0.03041680  0.02116654  0.30198403 -0.09651127 -0.21159797  0.37372678
  [7] -0.02139593 -0.01488907  0.24617119 -0.07700457 -0.22944666 -0.26288869
-> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
+> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )$derivCoef
  [1] -0.14527962 -0.10109764 -0.52403920  0.16499772  0.27489583 -1.78502927
  [7]  0.11486282  0.07993110  0.22205517 -0.06848645 -0.06329786  1.41130249
-> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
+> urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )$derivCoef
  [1]  0.11486282  0.07993110  0.22205517 -0.06848645 -0.06329786  1.41130249
  [7] -0.09346688 -0.06504203 -0.46822636  0.14549102  0.29274452 -1.14841380
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -670,14 +664,12 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
          no        full        part 
  0.15204791 -0.11746817 -0.03457975 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinIntAttr <- xMeanLinInt
-> attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinIntAttr, 3,
-+   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 [1] -0.05036251 -0.03504642  1.74563255 -0.61879668  0.04098445  0.02852039
 [7]  3.37740996  0.50356991
-> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinIntAttr, 3,
-+   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
 [1]  0.04098445  0.02852039  3.37740996  0.50356991 -0.01626528 -0.01131874
 [7]  3.15584284 -0.19984914
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -758,14 +750,12 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
          no        full        part 
  0.24919379 -0.17672093 -0.07247287 
 > # partial derivatives of the effect wrt the coefficients
-> xMeanQuadIntAttr <- xMeanQuadInt
-> attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadIntAttr, 
-+   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
++   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
  [1]  -0.08522627  -0.05930752  -0.17122875 147.93976018  -1.04716260
  [6]   0.06224584   0.04331583   4.13449840 252.80033163   0.76480544
-> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadIntAttr, 
-+   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
++   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
  [1]   0.06224584   0.04331583   4.13449840 252.80033163   0.76480544
  [6]  -0.03735647  -0.02599574   2.01139265 252.62524861  -0.45899350
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -868,12 +858,12 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
          no        full        part 
  0.25344121 -0.16694105 -0.08650017 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-+   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )$derivCoef
  [1] -0.08059322 -0.05608346 -0.13230053 -0.09276850  0.14447582 -0.99023703
  [7]  0.06129809  0.04265631  0.05558755  0.03897772 -0.03326718  0.75316064
-> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-+   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 2 )
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 2 )$derivCoef
  [1]  0.06129809  0.04265631  0.05558755  0.03897772 -0.03326718  0.75316064
  [7] -0.04615646 -0.03211950 -0.11757200 -0.08244093  0.15385647 -0.56711760
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -938,12 +928,12 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
          no        full        part 
 -0.22244736  0.12866860  0.09377876 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-+   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )$derivCoef
  [1]  0.06664107  0.04637440  0.00000000  0.09174462 -0.14447582  0.81880898
  [7] -0.05282959 -0.03676322  0.00000000 -0.03741489  0.03326718 -0.64910941
-> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-+   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 2 )
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 2 )$derivCoef
  [1] -0.05282959 -0.03676322  0.00000000 -0.03741489  0.03326718 -0.64910941
  [7]  0.04962748  0.03453492  0.00000000  0.08842759 -0.15385647  0.60976548
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -993,4 +983,4 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.649   0.016   0.659 
+  0.623   0.032   0.650 

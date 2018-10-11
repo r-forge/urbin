@@ -87,16 +87,12 @@ semEla.age      stdEr
 > print( sum( elaLinNum[ c( "part", "full" ) ] ) )
 [1] -0.3097679
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinAttr <- xMeanLin
-> attr( xMeanLinAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
-+   iPos = 4, seSimplify = FALSE, model = "oprobit" )
+> urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, xPos = 2, 
++   iPos = 4, seSimplify = FALSE, model = "oprobit" )$derivCoef
        kids         age        educ                         
  0.03776701 19.02029626  0.66683279 -0.05427206  0.00000000 
-> xMeanLin4Attr <- xMeanLin[-5]
-> attr( xMeanLin4Attr, "derivOnly" ) <- 1 
-> urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin4Attr, xPos = 2, 
-+   iPos = 4, seSimplify = FALSE, model = "oprobit" )
+> urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], xPos = 2, 
++   iPos = 4, seSimplify = FALSE, model = "oprobit" )$derivCoef
        kids         age        educ             
  0.03776701 19.02029626  0.66683279 -0.05427206 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -111,11 +107,11 @@ age 0.03776701 19.0203 0.6668328 -0.05427206         0
           kids     age      educ     no|part
 age 0.03776701 19.0203 0.6668328 -0.05427206
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLinAttr, xPos = 2, 
-+   iPos = 4, model = "oprobit", seSimplify = TRUE )
+> urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, xPos = 2, 
++   iPos = 4, model = "oprobit", seSimplify = TRUE )$derivCoef
 [1]  0.00000 16.71168  0.00000  0.00000  0.00000
-> urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin4Attr, xPos = 2, 
-+   iPos = 4, model = "oprobit", seSimplify = TRUE )
+> urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], xPos = 2, 
++   iPos = 4, model = "oprobit", seSimplify = TRUE )$derivCoef
 [1]  0.00000 16.71168  0.00000  0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, xPos = 2, 
@@ -203,18 +199,14 @@ semEla.age      stdEr
 > print( sum( elaQuadNum[ c( "part", "full" ) ] ) )
 [1] -0.3128325
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanQuadAttr <- xMeanQuad
-> attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
-+   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )
+> urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
++   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )$derivCoef
          kids           age           age          educ               
    0.07047985   20.41189743 1553.29134185    1.24442660   -0.10128115 
               
    0.00000000 
-> xMeanQuad5Attr <- xMeanQuad[-6]
-> attr( xMeanQuad5Attr, "derivOnly" ) <- 1 
-> urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad5Attr, 
-+   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )
+> urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
++   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = FALSE )$derivCoef
          kids           age           age          educ               
    0.07047985   20.41189743 1553.29134185    1.24442660   -0.10128115 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -229,11 +221,11 @@ age 0.07047985 20.4119 1553.291 1.244427 -0.1012812         0
           kids     age I(age^2)     educ    no|part
 age 0.07047985 20.4119 1553.291 1.244427 -0.1012812
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuadAttr, 
-+   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )
+> urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
++   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )$derivCoef
 [1]    0.00000   16.10362 1370.02628    0.00000    0.00000    0.00000
-> urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad5Attr, 
-+   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )
+> urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
++   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", seSimplify = TRUE )$derivCoef
 [1]    0.00000   16.10362 1370.02628    0.00000    0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
@@ -396,16 +388,12 @@ AIC: 1597.811
 > print( sum( elaIntNum[ c( "part", "full" ) ] ) )
 [1] -0.3350654
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanIntAttr <- xMeanInt
-> attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr,
-+   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
+> urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
++   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef
 [1] -0.001369020 -0.886735879  0.279945927  0.726109373 -0.024172078
 [6]  0.001967312  0.000000000
-> xMeanInt6Attr <- xMeanInt[-7]
-> attr( xMeanInt6Attr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr,
-+   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
+> urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
++   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef
 [1] -0.001369020 -0.886735879  0.279945927  0.726109373 -0.024172078
 [6]  0.001967312
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -477,15 +465,11 @@ AIC: 1597.811
 > print( sum( effIntNum[ c( "part", "full" ) ] ) )
 [1] -0.1458386
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinIntAttr <- xMeanLinInt
-> attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( summary( estOProbitLin ) )[,1], xMeanLinIntAttr, 
-+   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
+> urbinEffInt( coef( summary( estOProbitLin ) )[,1], xMeanLinInt, 
++   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )$derivCoef
 [1]  0.01299905  8.62023229  0.22951751 -0.01867993  0.00000000
-> xMeanLinInt4Attr <- xMeanLinInt[-5]
-> attr( xMeanLinInt4Attr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], xMeanLinInt4Attr, 
-+   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
+> urbinEffInt( coef( summary( estOProbitLin ) )[-5,1], xMeanLinInt[-5], 
++   xPos = 2, iPos = 4, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )$derivCoef
 [1]  0.01299905  8.62023229  0.22951751 -0.01867993
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -554,16 +538,12 @@ AIC: 1597.811
 > print( sum( effIntQuadNum[ c( "part", "full" ) ] ) )
 [1] -0.2401616
 > # partial derivatives of the effect wrt the coefficients
-> xMeanQuadIntAttr <- xMeanQuadInt
-> attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadIntAttr, 
-+   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
+> urbinEffInt( coef( summary( estOProbitQuad ) )[,1], xMeanQuadInt, 
++   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )$derivCoef
 [1]   0.002692085   7.787302113 693.442395620   0.047532776  -0.003868588
 [6]   0.000000000
-> xMeanQuadInt5Attr <- xMeanQuadInt[-6]
-> attr( xMeanQuadInt5Attr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt5Attr, 
-+   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )
+> urbinEffInt( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuadInt[-6], 
++   xPos = c( 2, 3 ), iPos = 5, c( 30, 40 ), c( 50, 60 ), model = "oprobit" )$derivCoef
 [1]   0.002692085   7.787302113 693.442395620   0.047532776  -0.003868588
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -654,12 +634,12 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > print( sum( effCatNum[ c( "part", "full" ) ] ) )
 [1] -0.2354606
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr, 
-+   c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )
+> urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, 
++   c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )$derivCoef
 [1]  0.0002459577 -0.2241157983 -0.1571489263  0.3816181715  0.0043427500
 [6] -0.0003534469  0.0000000000
-> urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
-+   c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )
+> urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], 
++   c( 2:4 ), iPos = 6, c( -1, -1, 1, 0 ), model = "oprobit" )$derivCoef
 [1]  0.0002459577 -0.2241157983 -0.1571489263  0.3816181715  0.0043427500
 [6] -0.0003534469
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -724,12 +704,12 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > print( sum( effCat2Num[ c( "part", "full" ) ] ) )
 [1] 0.1994941
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanIntAttr, 
-+   c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
+> urbinEffCat( coef( summary( estOProbitInt ) )[,1], xMeanInt, 
++   c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )$derivCoef
 [1]  0.006084175  0.000000000  0.169638478 -0.381618171  0.107425164
 [6] -0.008743099  0.000000000
-> urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt6Attr, 
-+   c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )
+> urbinEffCat( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7], 
++   c( 2:4 ), iPos = 6, c( 0, 1, -1, 1 ), model = "oprobit" )$derivCoef
 [1]  0.006084175  0.000000000  0.169638478 -0.381618171  0.107425164
 [6] -0.008743099
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -772,4 +752,4 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.388   0.020   0.401 
+  0.386   0.011   0.396 

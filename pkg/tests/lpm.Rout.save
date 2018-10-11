@@ -74,13 +74,10 @@ semEla.age      stdEr
          1 
 -0.3043666 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanAgeAttr <- xMeanLin["age"]
-> attr( xMeanAgeAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estLpmLin )["age"], xMeanAgeAttr, xPos = 1, model = "lpm" )
+> urbinEla( coef( estLpmLin )["age"], xMeanLin["age"], xPos = 1, 
++   model = "lpm" )$derivCoef
 [1] 42.53785
-> xMeanLinAttr <- xMeanLin
-> attr( xMeanLinAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3, model = "lpm" )
+> urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm" )$derivCoef
 [1]  0.00000  0.00000 42.53785  0.00000
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
@@ -152,12 +149,10 @@ semEla.age      stdEr
          1 
 -0.3122117 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanAgeAttr, 
-+   xPos = c( 1, 2 ), model = "lpm" )
+> urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
++   xPos = c( 1, 2 ), model = "lpm" )$derivCoef
 [1]   42.53785 3618.93713
-> xMeanQuadAttr <- xMeanQuad
-> attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ), model = "lpm" )
+> urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )$derivCoef
 [1]    0.00000    0.00000   42.53785 3618.93713    0.00000
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
@@ -288,15 +283,11 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
 +     predict( estLpmInt, newdata = Mroz87Lower ) )
 [1] -0.3475274
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanIntShares3Attr <- xMeanInt[3:5]
-> attr( xMeanIntShares3Attr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), model = "lpm" )
+> urbinElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5], 
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), model = "lpm" )$derivCoef
 [1] -2.328617  0.732999  1.902712
-> xMeanIntAttr <- xMeanInt
-> attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
-+   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )
+> urbinElaInt( coef( estLpmInt ), xMeanInt, 
++   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )$derivCoef
 [1]  0.000000  0.000000 -2.328617  0.732999  1.902712  0.000000
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
@@ -361,10 +352,8 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
          1 
 -0.1431039 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> naAttr <- NA
-> attr( naAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( estLpmLin ), naAttr, xPos = 3,
-+   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
+> urbinEffInt( coef( estLpmLin ), NULL, xPos = 3,
++   c( 30, 40 ), c( 50, 60 ), model = "lpm" )$derivCoef
 [1]  0  0 20  0
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -421,8 +410,8 @@ F-statistic: 8.651 on 5 and 747 DF,  p-value: 5.539e-08
          1 
 -0.2374667 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
-+   c( 30, 40 ), c( 50, 60 ), model = "lpm" )
+> urbinEffInt( coef( estLpmQuad ), NULL, xPos = c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), model = "lpm" )$derivCoef
 [1]    0    0   20 1800    0
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -498,11 +487,11 @@ In urbinEffInt(allCoef = coef(estLpmQuad), allXVal = NULL, xPos = 3:4, refBound 
          1 
 -0.2392568 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ), 
-+   model = "lpm" )
+> urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ), 
++   model = "lpm" )$derivCoef
 [1] -0.587822 -0.412178  1.000000
-> urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( -1, -1, 1, 0 ), 
-+   model = "lpm" )
+> urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ), 
++   model = "lpm" )$derivCoef
 [1]  0.000000  0.000000 -0.587822 -0.412178  1.000000  0.000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
@@ -552,11 +541,11 @@ In urbinEffInt(allCoef = coef(estLpmQuad), allXVal = NULL, xPos = 3:4, refBound 
         1 
 0.2107741 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ), 
-+   model = "lpm" )
+> urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 
++   model = "lpm" )$derivCoef
 [1]  0.0000000  0.4345679 -1.0000000
-> urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( 0, 1, -1, 1 ), 
-+   model = "lpm" )
+> urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ), 
++   model = "lpm" )$derivCoef
 [1]  0.0000000  0.0000000  0.0000000  0.4345679 -1.0000000  0.0000000
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
@@ -591,4 +580,4 @@ In urbinEffInt(allCoef = coef(estLpmQuad), allXVal = NULL, xPos = 3:4, refBound 
 > 
 > proc.time()
    user  system elapsed 
-  0.251   0.036   0.282 
+  0.273   0.011   0.278 

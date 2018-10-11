@@ -43,14 +43,12 @@ Mroz87mUpper <- mlogit.data( Mroz87Upper, shape = "wide",
 100 * ( predict( estMLogitLin, newdata = Mroz87mUpper, type = "response" ) -
     predict( estMLogitLin, newdata = Mroz87mLower, type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanLinAttr <- xMeanLin
-attr( xMeanLinAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  seSimplify = FALSE, model = "MNL", yCat = 0 )
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  seSimplify = FALSE, model = "MNL", yCat = 1 )
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  seSimplify = FALSE, model = "MNL", yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  seSimplify = FALSE, model = "MNL", yCat = 0 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  seSimplify = FALSE, model = "MNL", yCat = 1 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  seSimplify = FALSE, model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
@@ -62,12 +60,12 @@ numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 2 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  model = "MNL", seSimplify = TRUE, yCat = 0 )
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  model = "MNL", seSimplify = TRUE, yCat = 1 )
-urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinAttr, 3, 
-  model = "MNL", seSimplify = TRUE, yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 0 )
@@ -123,14 +121,12 @@ Mroz87mUpper <- mlogit.data( Mroz87Upper, shape = "wide",
 100 * ( predict( estMLogitQuad, newdata = Mroz87mUpper, type = "response" ) -
     predict( estMLogitQuad, newdata = Mroz87mLower, type = "response" ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanQuadAttr <- xMeanQuad
-attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = FALSE, yCat = 0 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = FALSE, yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = FALSE, yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = FALSE, yCat = 0 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = FALSE, yCat = 1 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = FALSE, yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
@@ -142,12 +138,12 @@ numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 2 )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = TRUE, yCat = 0 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = TRUE, yCat = 1 )
-urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadAttr, c( 3, 4 ), 
-  model = "MNL", seSimplify = TRUE, yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
@@ -263,14 +259,12 @@ Mroz87mUpper <- mlogit.data( Mroz87Upper, shape = "wide",
     colMeans(
       predict( estMLogitInt, newdata = Mroz87mLower, type = "response" ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanIntAttr <- xMeanInt
-attr( xMeanIntAttr, "derivOnly" ) <- 1 
-urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )
-urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
-urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr,
-  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )$derivCoef
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )$derivCoef
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
@@ -337,12 +331,10 @@ Mroz87mInt <- mlogit.data( Mroz87Int, shape = "wide",
 predict( estMLogitLin, newdata = Mroz87mInt, type = "response" ) -
   predict( estMLogitLin, newdata = Mroz87mRef, type = "response" )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanLinIntAttr <- xMeanLinInt
-attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinIntAttr, 3,
-  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )
-urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinIntAttr, 3,
-  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitLin )[ coefPermuteLin ],
@@ -399,12 +391,10 @@ Mroz87mInt <- mlogit.data( Mroz87Int, shape = "wide",
 predict( estMLogitQuad, newdata = Mroz87mInt, type = "response" ) -
   predict( estMLogitQuad, newdata = Mroz87mRef, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-xMeanQuadIntAttr <- xMeanQuadInt
-attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadIntAttr, 
-  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )
-urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadIntAttr, 
-  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
@@ -473,10 +463,10 @@ predict( estMLogitInt, newdata = df53.60m, type = "response" ) -
   sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
   predict( estMLogitInt, newdata = df38.44m, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-  c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )
-urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-  c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 2 )
+urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
+  c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )$derivCoef
+urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
+  c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
   t0 = coef( estMLogitInt )[ coefPermuteInt ],
@@ -513,10 +503,10 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
   predict( estMLogitInt, newdata = df45.52m, type = "response" ) -
   predict( estMLogitInt, newdata = df53.60m, type = "response" )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-  c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )
-urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanIntAttr, 
-  c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 2 )
+urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
+  c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )$derivCoef
+urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
+  c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
   t0 = coef( estMLogitInt )[ coefPermuteInt ],

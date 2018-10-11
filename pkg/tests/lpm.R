@@ -23,12 +23,9 @@ urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm" )
     predict( estLpmLin, 
       newdata = as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanAgeAttr <- xMeanLin["age"]
-attr( xMeanAgeAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estLpmLin )["age"], xMeanAgeAttr, xPos = 1, model = "lpm" )
-xMeanLinAttr <- xMeanLin
-attr( xMeanLinAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estLpmLin ), xMeanLinAttr, xPos = 3, model = "lpm" )
+urbinEla( coef( estLpmLin )["age"], xMeanLin["age"], xPos = 1, 
+  model = "lpm" )$derivCoef
+urbinEla( coef( estLpmLin ), xMeanLin, xPos = 3, model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
   t0 = coef( estLpmLin )["age"], 
@@ -61,11 +58,9 @@ urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )
     predict( estLpmQuad, 
       newdata = as.data.frame( t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanAgeAttr, 
-  xPos = c( 1, 2 ), model = "lpm" )
-xMeanQuadAttr <- xMeanQuad
-attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-urbinEla( coef( estLpmQuad ), xMeanQuadAttr, xPos = c( 3, 4 ), model = "lpm" )
+urbinEla( coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], xMeanQuad[ "age" ], 
+  xPos = c( 1, 2 ), model = "lpm" )$derivCoef
+urbinEla( coef( estLpmQuad ), xMeanQuad, xPos = c( 3, 4 ), model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estLpmQuad )[ c( "age", "I(age^2)" ) ], 
@@ -141,14 +136,10 @@ all.equal(
 10 * mean( predict( estLpmInt, newdata = Mroz87Upper ) -
     predict( estLpmInt, newdata = Mroz87Lower ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-xMeanIntShares3Attr <- xMeanInt[3:5]
-attr( xMeanIntShares3Attr, "derivOnly" ) <- 1 
-urbinElaInt( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), model = "lpm" )
-xMeanIntAttr <- xMeanInt
-attr( xMeanIntAttr, "derivOnly" ) <- 1 
-urbinElaInt( coef( estLpmInt ), xMeanIntAttr, 
-  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )
+urbinElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5], 
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), model = "lpm" )$derivCoef
+urbinElaInt( coef( estLpmInt ), xMeanInt, 
+  c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 3, 4, 0, 5 ), model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
   t0 = coef( estLpmInt )[3:5], allXVal = xMeanInt[3:5], 
@@ -194,10 +185,8 @@ predict( estLpmLin,
   predict( estLpmLin, 
     newdata = as.data.frame( t( replace( xMeanLin, 3, 35 ) ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
-naAttr <- NA
-attr( naAttr, "derivOnly" ) <- 1 
-urbinEffInt( coef( estLpmLin ), naAttr, xPos = 3,
-  c( 30, 40 ), c( 50, 60 ), model = "lpm" )
+urbinEffInt( coef( estLpmLin ), NULL, xPos = 3,
+  c( 30, 40 ), c( 50, 60 ), model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estLpmLin )[3], allXVal = NA,
@@ -237,8 +226,8 @@ predict( estLpmQuad,
     newdata = as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) ), 
     type = "response" )
 # partial derivatives of the effect wrt the coefficients
-urbinEffInt( coef( estLpmQuad ), naAttr, xPos = c( 3, 4 ),
-  c( 30, 40 ), c( 50, 60 ), model = "lpm" )
+urbinEffInt( coef( estLpmQuad ), NULL, xPos = c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estLpmQuad )[3:4], allXVal = NA,
@@ -287,10 +276,10 @@ predict( estLpmInt, newdata = df53.60 ) -
   sum( Mroz87$age38.44 ) / sum( Mroz87$age30.37 + Mroz87$age38.44 ) *
   predict( estLpmInt, newdata = df38.44 )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( -1, -1, 1, 0 ), 
-  model = "lpm" )
-urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( -1, -1, 1, 0 ), 
-  model = "lpm" )
+urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( -1, -1, 1, 0 ), 
+  model = "lpm" )$derivCoef
+urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( -1, -1, 1, 0 ), 
+  model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
   t0 = coef( estLpmInt )[3:5], xPos = 1:3,
@@ -321,10 +310,10 @@ sum( Mroz87$age38.44 ) / sum( Mroz87$age38.44 + Mroz87$age45.52 ) *
   predict( estLpmInt, newdata = df45.52 ) -
   predict( estLpmInt, newdata = df53.60 )
 # partial derivatives of the effect wrt the coefficients
-urbinEffCat( coef( estLpmInt )[3:5], xMeanIntShares3Attr, 1:3, c( 0, 1, -1, 1 ), 
-  model = "lpm" )
-urbinEffCat( coef( estLpmInt ), xMeanIntAttr, 3:5, c( 0, 1, -1, 1 ), 
-  model = "lpm" )
+urbinEffCat( coef( estLpmInt )[3:5], xMeanInt[3:5], 1:3, c( 0, 1, -1, 1 ), 
+  model = "lpm" )$derivCoef
+urbinEffCat( coef( estLpmInt ), xMeanInt, 3:5, c( 0, 1, -1, 1 ), 
+  model = "lpm" )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
   t0 = coef( estLpmInt )[3:5], xPos = 1:3,

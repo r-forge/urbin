@@ -91,10 +91,8 @@ semEla.age      stdEr
          1 
 -0.3199094 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinAttr <- xMeanLin
-> attr( xMeanLinAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
-+   seSimplify = FALSE )
+> urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
++   seSimplify = FALSE )$derivCoef
                    kids         age        educ 
  0.05742655  0.03996217 19.14172240  0.70559152 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -104,8 +102,8 @@ semEla.age      stdEr
     (Intercept)       kids      age      educ
 age  0.05742655 0.03996217 19.14172 0.7055915
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estProbitLin ), xMeanLinAttr, 3, model = "probit", 
-+   seSimplify = TRUE )
+> urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
++   seSimplify = TRUE )$derivCoef
 [1]  0.00000  0.00000 16.69892  0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
@@ -184,10 +182,8 @@ semEla.age      stdEr
          1 
 -0.3193229 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanQuadAttr <- xMeanQuad
-> attr( xMeanQuadAttr, "derivOnly" ) <- 1 
-> urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit",
-+   seSimplify = FALSE )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit",
++   seSimplify = FALSE )$derivCoef
                      kids          age          age         educ 
 1.096957e-01 7.633536e-02 2.066394e+01 1.559508e+03 1.347814e+00 
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -197,8 +193,8 @@ semEla.age      stdEr
     (Intercept)       kids      age I(age^2)     educ
 age   0.1096957 0.07633536 20.66394 1559.508 1.347814
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
-> urbinEla( coef( estProbitQuad ), xMeanQuadAttr, c( 3, 4 ), model = "probit", 
-+   seSimplify = TRUE )
+> urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
++   seSimplify = TRUE )$derivCoef
 [1]    0.00000    0.00000   15.99772 1361.01753    0.00000
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
@@ -338,10 +334,8 @@ Number of Fisher Scoring iterations: 4
 +     predict( estProbitInt, newdata = Mroz87Lower, type = "response" ) )
 [1] -0.3517456
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanIntAttr <- xMeanInt
-> attr( xMeanIntAttr, "derivOnly" ) <- 1 
-> urbinElaInt( coef( estProbitInt ), xMeanIntAttr, 
-+   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )
+> urbinElaInt( coef( estProbitInt ), xMeanInt, 
++   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )$derivCoef
 [1] -0.010309885 -0.007174475 -0.885844700  0.279991827  0.716229566
 [6] -0.126676033
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
@@ -394,10 +388,8 @@ Number of Fisher Scoring iterations: 4
          1 
 -0.1506167 
 > # partial derivatives of the semi-elasticity wrt the coefficients
-> xMeanLinIntAttr <- xMeanLinInt
-> attr( xMeanLinIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( estProbitLin ), xMeanLinIntAttr, 3, 
-+   c( 30, 40 ), c( 50, 60 ), model = "probit" )
+> urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3, 
++   c( 30, 40 ), c( 50, 60 ), model = "probit" )$derivCoef
 [1] 0.01968989 0.01370186 8.65400572 0.24192682
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -449,10 +441,8 @@ Number of Fisher Scoring iterations: 4
          1 
 -0.2527247 
 > # partial derivatives of the effect wrt the coefficients
-> xMeanQuadIntAttr <- xMeanQuadInt
-> attr( xMeanQuadIntAttr, "derivOnly" ) <- 1 
-> urbinEffInt( coef( estProbitQuad ), xMeanQuadIntAttr, c( 3, 4 ), 
-+   c( 30, 40 ), c( 50, 60 ), model = "probit" )
+> urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ), 
++   c( 30, 40 ), c( 50, 60 ), model = "probit" )$derivCoef
 [1] 2.237943e-03 1.557347e-03 7.675244e+00 6.864825e+02 2.749727e-02
 > # numerically computed partial derivatives of the effect wrt the coefficients
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
@@ -525,8 +515,8 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXV
          1 
 -0.2523648 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( -1, -1, 1, 0 ), 
-+   model = "probit" )
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ), 
++   model = "probit" )$derivCoef
 [1] -0.004643643 -0.003231433 -0.224000939 -0.157068388  0.376425684
 [6] -0.057055754
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -570,8 +560,8 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXV
         1 
 0.2226734 
 > # partial derivatives of the effect wrt the coefficients
-> urbinEffCat( coef( estProbitInt ), xMeanIntAttr, c( 3:5 ), c( 0, 1, -1, 1 ), 
-+   model = "probit" )
+> urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ), 
++   model = "probit" )$derivCoef
 [1]  0.012448894  0.008662976  0.000000000  0.168992409 -0.376425684
 [6]  0.152957729
 > # numerically computed partial derivatives of the effect wrt the coefficients
@@ -600,4 +590,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXV
 > 
 > proc.time()
    user  system elapsed 
-  0.578   0.036   0.607 
+  0.571   0.048   0.613 
