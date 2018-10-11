@@ -1,5 +1,6 @@
 urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
-  allCoefVcov = NULL, xMeanSd = NULL, yCat = NULL, 
+  allCoefVcov = NULL, xMeanSd = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
+  yCat = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL ){
   
   # number of coefficients
@@ -76,7 +77,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, nCoef, xPos, xMeanSd,
-    nXVal = nXVal, pCall = match.call() )
+    nXVal = nXVal, iPos = iPos, pCall = match.call() )
   # check the boundaries of the intervals
   refBound <- elaIntBounds( refBound, 1, argName = "refBound" )
   intBound <- elaIntBounds( intBound, 1, argName = "intBound" )

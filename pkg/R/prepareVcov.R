@@ -1,5 +1,5 @@
 prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL, 
-  nXVal = nCoef, pCall = NULL ){
+  nXVal = nCoef, iPos = 0, pCall = NULL ){
 
   if( !is.null( pCall ) ) {
     pCall <- paste( "In", deparse( pCall, width.cutoff = 500 ), ":\n  " )
@@ -83,13 +83,13 @@ prepareVcov <- function( allCoefVcov, nCoef, xPos, xMeanSd = NULL,
           allCoefVcov[ xPosRep[1], xPosRep[2] ] <- 
             allCoefVcov[ xPosRep[2], xPosRep[1] ] <-
             sigmaSq * XXinv[2,3]
-          if( all( xPos != 1 ) ) {
-            xPosIntercept <- (i-1) * nXVal + 1
-            allCoefVcov[ xPosIntercept, xPosRep[1] ] <- 
-              allCoefVcov[ xPosRep[1], xPosIntercept ] <-
+          if( iPos != 0 ) {
+            iPosRep <- (i-1) * nXVal + iPos
+            allCoefVcov[ iPosRep, xPosRep[1] ] <- 
+              allCoefVcov[ xPosRep[1], iPosRep ] <-
               sigmaSq * XXinv[1,2]
-            allCoefVcov[ xPosIntercept, xPosRep[2] ] <- 
-              allCoefVcov[ xPosRep[2], xPosIntercept ] <-
+            allCoefVcov[ iPosRep, xPosRep[2] ] <- 
+              allCoefVcov[ xPosRep[2], iPosRep ] <-
               sigmaSq * XXinv[1,3]
           }
         }

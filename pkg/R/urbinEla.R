@@ -1,6 +1,6 @@
 urbinEla <- function( allCoef, allXVal, xPos, model, 
   allCoefVcov = NULL, seSimplify = !is.matrix( allCoefVcov ), 
-  xMeanSd = NULL, yCat = NULL, 
+  xMeanSd = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), yCat = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL ){
   
   # check argument seSimplify
@@ -91,7 +91,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
   # check and prepare allCoefVcov
   allCoefVcov <- prepareVcov( allCoefVcov, length( allCoef ), xPos, xMeanSd,
-    nXVal = nXVal, pCall = match.call() )
+    nXVal = nXVal, iPos = iPos, pCall = match.call() )
   # Identify coefficients of interest (kth/tth covariate)
   if( length( xPos ) == 2 ){
     if( model %in% c( "lpm", "probit", "logit" ) ){

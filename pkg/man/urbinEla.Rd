@@ -22,7 +22,8 @@
 
 \usage{
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
-  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL, yCat = NULL, 
+  seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL, 
+  iPos = ifelse( all( xPos != 1 ), 1, 0 ), yCat = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
 }
 
@@ -70,6 +71,11 @@ urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
+  \item{iPos}{a posivite integer 
+    indicating the position of the intercept
+    in arguments \code{allCoef}, \code{allXVal}, 
+    and eventually \code{allCoefVcov}.
+    A value of zero indicates that the model does not have an intercept.}
   \item{yCat,allCoefBra,allXValBra,yCatBra,lambda}{
     will be documented later}
 }

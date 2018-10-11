@@ -26,7 +26,8 @@
 
 \usage{
 urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
-  allCoefVcov = NULL, xMeanSd = NULL, yCat = NULL,
+  allCoefVcov = NULL, xMeanSd = NULL, 
+  iPos = ifelse( all( xPos != 1 ), 1, 0 ), yCat = NULL,
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
 }
 
@@ -80,6 +81,11 @@ urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
     is used to approximate the covariance 
     between the coefficient of the linear term 
     and the coefficient of the quadratic term.}
+  \item{iPos}{a posivite integer 
+    indicating the position of the intercept
+    in arguments \code{allCoef}, \code{allXVal}, 
+    and eventually \code{allCoefVcov}.
+    A value of zero indicates that the model does not have an intercept.}
   \item{yCat,allCoefBra,allXValBra,yCatBra,lambda}{not yet documented.}
 }
 
