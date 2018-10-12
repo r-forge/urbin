@@ -314,6 +314,9 @@ xMeanLinInt <- c( xMeanLin[ 1:2 ], NA, xMeanLin[4] )
 # without standard errors
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
+  yCat = 0 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
   yCat = 1 )
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
@@ -332,10 +335,16 @@ predict( estMLogitLin, newdata = Mroz87mInt, type = "response" ) -
   predict( estMLogitLin, newdata = Mroz87mRef, type = "response" )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0 )$derivCoef
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitLin )[ coefPermuteLin ],
+  allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0 )
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitLin )[ coefPermuteLin ],
   allXVal = xMeanLinInt, xPos = 3,
@@ -349,6 +358,10 @@ numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
+  yCat = 0 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
   yCat = 1 )
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
@@ -356,6 +369,10 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   yCat = 2 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
+  yCat = 0 )
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
   allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
@@ -372,6 +389,9 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt,
 xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # without standard errors
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", yCat = 0 )
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
   model = "MNL", yCat = 1 )
@@ -392,10 +412,16 @@ predict( estMLogitQuad, newdata = Mroz87mInt, type = "response" ) -
   predict( estMLogitQuad, newdata = Mroz87mRef, type = "response" )
 # partial derivatives of the effect wrt the coefficients
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0 )$derivCoef
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
 # numerically computed partial derivatives of the effect wrt the coefficients
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0 )
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
@@ -409,6 +435,10 @@ numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 0 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
   yCat = 1 )
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
@@ -419,6 +449,10 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt,
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 0 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   yCat = 1 )
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
@@ -426,6 +460,10 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt,
   yCat = 2 )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0 )
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],

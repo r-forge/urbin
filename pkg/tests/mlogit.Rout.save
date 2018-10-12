@@ -641,6 +641,11 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 > # without standard errors
 > urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
 +   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
++   yCat = 0 )
+   effect     stdEr 
+0.1520479        NA 
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
++   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
 +   yCat = 1 )
     effect      stdEr 
 -0.1174682         NA 
@@ -665,6 +670,10 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
  0.15204791 -0.11746817 -0.03457975 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0 )$derivCoef
+[1]  0.009378054  0.006526029 -2.056823214  0.115226763 -0.024719168
+[6] -0.017201652 -3.467033499 -0.303720776
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 [1] -0.05036251 -0.03504642  1.74563255 -0.61879668  0.04098445  0.02852039
 [7]  0.31119066  0.50356991
@@ -673,6 +682,14 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 [1]  0.04098445  0.02852039  0.31119066  0.50356991 -0.01626528 -0.01131874
 [7]  3.15584284 -0.19984914
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitLin )[ coefPermuteLin ],
++   allXVal = xMeanLinInt, xPos = 3,
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0 )
+     full:(intercept)   full:kids  full:age full:educ part:(intercept)
+[1,]      0.009378054 0.006526029 -2.056823 0.1152268      -0.02471917
+       part:kids  part:age  part:educ
+[1,] -0.01720165 -3.467033 -0.3037208
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
 +   t0 = coef( estMLogitLin )[ coefPermuteLin ],
 +   allXVal = xMeanLinInt, xPos = 3,
@@ -694,6 +711,12 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 > urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
++   yCat = 0 )
+    effect      stdEr 
+0.15204791 0.05540967 
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
++   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
++   allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
 +   yCat = 1 )
      effect       stdEr 
 -0.11746817  0.04657249 
@@ -705,6 +728,12 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 -0.03457975  0.04733234 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
+> urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
++   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
++   allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
++   yCat = 0 )
+    effect      stdEr 
+0.15204791 0.06107244 
 > urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
 +   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
@@ -725,6 +754,11 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 > xMeanQuadInt <- c( xMeanLin[ 1:2 ], NA, NA, xMeanLin[4] )
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # without standard errors
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
++   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
++   model = "MNL", yCat = 0 )
+   effect     stdEr 
+0.2490744        NA 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
 +   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
 +   model = "MNL", yCat = 1 )
@@ -751,6 +785,10 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
  0.24919379 -0.17672093 -0.07247287 
 > # partial derivatives of the effect wrt the coefficients
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
++   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0 )$derivCoef
+ [1]    0.02298043    0.01599169   -1.29639833 -160.72167337    0.28235715
+ [6]   -0.02488936   -0.01732009   -3.47901973 -265.40716180   -0.30581195
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
 +   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
  [1]  -0.08522627  -0.05930752  -0.17122875 147.93976018  -1.04716260
  [6]   0.06224584   0.04331583   1.46762708  12.78191319   0.76480544
@@ -759,6 +797,14 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
  [1]   0.06224584   0.04331583   1.46762708  12.78191319   0.76480544
  [6]  -0.03735647  -0.02599574   2.01139265 252.62524861  -0.45899350
 > # numerically computed partial derivatives of the effect wrt the coefficients
+> numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
++   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
++   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
++   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0 )
+     full:(intercept)  full:kids  full:age full:I(age^2) full:educ
+[1,]       0.02298043 0.01599169 -1.296398     -160.7217 0.2823572
+     part:(intercept)   part:kids part:age part:I(age^2)  part:educ
+[1,]      -0.02488936 -0.01732009 -3.47902     -265.4072 -0.3058119
 > numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
 +   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
 +   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
@@ -780,6 +826,12 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
 +   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
++   yCat = 0 )
+    effect      stdEr 
+0.24907440 0.06261855 
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
++   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
++   allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
 +   yCat = 1 )
      effect       stdEr 
 -0.17525132  0.04817668 
@@ -791,6 +843,15 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 -0.07382308  0.05321737 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (only standard errors) 
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
++   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
++   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
++   yCat = 0 )
+   effect     stdEr 
+0.2490744 0.6859944 
+Warning message:
+In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQuadInt, xPos = c(3, 4), refBound = c(30, 40), intBound = c(50, 60), model = "MNL", allCoefVcov = sqrt(diag(vcov(estMLogitQuad)))[coefPermuteQuad], yCat = 0) :
+  the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
 +   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
 +   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -811,6 +872,12 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # effects of age changing from the 30-40 interval to the 50-60 interval
 > # (standard errors + mean value and standard deviation of age)
+> urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
++   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
++   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
++   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0 )
+    effect      stdEr 
+0.24907440 0.05660186 
 > urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
 +   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
 +   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -983,4 +1050,4 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.597   0.040   0.632 
+  0.656   0.023   0.675 
