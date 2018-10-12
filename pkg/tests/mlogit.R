@@ -31,6 +31,14 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3,
   model = "MNL", yCat = 1 )
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3, 
   model = "MNL", yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3, 
+  model = "MNL", yCat = 0:1 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3, 
+  model = "MNL", yCat = 1:2 )
+all.equal( c( 0, NA ), unlist(
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, xPos = 3,
+    model = "MNL", yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ),
+  check.attributes = FALSE )
 # semi-elasticity of age based on numerical derivation
 Mroz87Lower <- as.data.frame( t( xMeanLin * c( 1, 1, 0.995, 1 ) ) )
 Mroz87Lower$lfp3 <- factor( "no", levels = levels( Mroz87$lfp3 ) )
@@ -49,6 +57,13 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
   seSimplify = FALSE, model = "MNL", yCat = 1 )$derivCoef
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
   seSimplify = FALSE, model = "MNL", yCat = 2 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  seSimplify = FALSE, model = "MNL", yCat = 0:1 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  seSimplify = FALSE, model = "MNL", yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 8 ),
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
+    seSimplify = FALSE, model = "MNL", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
@@ -59,6 +74,16 @@ numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
   t0 = coef( estMLogitLin )[ coefPermuteLin ], 
   allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 2 )
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+  t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+  allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 0:1 )
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+  t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+  allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 1:2 )
+all.equal( rep( 0, 8 ), c( 
+  numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ], 
+    allXVal = xMeanLin, xPos = 3, model = "MNL", yCat = 0:2 ) ) )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
   model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
@@ -66,6 +91,13 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
   model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
   model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  model = "MNL", seSimplify = TRUE, yCat = 0:1 )$derivCoef
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, 
+  model = "MNL", seSimplify = TRUE, yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 8 ),
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
+    model = "MNL", seSimplify = TRUE, yCat = 0:2 )$derivCoef )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 0 )
@@ -73,6 +105,14 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 1 )
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
   vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
+  vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 0:1 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
+  vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
+    vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], yCat = 0:2 )[
+      c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
@@ -83,6 +123,16 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
   yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
+  sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
+  yCat = 0:1 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
+  sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
+    sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], seSimplify = FALSE, 
+    yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 0 )
@@ -90,6 +140,14 @@ urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL",
   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 1 )
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
   sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 2 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
+  sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 0:1 )
+urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
+  sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3, model = "MNL", 
+    sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ], yCat = 0:2 )[ 
+      c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 
 ### quadratic in age
 estMLogitQuad <- mlogit( lfp3 ~ 0 | kids + age + I(age^2) + educ, 
@@ -107,6 +165,14 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "MNL", yCat = 1 )
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", yCat = 1:2 )
+all.equal( c( 0, NA ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), 
+  check.attributes = FALSE )
 # semi-elasticity of age based on numerical derivation
 Mroz87Lower <- as.data.frame( 
   t( xMeanQuad * c( 1, 1, 0.995, 0.995^2, 1 ) ) )
@@ -127,6 +193,13 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "MNL", seSimplify = FALSE, yCat = 1 )$derivCoef
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", seSimplify = FALSE, yCat = 2 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = FALSE, yCat = 0:1 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = FALSE, yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 10 ),
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", seSimplify = FALSE, yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
@@ -137,6 +210,16 @@ numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
 numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 2 )
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 0:1 )
+numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+  t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 1:2 )
+all.equal( rep( 0, 10 ), c(
+  numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ], 
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "MNL", yCat = 0:2 ) ) )
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", seSimplify = TRUE, yCat = 0 )$derivCoef
@@ -144,6 +227,13 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "MNL", seSimplify = TRUE, yCat = 1 )$derivCoef
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", seSimplify = TRUE, yCat = 2 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 0:1 )$derivCoef
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", seSimplify = TRUE, yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 10 ),
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", seSimplify = TRUE, yCat = 0:2 )$derivCoef )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
@@ -154,6 +244,16 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
   yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+    yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
@@ -164,6 +264,17 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
   seSimplify = FALSE, yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
+  seSimplify = FALSE, yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
+  seSimplify = FALSE, yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ], 
+    seSimplify = FALSE, yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), 
+  check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, simplified)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -174,6 +285,16 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+    yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, xMeanSd)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -187,6 +308,20 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
   seSimplify = FALSE, yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
+  seSimplify = FALSE, yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
+  seSimplify = FALSE, yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+    xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
+    seSimplify = FALSE, yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), 
+  check.attributes = FALSE )
 # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
@@ -197,6 +332,17 @@ urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 2 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0:1 )
+urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ), 
+    model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+    xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0:2 )[ 
+      c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticity of age based on partial derivatives calculated by the mfx package
 # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
 # estMLogitQuadMfx <- logitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87 )
