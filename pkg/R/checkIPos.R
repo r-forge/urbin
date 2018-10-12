@@ -8,6 +8,10 @@ checkIPos <- function( iPos, xPos, allXVal, model ) {
   if( iPos < 0 ) {
     stop( "argument 'iPos' must be a non-negative value" )
   }
+  if( iPos != 0 && iPos %in% xPos ) {
+    stop( "argument 'xPos' must not indicate the intercept",
+      " (as indicated by argument 'iPos')" )
+  }
   if( iPos > length( allXVal ) ) {
     stop( "argument 'iPos' must be smaller than or equal to ",
       length( allXVal ) )
