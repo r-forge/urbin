@@ -48,6 +48,8 @@ estLogitLinMfx <- logitmfx( lfp ~ kids + age + educ, data = Mroz87 )
 estLogitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
 urbinEla( estLogitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, iPos = 0, 
   model = "lpm", estLogitLinMfx$mfxest[ "age", 2 ] )
+urbinEla( estLogitLinMfx$mfxest[ , 1 ], xMeanLin[-1], 2, iPos = 0, 
+  model = "lpm", estLogitLinMfx$mfxest[ , 2 ] )
 
 
 ### quadratic in age
@@ -102,9 +104,16 @@ estLogitQuadMfx$mfxest[ "age", 1:2 ] * xMeanQuad[ "age" ] +
 urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
   xMeanQuad["age"], 1:2, iPos = 0, 
   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+urbinEla( estLogitQuadMfx$mfxest[  , 1 ], 
+  xMeanQuad[-1], 2:3, iPos = 0, 
+  model = "lpm", estLogitQuadMfx$mfxest[ , 2 ] )
 urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
   xMeanQuad["age"], 1:2, iPos = 0, 
   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+urbinEla( estLogitQuadMfx$mfxest[  , 1 ], 
+  xMeanQuad[-1], 2:3, iPos = 0, 
+  model = "lpm", estLogitQuadMfx$mfxest[ , 2 ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 
@@ -171,6 +180,9 @@ estLogitIntMfx <- logitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ,
 urbinElaInt( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], 
   c( 1, 2, 0, 3 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
   estLogitIntMfx$mfxest[ 2:4, 2 ] )
+urbinElaInt( estLogitIntMfx$mfxest[ , 1 ], xMeanInt[ -1 ], 
+  c( 2, 3, 0, 4 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
+  estLogitIntMfx$mfxest[ , 2 ] )
 
 
 ### effect of age changing between discrete intervals 
@@ -210,6 +222,9 @@ urbinEffInt( coef( estLogitLin ), allXVal = xMeanLinInt, xPos = 3,
 urbinEffInt( estLogitLinMfx$mfxest[ "age", 1 ], NULL, 1, iPos = 0, 
   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estLogitLinMfx$mfxest[ "age", 2 ] )
+urbinEffInt( estLogitLinMfx$mfxest[ , 1 ], NULL, 2, iPos = 0, 
+  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estLogitLinMfx$mfxest[ , 2 ] )
 
 
 ### effect of age changing between discrete intervals 
@@ -257,9 +272,16 @@ urbinEffInt( coef( estLogitQuad ), xMeanQuadInt, c( 3, 4 ),
 urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
   iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
+urbinEffInt( estLogitQuadMfx$mfxest[ , 1 ], NULL, 2:3, 
+  iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estLogitQuadMfx$mfxest[ , 2 ] )
 urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
   iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
+urbinEffInt( estLogitQuadMfx$mfxest[ , 1 ], NULL, 2:3, 
+  iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  estLogitQuadMfx$mfxest[ , 2 ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
 
@@ -297,6 +319,8 @@ urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
   c( -1, -1, 1, 0 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
+urbinEffCat( estLogitIntMfx$mfxest[ , 1 ], xMeanInt[ -1 ], c(2:4), 
+  c( -1, -1, 1, 0 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ , 2 ] )
 
 ### effects of age changing from the 53-60 category to the 38-52 category
 # without standard errors
@@ -325,4 +349,6 @@ urbinEffCat( coef( estLogitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
   c( 0, 1, -1, 1 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
+urbinEffCat( estLogitIntMfx$mfxest[ , 1 ], xMeanInt[ -1 ], c(2:4), 
+  c( 0, 1, -1, 1 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ , 2 ] )
 
