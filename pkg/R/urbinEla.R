@@ -221,7 +221,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   result$call <- match.call()
   result$allCoefVcov <- allCoefVcov
   result$derivCoef <- derivCoef
-  result$semEla <- semEla
+  result$semEla <- unname( semEla )
   result$stdEr <- semElaSE
   class( result ) <- "urbin"
   return( result )

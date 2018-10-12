@@ -79,7 +79,7 @@ Number of Fisher Scoring iterations: 4
 > xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
 > # semi-elasticity of age without standard errors
 > urbinEla( coef( estProbitLin ), xMeanLin, xPos = 3, model = "probit" )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102         NA 
 > # semi-elasticity of age based on numerical derivation
 > 100 * ( predict( estProbitLin, 
@@ -99,8 +99,8 @@ semEla.age      stdEr
 > numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
 +   t0 = coef( estProbitLin ), 
 +   allXVal = xMeanLin, xPos = 3, model = "probit" )
-    (Intercept)       kids      age      educ
-age  0.05742655 0.03996217 19.14172 0.7055915
+     (Intercept)       kids      age      educ
+[1,]  0.05742655 0.03996217 19.14172 0.7055915
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
 +   seSimplify = TRUE )$derivCoef
@@ -108,12 +108,12 @@ age  0.05742655 0.03996217 19.14172 0.7055915
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
 +   vcov( estProbitLin ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102  0.1165911 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit",
 +   sqrt( diag( vcov( estProbitLin ) ) ), seSimplify = FALSE )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102  0.1370817 
 Warning message:
 In urbinEla(coef(estProbitLin), xMeanLin, 3, model = "probit", sqrt(diag(vcov(estProbitLin))),  :
@@ -121,7 +121,7 @@ In urbinEla(coef(estProbitLin), xMeanLin, 3, model = "probit", sqrt(diag(vcov(es
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
 +   sqrt( diag( vcov( estProbitLin ) ) ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102  0.1166118 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
 > estProbitLinMfx <- probitmfx( lfp ~ kids + age + educ, data = Mroz87 )
@@ -130,11 +130,11 @@ semEla.age      stdEr
 -0.3199102  0.1165911 
 > urbinEla( estProbitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, iPos = 0, 
 +   model = "lpm", estProbitLinMfx$mfxest[ "age", 2 ] )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102  0.1165911 
 > urbinEla( estProbitLinMfx$mfxest[ , 1 ], xMeanLin[-1], 2, iPos = 0, 
 +   model = "lpm", estProbitLinMfx$mfxest[ , 2 ] )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3199102  0.1165911 
 > 
 > 
@@ -174,7 +174,7 @@ Number of Fisher Scoring iterations: 4
 > xMeanQuad <- c( xMeanLin[ 1:3], xMeanLin[3]^2, xMeanLin[4] )
 > # semi-elasticity of age without standard errors
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit" )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114         NA 
 > # semi-elasticity of age based on numerical derivation
 > 100 * ( predict( estProbitQuad, 
@@ -194,8 +194,8 @@ semEla.age      stdEr
 > numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla }, 
 +   t0 = coef( estProbitQuad ), 
 +   allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "probit" )
-    (Intercept)       kids      age I(age^2)     educ
-age   0.1096957 0.07633536 20.66394 1559.508 1.347814
+     (Intercept)       kids      age I(age^2)     educ
+[1,]   0.1096957 0.07633536 20.66394 1559.508 1.347814
 > # simplified partial derivatives of the semi-elasticity wrt the coefficients
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   seSimplify = TRUE )$derivCoef
@@ -203,12 +203,12 @@ age   0.1096957 0.07633536 20.66394 1559.508 1.347814
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   vcov( estProbitQuad ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114  0.1120032 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114  1.8253970 
 Warning messages:
 1: In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
@@ -218,7 +218,7 @@ Warning messages:
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114  1.4894894 
 Warning message:
 In urbinEla(allCoef = coef(estProbitQuad), allXVal = xMeanQuad, xPos = c(3, 4), model = "probit", allCoefVcov = sqrt(diag(vcov(estProbitQuad)))) :
@@ -228,7 +228,7 @@ In urbinEla(allCoef = coef(estProbitQuad), allXVal = xMeanQuad, xPos = c(3, 4), 
 +   sqrt( diag( vcov( estProbitQuad ) ) ), 
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ),
 +   seSimplify = FALSE )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114  0.1104750 
 Warning message:
 In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
@@ -237,7 +237,7 @@ In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ),
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3193114  0.1352247 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > # (differs from the above, because mean(age)^2 is not the same as mean(age^2))
@@ -249,7 +249,7 @@ semEla.age      stdEr
 > urbinEla( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
 +   xMeanQuad["age"], 1:2, iPos = 0, 
 +   model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3332012  1.5544393 
 Warning message:
 In urbinEla(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = xMeanQuad["age"], xPos = 1:2, model = "lpm", allCoefVcov = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 2], iPos = 0) :
@@ -257,7 +257,7 @@ In urbinEla(allCoef = estProbitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal 
 > urbinEla( estProbitQuadMfx$mfxest[ , 1 ], 
 +   xMeanQuad[-1], 2:3, iPos = 0, 
 +   model = "lpm", estProbitQuadMfx$mfxest[ , 2 ] )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3332012  1.5544393 
 Warning message:
 In urbinEla(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = xMeanQuad[-1], xPos = 2:3, model = "lpm", allCoefVcov = estProbitQuadMfx$mfxest[, 2], iPos = 0) :
@@ -266,13 +266,13 @@ In urbinEla(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = xMeanQuad[-1], xPo
 +   xMeanQuad["age"], 1:2, iPos = 0, 
 +   model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3332012  0.1411211 
 > urbinEla( estProbitQuadMfx$mfxest[ , 1 ], 
 +   xMeanQuad[-1], 2:3, iPos = 0, 
 +   model = "lpm", estProbitQuadMfx$mfxest[ , 2 ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
-semEla.age      stdEr 
+    semEla      stdEr 
 -0.3332012  0.1411211 
 > 
 > 
@@ -641,4 +641,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = NULL, xPos = 2:
 > 
 > proc.time()
    user  system elapsed 
-  0.565   0.032   0.591 
+  0.575   0.032   0.602 
