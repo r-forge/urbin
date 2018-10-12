@@ -37,6 +37,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
+    # add column for coefficients of the reference category
+    mCoef <- cbind( mCoef, 0 )
   } else if( model == "CondL"){
     # number of categories of the dependent variable
     nYCat <- round( nXVal / nCoef )
@@ -67,6 +69,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   # check argument yCat
   if( model %in% c( "MNL", "CondL" ) ) {
     checkYCat( yCat, nYCat ) 
+    if( model == "MNL" ) {
+      yCat[ yCat == 0 ] <- nYCat + 1
+    }
   } else if( model != "NestedL" && !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
@@ -158,8 +163,8 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
   } else if( model == "MNL" ){
-    pFunRef <- exp( refXbeta ) / ( 1 + sum( exp( refXbeta ) ) )
-    pFunInt <- exp( intXbeta ) / ( 1 + sum( exp( intXbeta ) ) )
+    pFunRef <- exp( refXbeta ) / sum( exp( refXbeta ) )
+    pFunInt <- exp( intXbeta ) / sum( exp( intXbeta ) )
     eff <- pFunInt[ yCat ] - pFunRef[ yCat ]
   } else if( model == "CondL"){
     eff <- exp( intXbeta[ yCat ] )/( sum( exp( intXbeta ) ) ) -
