@@ -294,24 +294,9 @@ xMeanInt <- c( 1, colMeans( Mroz87[ ,
 urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit",
   vcov( estProbitQuad ) )
 
-# semi-elasticity of age (only standard errors of coefficients)
-urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-  sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE )
-
-# semi-elasticity of age (only standard errors of coefficients, 
-# simplified equation for calculating standard error of the semi-elasticity)
-urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-  sqrt( diag( vcov( estProbitQuad ) ) ) )
-
-# semi-elasticity of age (standard errors of coefficients, 
-# mean and standard deviation of age provided)
-urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
-  sqrt( diag( vcov( estProbitQuad ) ) ), seSimplify = FALSE,
-  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
-
 # semi-elasticity of age (standard errors of coefficients,
 # mean and standard deviation of age provided, 
-# simplified equation for calculating standard error of the semi-elasticity)
+# simplified calculation of standard error)
 urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
   sqrt( diag( vcov( estProbitQuad ) ) ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
@@ -335,10 +320,10 @@ urbinElaInt( coef( estProbitInt ), xMeanInt,
 #####################  urbinEffInt()  ############################
 ##################################################################  
 # effect of age changing from the 30-40 interval to the 50-60 interval
-# (only standard errors of coefficients)
+# (full covariance matrix of coefficients)
 urbinEffInt( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "probit",
-  sqrt( diag( vcov( estProbitQuad ) ) ) )
+  vcov( estProbitQuad ) )
   
 # effect of age changing from the 30-40 interval to the 50-60 interval
 # (with standard errors of coefficients as well as 
