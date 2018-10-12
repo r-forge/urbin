@@ -50,7 +50,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   }
   # check argument yCat
   if( model == "MNL" ) {
-    checkYCat( yCat, nYCat ) 
+    checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
@@ -113,8 +113,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     xBeta <- allXVal %*% mCoef
     checkXBeta( xBeta )
     pfun <- exp( xBeta ) / sum( exp( xBeta ) )
-    semEla <- xVal * pfun[ yCat ] * 
-      ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
+    semEla <- sum( xVal * pfun[ yCat ] * 
+      ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) ) )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   } 
@@ -150,61 +150,73 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   } else if( model == "MNL" ){
     derivCoef <- rep( 0, length( allCoef ) )
     if( seSimplify ) {
-      derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] <- 
-        - pfun[ yCat ] * xVal * pfun[ 1:nYCat ]
-      if( yCat <= nYCat ) {
-        derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] <- 
-          derivCoef[ ( yCat - 1 ) * nXVal + xPos[1] ] + 
-          pfun[ yCat ] * xVal
-      }
-      if( length( xPos ) == 2 ) {
-        derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] <- 
-          - pfun[ yCat ] * 2 * xVal^2 * pfun[ 1:nYCat ]
-        if( yCat <= nYCat ) {
-          derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] <- 
-            derivCoef[ ( yCat - 1 ) * nXVal + xPos[2] ] +
-            pfun[ yCat ] * 2 * xVal^2
+      for( yCati in yCat ) {
+        derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] <- 
+          derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] -
+          pfun[ yCati ] * xVal * pfun[ 1:nYCat ]
+        if( yCati <= nYCat ) {
+          derivCoef[ ( yCati - 1 ) * nXVal + xPos[1] ] <- 
+            derivCoef[ ( yCati - 1 ) * nXVal + xPos[1] ] + 
+            pfun[ yCati ] * xVal
+        }
+        if( length( xPos ) == 2 ) {
+          derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] <- 
+            derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] -
+            pfun[ yCati ] * 2 * xVal^2 * pfun[ 1:nYCat ]
+          if( yCati <= nYCat ) {
+            derivCoef[ ( yCati - 1 ) * nXVal + xPos[2] ] <- 
+              derivCoef[ ( yCati - 1 ) * nXVal + xPos[2] ] +
+              pfun[ yCati ] * 2 * xVal^2
+          }
         }
       }
     } else {
       for( p in 1:nYCat ) {
         coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
-        if( p == yCat ) {
-          derivCoef[ coefNoYCat ][ -xPos ] <-
-            ( xCoefLinQuad[ yCat ] * pfun[ yCat ] *
-                ( 1 - 2 * pfun[ yCat ] ) + 
-                ( 2 * pfun[ yCat ]^2 - pfun[ yCat ] ) *
-                sum( xCoefLinQuad * pfun ) ) * 
-            xVal * allXVal[ -xPos ]
-          derivCoef[ coefNoYCat ][ xPos[1] ] <-
-            ( pfun[ yCat ] *
-                ( 1 - pfun[ yCat ] + xCoefLinQuad[ yCat ] * xVal *
-                    ( 1 - 2 * pfun[ yCat ] ) ) +
-                pfun[ yCat ] * xVal * 
-                ( 2 * pfun[ yCat ] - 1 ) *
-                sum( xCoefLinQuad * pfun ) ) * xVal
-          if( length( xPos ) == 2 ) {
-            derivCoef[ coefNoYCat ][ xPos[2] ] <-
-              ( pfun[ yCat ] * ( 2 * xVal * ( 1 - pfun[ yCat ] ) +
-                  xCoefLinQuad[ yCat ] * xVal^2 * ( 1 - 2 * pfun[ yCat ] ) ) +
-                  pfun[ yCat ] * xVal^2 * ( 2 * pfun[ yCat ] - 1 ) *
+        for( yCati in yCat ) {
+          if( p == yCati ) {
+            derivCoef[ coefNoYCat ][ -xPos ] <-
+              derivCoef[ coefNoYCat ][ -xPos ] +
+              ( xCoefLinQuad[ yCati ] * pfun[ yCati ] *
+                  ( 1 - 2 * pfun[ yCati ] ) + 
+                  ( 2 * pfun[ yCati ]^2 - pfun[ yCati ] ) *
+                  sum( xCoefLinQuad * pfun ) ) * 
+              xVal * allXVal[ -xPos ]
+            derivCoef[ coefNoYCat ][ xPos[1] ] <-
+              derivCoef[ coefNoYCat ][ xPos[1] ] +
+              ( pfun[ yCati ] *
+                  ( 1 - pfun[ yCati ] + xCoefLinQuad[ yCati ] * xVal *
+                      ( 1 - 2 * pfun[ yCati ] ) ) +
+                  pfun[ yCati ] * xVal * 
+                  ( 2 * pfun[ yCati ] - 1 ) *
                   sum( xCoefLinQuad * pfun ) ) * xVal
-          }
-        } else {
-          derivCoef[ coefNoYCat ][ -xPos ] <-
-            pfun[ yCat ] * pfun[ p ] *
-            ( 2 * sum( xCoefLinQuad * pfun ) -
-                xCoefLinQuad[ yCat ] - xCoefLinQuad[ p ] ) *
-            xVal * allXVal[ -xPos ]
-          derivCoef[ coefNoYCat ][ xPos[1] ] <-
-            pfun[ yCat ] * pfun[ p ] *
-            ( - xCoefLinQuad[ yCat ] * xVal - xCoefLinQuad[ p ] * xVal - 
-                1 + 2 * xVal * sum( xCoefLinQuad * pfun ) ) * xVal
-          if( length( xPos ) == 2 ) {
-            derivCoef[ coefNoYCat ][ xPos[2] ] <-
-              pfun[ yCat ] * pfun[ p ] *
-              ( - xCoefLinQuad[ yCat ] * xVal^2 - xCoefLinQuad[ p ] * xVal^2 - 
-                  2 * xVal + 2 * xVal^2 * sum( xCoefLinQuad * pfun ) ) * xVal
+            if( length( xPos ) == 2 ) {
+              derivCoef[ coefNoYCat ][ xPos[2] ] <-
+                derivCoef[ coefNoYCat ][ xPos[2] ] +
+                ( pfun[ yCati ] * ( 2 * xVal * ( 1 - pfun[ yCati ] ) +
+                    xCoefLinQuad[ yCati ] * xVal^2 * ( 1 - 2 * pfun[ yCati ] ) ) +
+                    pfun[ yCati ] * xVal^2 * ( 2 * pfun[ yCati ] - 1 ) *
+                    sum( xCoefLinQuad * pfun ) ) * xVal
+            }
+          } else {
+            derivCoef[ coefNoYCat ][ -xPos ] <-
+              derivCoef[ coefNoYCat ][ -xPos ] +
+              pfun[ yCati ] * pfun[ p ] *
+              ( 2 * sum( xCoefLinQuad * pfun ) -
+                  xCoefLinQuad[ yCati ] - xCoefLinQuad[ p ] ) *
+              xVal * allXVal[ -xPos ]
+            derivCoef[ coefNoYCat ][ xPos[1] ] <-
+              derivCoef[ coefNoYCat ][ xPos[1] ] +
+              pfun[ yCati ] * pfun[ p ] *
+              ( - xCoefLinQuad[ yCati ] * xVal - xCoefLinQuad[ p ] * xVal - 
+                  1 + 2 * xVal * sum( xCoefLinQuad * pfun ) ) * xVal
+            if( length( xPos ) == 2 ) {
+              derivCoef[ coefNoYCat ][ xPos[2] ] <-
+                derivCoef[ coefNoYCat ][ xPos[2] ] +
+                pfun[ yCati ] * pfun[ p ] *
+                ( - xCoefLinQuad[ yCati ] * xVal^2 - xCoefLinQuad[ p ] * xVal^2 - 
+                    2 * xVal + 2 * xVal^2 * sum( xCoefLinQuad * pfun ) ) * xVal
+            }
           }
         }
       }
