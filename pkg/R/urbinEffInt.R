@@ -158,8 +158,9 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
   } else if( model == "MNL" ){
-    eff <- exp( intXbeta[ yCat ] )/( 1 + sum( exp( intXbeta ) ) ) - 
-      exp( refXbeta[ yCat ] )/( 1 + sum( exp( refXbeta ) ) )
+    pFunRef <- exp( refXbeta ) / ( 1 + sum( exp( refXbeta ) ) )
+    pFunInt <- exp( intXbeta ) / ( 1 + sum( exp( intXbeta ) ) )
+    eff <- pFunInt[ yCat ] - pFunRef[ yCat ]
   } else if( model == "CondL"){
     eff <- exp( intXbeta[ yCat ] )/( sum( exp( intXbeta ) ) ) -
       exp( refXbeta[ yCat ] )/( sum( exp( refXbeta ) ) )    
@@ -203,30 +204,18 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     for( p in 1:nYCat ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
-          ( exp( intXbeta[ p ] ) * 
-              ( 1 + sum( exp( intXbeta[ -yCat ] ) ) )/
-              ( 1 + sum( exp( intXbeta ) ) )^2 -
-              exp( refXbeta[ p ] ) * 
-              ( 1 + sum( exp( refXbeta[ -yCat ] ) ) )/
-              ( 1 + sum( exp( refXbeta ) ) )^2 ) * allXVal[ - xPos ]
+          ( pFunInt[ p ] - pFunInt[ p ]^2 - pFunRef[ p ] + pFunRef[ p ]^2 ) *
+          allXVal[ - xPos ]
         derivCoef[ xPos, p ] <- 
-          ( exp( intXbeta[ p ] ) * 
-              ( 1 + sum( exp( intXbeta[ -yCat ] ) ) )/
-              ( 1 + sum( exp( intXbeta ) ) )^2 ) * intX -
-          ( exp( refXbeta[ p ] ) * 
-              ( 1 + sum( exp( refXbeta[ -yCat ] ) ) )/
-              ( 1 + sum( exp( refXbeta ) ) )^2 ) * refX
+          ( pFunInt[ p ] - pFunInt[ p ]^2 ) * intX -
+          ( pFunRef[ p ] - pFunRef[ p ]^2 ) * refX
       } else{  
         derivCoef[ -xPos, p ] <- 
-          ( ( exp( refXbeta[ yCat ] ) * exp( refXbeta[ p ] ) )/
-              ( 1 + sum( exp( refXbeta ) ) )^2 -
-              ( exp( intXbeta[ yCat ] ) * exp( intXbeta[ p ] ) )/
-              ( 1 + sum( exp( intXbeta ) ) )^2 ) * allXVal[ -xPos ]
+          ( pFunRef[ yCat ] * pFunRef[ p ] - pFunInt[ yCat ] * pFunInt[ p ] ) *
+          allXVal[ - xPos ]
         derivCoef[ xPos, p ] <- 
-          ( ( exp( refXbeta[ yCat ] ) * exp( refXbeta[ p ] ) )/
-              ( 1 + sum( exp( refXbeta ) ) )^2 ) * intX -
-          ( ( exp( intXbeta[ yCat ] ) * exp( intXbeta[ p ] ) )/
-              ( 1 + sum( exp( intXbeta ) ) )^2 ) * refX
+          pFunRef[ yCat ] * pFunRef[ p ] * refX -
+          pFunInt[ yCat ] * pFunInt[ p ] * intX
       }     
     }
     derivCoef <- c( derivCoef )
