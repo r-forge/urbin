@@ -46,7 +46,7 @@ urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit",
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 estProbitLinMfx <- probitmfx( lfp ~ kids + age + educ, data = Mroz87 )
 estProbitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
-urbinEla( estProbitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, 
+urbinEla( estProbitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, iPos = 0, 
   model = "lpm", estProbitLinMfx$mfxest[ "age", 2 ] )
 
 
@@ -100,10 +100,10 @@ estProbitQuadMfx <- probitmfx( lfp ~ kids + age + I(age^2) + educ, data = Mroz87
 estProbitQuadMfx$mfxest[ "age", 1:2 ] * xMeanQuad[ "age" ] +
   2 * estProbitQuadMfx$mfxest[ "I(age^2)", 1:2 ] * xMeanQuad[ "age" ]^2
 urbinEla( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
-  xMeanQuad["age"], 1:2, 
+  xMeanQuad["age"], 1:2, iPos = 0, 
   model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
 urbinEla( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
-  xMeanQuad["age"], 1:2, 
+  xMeanQuad["age"], 1:2, iPos = 0, 
   model = "lpm", estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
@@ -169,7 +169,7 @@ urbinElaInt( coef( estProbitInt ), xMeanInt,
 estProbitIntMfx <- probitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
   data = Mroz87 )
 urbinElaInt( estProbitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], 
-  c( 1, 2, 0, 3 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
+  c( 1, 2, 0, 3 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
   estProbitIntMfx$mfxest[ 2:4, 2 ] )
 
 
@@ -208,7 +208,7 @@ urbinEffInt( coef( estProbitLin ), xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "probit", 
   allCoefVcov = sqrt( diag( vcov( estProbitLin ) ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
-urbinEffInt( estProbitLinMfx$mfxest[ "age", 1 ], NULL, 1, 
+urbinEffInt( estProbitLinMfx$mfxest[ "age", 1 ], NULL, 1, iPos = 0, 
   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estProbitLinMfx$mfxest[ "age", 2 ] )
 
@@ -255,10 +255,10 @@ urbinEffInt( coef( estProbitQuad ), xMeanQuadInt, c( 3, 4 ),
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
-  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+  iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
-urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
-  c( 30, 40 ), c( 50, 60 ), model = "lpm", 
+urbinEffInt( estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2,
+  iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
   estProbitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 
@@ -296,7 +296,7 @@ urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( -1, -1, 1, 0 ),
   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 urbinEffCat( estProbitIntMfx$mfxest[ 2:4, 1 ], 
-  xMeanInt[ 3:5 ], c(1:3), c( -1, -1, 1, 0 ), model = "lpm", 
+  xMeanInt[ 3:5 ], c(1:3), iPos = 0, c( -1, -1, 1, 0 ), model = "lpm", 
   estProbitIntMfx$mfxest[ 2:4, 2 ] )
 
 ### effects of age changing from the 53-60 category to the 38-52 category
@@ -325,5 +325,5 @@ urbinEffCat( coef( estProbitInt ), xMeanInt, c( 3:5 ), c( 0, 1, -1, 1 ),
   model = "probit", allCoefVcov = sqrt( diag( vcov( estProbitInt ) ) ) )
 # semi-elasticity of age based on partial derivative calculated by the mfx package
 urbinEffCat( estProbitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
-  c( 0, 1, -1, 1 ), model = "lpm", estProbitIntMfx$mfxest[ 2:4, 2 ] )
+  c( 0, 1, -1, 1 ), iPos = 0, model = "lpm", estProbitIntMfx$mfxest[ 2:4, 2 ] )
 

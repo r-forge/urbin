@@ -24,7 +24,7 @@
 \usage{
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL, 
-  iPos = ifelse( all( xPos != 1 ), 1, 0 ), yCat = NULL, 
+  iPos = 1, yCat = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
 }
 

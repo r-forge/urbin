@@ -128,7 +128,7 @@ semEla.age      stdEr
 > estLogitLinMfx$mfxest[ "age", 1:2 ] * xMeanLin[ "age" ]
      dF/dx  Std. Err. 
 -0.3236826  0.1183349 
-> urbinEla( estLogitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, 
+> urbinEla( estLogitLinMfx$mfxest[ "age", 1 ], xMeanLin["age"], 1, iPos = 0, 
 +   model = "lpm", estLogitLinMfx$mfxest[ "age", 2 ] )
 semEla.age      stdEr 
 -0.3236826  0.1183349 
@@ -243,15 +243,15 @@ semEla.age      stdEr
      dF/dx  Std. Err. 
 -0.3347451  2.2359259 
 > urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
-+   xMeanQuad["age"], 1:2, 
++   xMeanQuad["age"], 1:2, iPos = 0, 
 +   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
 semEla.age      stdEr 
 -0.3347451  1.5810384 
 Warning message:
-In urbinEla(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = xMeanQuad["age"], xPos = 1:2, model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
+In urbinEla(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = xMeanQuad["age"], xPos = 1:2, model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2], iPos = 0) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEla( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], 
-+   xMeanQuad["age"], 1:2, 
++   xMeanQuad["age"], 1:2, iPos = 0, 
 +   model = "lpm", estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
 semEla.age      stdEr 
@@ -363,7 +363,7 @@ Number of Fisher Scoring iterations: 4
 > estLogitIntMfx <- logitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
 +   data = Mroz87 )
 > urbinElaInt( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], 
-+   c( 1, 2, 0, 3 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
++   c( 1, 2, 0, 3 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
 +   estLogitIntMfx$mfxest[ 2:4, 2 ] )
    semEla     stdEr 
 -0.477814  0.171646 
@@ -414,7 +414,7 @@ Number of Fisher Scoring iterations: 4
      effect       stdEr 
 -0.15246566  0.06446329 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
-> urbinEffInt( estLogitLinMfx$mfxest[ "age", 1 ], NULL, 1, 
+> urbinEffInt( estLogitLinMfx$mfxest[ "age", 1 ], NULL, 1, iPos = 0, 
 +   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estLogitLinMfx$mfxest[ "age", 2 ] )
      effect       stdEr 
@@ -480,15 +480,15 @@ In urbinEffInt(allCoef = coef(estLogitQuad), allXVal = xMeanQuadInt, xPos = c(3,
 -0.25353772  0.07205095 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
 > urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
-+   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
++   iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ] )
     effect      stdEr 
 -0.2537726  0.7651708 
 Warning message:
-In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = NULL, xPos = 1:2, refBound = c(30, 40), intBound = c(50, 60), model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2]) :
+In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVal = NULL, xPos = 1:2, refBound = c(30, 40), intBound = c(50, 60), model = "lpm", allCoefVcov = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 2], iPos = 0) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEffInt( estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 1 ], NULL, 1:2, 
-+   c( 30, 40 ), c( 50, 60 ), model = "lpm", 
++   iPos = 0, c( 30, 40 ), c( 50, 60 ), model = "lpm", 
 +   estLogitQuadMfx$mfxest[ c( "age", "I(age^2)" ), 2 ],
 +   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ) )
      effect       stdEr 
@@ -542,7 +542,7 @@ In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVa
 -0.25380744  0.07119196 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
 > urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
-+   c( -1, -1, 1, 0 ), model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
++   c( -1, -1, 1, 0 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
      effect       stdEr 
 -0.25514364  0.07315018 
 > 
@@ -584,11 +584,11 @@ In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[c("age", "I(age^2)"), 1], allXVa
 0.22385578 0.06608907 
 > # semi-elasticity of age based on partial derivative calculated by the mfx package
 > urbinEffCat( estLogitIntMfx$mfxest[ 2:4, 1 ], xMeanInt[ 3:5 ], c(1:3), 
-+   c( 0, 1, -1, 1 ), model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
++   c( 0, 1, -1, 1 ), iPos = 0, model = "lpm", estLogitIntMfx$mfxest[ 2:4, 2 ] )
     effect      stdEr 
 0.22465561 0.06745489 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  0.534   0.039   0.567 
+  0.575   0.036   0.606 

@@ -1,6 +1,5 @@
 urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
-  allCoefVcov = NULL, xMeanSd = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
-  yCat = NULL, 
+  allCoefVcov = NULL, xMeanSd = NULL, iPos = 1, yCat = NULL, 
   allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL ){
   
   # number of coefficients

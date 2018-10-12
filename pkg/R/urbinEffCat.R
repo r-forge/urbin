@@ -1,6 +1,5 @@
 urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
-  allCoefVcov = NULL, iPos = ifelse( all( xPos != 1 ), 1, 0 ), 
-  yCat = NULL ){
+  allCoefVcov = NULL, iPos = 1, yCat = NULL ){
   
   # number of coefficients
   nCoef <- length( allCoef )
