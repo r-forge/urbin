@@ -59,16 +59,13 @@
 \usage{
 urbinEla( allCoef, allXVal, xPos, model, allCoefVcov = NULL,
   seSimplify = !is.matrix( allCoefVcov ), xMeanSd = NULL, 
-  iPos = 1, yCat = NULL, 
-  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
+  iPos = 1, yCat = NULL )
   
 urbinElaInt( allCoef, allXVal, xPos, xBound, model, 
   allCoefVcov = NULL, iPos = 1, yCat = NULL )
   
 urbinEffInt( allCoef, allXVal = NULL, xPos, refBound, intBound, model,
-  allCoefVcov = NULL, xMeanSd = NULL, 
-  iPos = 1, yCat = NULL,
-  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL )
+  allCoefVcov = NULL, xMeanSd = NULL, iPos = 1, yCat = NULL )
   
 urbinEffCat( allCoef, allXVal, xPos, xGroups, model, 
   allCoefVcov = NULL, iPos = 1, yCat = NULL )
@@ -113,10 +110,8 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     \code{"lpm"} = binary probit model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model,
     \code{"oprobit"} = ordered probit model (see \bold{Details} section below), 
-    \code{"logit"} = binary logit model, 
-    \code{"MNL"} = multinomial logit model,
-    \code{"CondL"} = conditional logit model, or
-    \code{"NestedL"} = nested logit model.}
+    \code{"logit"} = binary logit model, or
+    \code{"MNL"} = multinomial logit model.}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -143,7 +138,7 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.
     A value of zero indicates that the model does not have an intercept.}
-  \item{yCat,allCoefBra,allXValBra,yCatBra,lambda}{
+  \item{yCat}{
     will be documented later}
 }
 

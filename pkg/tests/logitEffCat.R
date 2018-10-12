@@ -29,17 +29,3 @@ eff11b <- urbinEffCat( allCoef = c( 0.28, 0.003, 0.0075, -0.034,
   allCoefVcov = c( 0.03, 0.0001, 0.005, 0.01, 0.004, 
     0.05, 0.004, 0.5, 0.0078 ) )
 eff11b
-
-# Example
-eff12a <- urbinEffCat( allCoef = c( 0.28, 0.6, 0.0075 ),
-  allXVal = c( 1, 0.5, 0.3, 1, 0.1, 0.4 ), 
-  xPos = c( 2:3 ), 
-  xGroups = c( -1, -1, 1 ), yCat = 2, model = "CondL" )
-eff12a
-
-eff12b <- urbinEffCat( allCoef = c( 0.28, 0.6, 0.0075 ),
-  allXVal = c( 1, 0.5, 0.3, 1, 0.1, 0.4 ), 
-  xPos = c( 2:3 ), 
-  allCoefVcov = c( 0.1, 0.3, 0.005 ),
-  xGroups = c( -1, -1, 1 ), yCat = 2, model = "CondL" )
-eff12b

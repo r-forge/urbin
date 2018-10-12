@@ -21,25 +21,14 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
     # add column for coefficients of the reference category
     mCoef <- cbind( mCoef, 0 )
-  } else if( model == "CondL" ) {
-    # number of categories of the dependent variable
-    nYCat <- round( nXVal / nCoef )
-    if( nXVal != nCoef * nYCat ) {
-      stop( "length of argument 'allXVal' must be a multiple",
-        " of the length of argument 'allCoef'" )
-    } 
-    # create matrix of explanatory variables
-    mXVal <- matrix( allXVal, nrow = nCoef, ncol = nYCat )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model %in% c( "MNL", "CondL" ) ) {
+  if( model == "MNL" ) {
     checkYCat( yCat, nYCat ) 
-    if( model == "MNL" ) {
-      yCat[ yCat == 0 ] <- nYCat + 1
-    }
-  } else if( model != "NestedL" && !is.null( yCat ) ) {
+    yCat[ yCat == 0 ] <- nYCat + 1
+  } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
   # Check position vector
@@ -59,13 +48,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   shareVec <- rep( NA, nInt )
   for( i in 1:nInt ){
     if( xPos[i] != 0 ) {
-      if( model %in% c( "lpm", "probit", "oprobit", "logit", "MNL" ) ){
-        shareVec[ i ] <- allXVal[ xPos[i] ] 
-      } else if( model == "CondL" ) {
-        shareVec[ i ] <- mXVal[ xPos[i], yCat ]
-      } else {
-        stop( "argument 'model' specifies an unknown type of model" )
-      }
+      shareVec[ i ] <- allXVal[ xPos[i] ] 
     }
   }
   if( any( shareVec[ xPos != 0 ] < 0 ) ) {
@@ -113,18 +96,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       }
       checkXBeta( xBeta[,p] )
     }
-  } else if( model == "CondL" ) {
-    xBeta <- matrix( rep( rep( NA, nInt ), nYCat ), ncol = nYCat ) 
-    for( p in 1:nYCat ){
-      for( i in 1:nInt ){
-        allXValTemp <- replace( mXVal[ ,p], xPos, 0 )
-        if( xPos[i] != 0 ) {
-          allXValTemp[ xPos[i] ] <- 1 
-        }
-        xBeta[i,p] <- sum( allCoef * allXValTemp )    
-      }
-      checkXBeta( xBeta[,p] )
-    }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -134,8 +105,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else if( model == "logit" ){
     xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
-    xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
-  } else if( model == "CondL" ){
     xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   } else if( model != "lpm" ) {
     stop( "argument 'model' specifies an unknown type of model" )
@@ -213,24 +182,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       }
     }
     gradM <- apply( gradM, 2, function( x ) x )
-  } else if( model == "CondL" ){
-    gradM <- matrix( 0, nCoef, nInt - 1 )
-    for( m in 1:( nInt - 1 ) ) {
-      gradM[ -xPos, m ] <- 2 * 
-        ( ( exp( xBeta[ m+1, yCat ] ) * mXVal[ -xPos, yCat ] * 
-            sum( exp( xBeta[ m+1, ] ) ) - 
-            exp( xBeta[ m+1, yCat ] ) * 
-            rowSums( exp( xBeta[ m+1, ] ) * mXVal[ -xPos, , drop = FALSE ] ) )/
-            ( sum( exp( xBeta[ m+1, ] ) ) )^2 -
-            ( exp( xBeta[ m, yCat ] ) * mXVal[ -xPos, yCat ] * 
-                sum( exp( xBeta[ m, ] ) ) - 
-                exp( xBeta[ m, yCat ] ) * 
-                rowSums( exp( xBeta[ m,  ] ) * mXVal[ -xPos, , drop = FALSE ] ) )/
-            ( sum( exp( xBeta[ m, ] ) ) )^2 ) * 
-        xBound[m+1] / ( xBound[m+2] - xBound[m] )
-      gradM[ xPos[m], m ] <- 0
-      gradM[ xPos[m+1], m ] <- 0
-    } 
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }

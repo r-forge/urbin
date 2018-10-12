@@ -1,7 +1,6 @@
 urbinEla <- function( allCoef, allXVal, xPos, model, 
   allCoefVcov = NULL, seSimplify = !is.matrix( allCoefVcov ), 
-  xMeanSd = NULL, iPos = 1, yCat = NULL, 
-  allCoefBra = NULL, allXValBra = NULL, yCatBra = NULL, lambda = NULL ){
+  xMeanSd = NULL, iPos = 1, yCat = NULL ){
   
   # check argument seSimplify
   if( length( seSimplify ) != 1 || !is.logical( seSimplify ) ) {
@@ -46,40 +45,14 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
     # add column for coefficients of the reference category
     mCoef <- cbind( mCoef, 0 )
-  } else if( model == "CondL" ){
-    # number of categories of the dependent variable
-    nYCat <- round( nXVal / nCoef )
-    if( nXVal != nCoef * nYCat ) {
-      stop( "length of argument 'allXVal' must be a multiple",
-        " of the length of argument 'allCoef'" )
-    } 
-    # create matrix of explanatory variables
-    mXVal <- matrix( allXVal, nrow = nCoef, ncol = nYCat )
-  } else if( model == "NestedL" ){
-    NCoef <- length( allCoefBra )
-    mXValBra <- matrix( allXValBra, nrow = NCoef )
-    nXValBra <- dim( mXValBra )[1]
-    pXValBra <- dim( mXValBra )[2]
-    if( NCoef != nXValBra ) {
-      stop( "arguments 'allCoefBra' and 'allXValBra' must have the same length" )
-    }
-    O <- length( allXVal ) 
-    mXVal <- matrix( unlist( allXVal[ yCatBra ] ), nrow = nCoef ) 
-    nXVal <- dim( mXVal )[1]
-    pXVal <- dim( mXVal )[2]
-    if( nCoef != nXVal ) {
-      stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
-    }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model %in% c( "MNL", "CondL" ) ) {
+  if( model == "MNL" ) {
     checkYCat( yCat, nYCat ) 
-    if( model == "MNL" ) {
-      yCat[ yCat == 0 ] <- nYCat + 1
-    }
-  } else if( model != "NestedL" && !is.null( yCat ) ) {
+    yCat[ yCat == 0 ] <- nYCat + 1
+  } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
   # Check position vector
@@ -104,27 +77,11 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           " to the squared value of 'allXVal[ xPos[1] ]'" ) 
       }    
-    } else if( model == "CondL" ){
-      xCoef <- allCoef[ xPos ]
-      for( p in 1:nYCat ){
-        if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
-          stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
-            " to the squared value of 'allXVal[ xPos[1] ]'" ) 
-        }  
-      }
-    } else if( model == "NestedL" ){
-      xCoef <- allCoef[ xPos ]
-      for( p in 1:pXVal ){
-        if( !isTRUE( all.equal( mXVal[xPos[2], p], mXVal[xPos[1], p]^2 ) ) ) {
-          stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
-            " to the squared value of 'allXVal[ xPos[1] ]' " ) 
-        }  
-      }
     } else {
       stop( "argument 'model' specifies an unknown type of model" )
     }
   } else if( length( xPos ) == 1 ) {
-    if( model %in% c( "lpm", "probit", "oprobit", "logit", "CondL", "NestedL" ) ){
+    if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
       xCoef <- c( allCoef[ xPos ], 0 )
     } else if( model == "MNL" ){
       xCoef <- rbind( mCoef[ xPos, ], 0 ) 
@@ -158,38 +115,6 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     pfun <- exp( xBeta ) / sum( exp( xBeta ) )
     semEla <- xVal * pfun[ yCat ] * 
       ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) )
-  } else if( model == "CondL" ){
-    xVal <- rep( NA, nYCat )
-    for( p in 1:nYCat ){
-      xVal[p] <- mXVal[ xPos[ 1 ], p ]
-    }
-    xBeta <- allCoef %*% mXVal
-    checkXBeta( xBeta )
-    pfun <- exp( xBeta[ yCat ] )/( sum( exp( xBeta ) ) )
-    semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * 
-      xVal[ yCat ] * ( pfun - pfun^2 )
-  } else if( model == "NestedL" ){
-    xVal <- rep( NA, pXVal )
-    for( p in 1:pXVal ){
-      xVal[p] <- mXVal[ xPos[ 1 ], p ]
-    }
-    coef <- matrix( NA, nrow = O, ncol = nCoef )
-    for( o in 1:O ){
-      coef[o, ] <- allCoef/lambda[o] 
-    }
-    xBeta <- lapply( 1:O, function( i, m, v ){ colSums( m[[i]] * v[[i]] ) }, 
-      m=allXVal, v=coef )   #### v[[i]] is probably incorrect, because v=coef is not a list
-    checkXBeta( unlist( xBeta ) )
-    IV <- unlist( lapply( 1:O, function( i, m ){ log( sum( exp( m[[i]] ) ) ) }, 
-      m=xBeta ) ) 
-    pfun <- exp( xBeta[[ yCatBra ]][ yCat ] )/
-      ( sum( exp( xBeta[[ yCatBra ]] ) ) )
-    xBetaBra <- allCoefBra %*% mXValBra
-    pfunBra <- exp( xBetaBra[ yCatBra ] + lambda[ yCatBra ] * IV[ yCatBra ] )/
-      ( sum( exp( xBetaBra + lambda * IV ) ) )
-    semEla <- ( xCoef[1] + 2 * xCoef[2] * xVal[ yCat ] ) * xVal[ yCat ] * 
-      ( pfunBra * ( pfun - pfun^2 ) * 1/lambda[ yCatBra ] +
-          pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * IV[ yCatBra ] )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   } 
@@ -283,36 +208,6 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
           }
         }
       }
-    }
-  } else if( model == "CondL" ){
-    if( !seSimplify ) {
-      warning( "exact (non-simplified) calculation of derivatives of",
-        " semi-elasticities wrt coefficients has not yet been implemented",
-        " for CondL models" )
-    }
-    derivCoef <- rep( 0, length( allCoef ) )
-    derivCoef[ xPos[1] ] <- ( pfun - pfun^2 ) * xVal[ yCat ]
-    if( length( xPos ) == 2 ) {
-      derivCoef[ xPos[2] ] <- ( pfun - pfun^2 ) * 2 * xVal[ yCat ]^2
-    }
-  } else if( model == "NestedL" ){
-    if( !seSimplify ) {
-      warning( "exact (non-simplified) calculation of derivatives of",
-        " semi-elasticities wrt coefficients has not yet been implemented",
-        " for NestL models" )
-    }
-    derivCoef <- rep( 0, length( allCoef ) )
-    derivCoef[ xPos[1] ] <- ( 
-      pfunBra * ( pfun - pfun^2 ) / lambda[ yCatBra ] +
-        pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * 
-        IV[ yCatBra ] ) *
-      xVal[ yCat ]
-    if( length( xPos ) == 2 ) {
-      derivCoef[ xPos[2] ] <- ( 
-        pfunBra * ( pfun - pfun^2 ) / lambda[ yCatBra ] + 
-          pfun^2 * ( pfunBra - pfunBra^2 ) * lambda[ yCatBra ] * 
-          IV[ yCatBra ] ) *
-        2 * xVal[ yCat ]^2
     }
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
