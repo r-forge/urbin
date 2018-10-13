@@ -27,6 +27,9 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     } 
     # create matrix of coefficients
     mCoef <- matrix( allCoef, nrow = nXVal, ncol = nYCat )
+    # add column for coefficients of the reference category
+    mCoef <- cbind( mCoef, 0 )
+    # coefficients of the dummy variables (variable of interest)
     xCoef <- rbind( mCoef[ xPos, ], 0 )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
@@ -34,6 +37,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   # check argument yCat
   if( model == "MNL" ) {
     checkYCat( yCat, nYCat ) 
+    yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
   }
@@ -111,8 +115,8 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       DEffect %*% xCoef
     checkXBeta( c( XBetaRef, XBetaEffect ) )
     # probabilities
-    pFunRef <- exp( XBetaRef ) / ( 1 + sum( exp( XBetaRef ) ) )
-    pFunEffect <- exp( XBetaEffect ) / ( 1 + sum( exp( XBetaEffect ) ) )
+    pFunRef <- exp( XBetaRef ) / sum( exp( XBetaRef ) )
+    pFunEffect <- exp( XBetaEffect ) / sum( exp( XBetaEffect ) )
     # effect
     effeG <- pFunEffect[ yCat ] - pFunRef[ yCat ]
   } else {
