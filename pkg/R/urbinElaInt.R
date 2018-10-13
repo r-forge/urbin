@@ -26,7 +26,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   }
   # check argument yCat
   if( model == "MNL" ) {
-    checkYCat( yCat, nYCat ) 
+    checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
@@ -108,7 +108,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     dFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )^2
   } else if( model == "MNL" ){
     pFunMat <- exp( xBeta ) / rowSums( exp( xBeta ) )
-    pFun <- pFunMat[ , yCat ]
+    pFun <- rowSums( pFunMat[ , yCat, drop = FALSE ] )
   } else if( model != "lpm" ) {
     stop( "argument 'model' specifies an unknown type of model" )
   }
