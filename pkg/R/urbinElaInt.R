@@ -68,10 +68,10 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   weights <- elaIntWeights( shareVec )
   # prepare calculation of semi-elasticity 
   if( model == "lpm" ) {
-    xCoef <- rep( 0, length( xPos ) )
+    pFun <- rep( 0, length( xPos ) )
     for( i in 1:length( xPos ) ) {
       if( xPos[i] != 0 ) {
-        xCoef[i] <- allCoef[ xPos[i] ]
+        pFun[i] <- allCoef[ xPos[i] ]
       }
     }
   } else if( model %in% c( "probit", "oprobit", "logit" ) ){
@@ -101,16 +101,16 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   }
   # vector of probabilities of y=1 for each interval
   if( model %in% c( "probit", "oprobit" ) ){
-    xCoef <- pnorm( xBeta )
+    pFun <- pnorm( xBeta )
   } else if( model == "logit" ){
-    xCoef <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
+    pFun <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
   } else if( model == "MNL" ){
-    xCoef <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
+    pFun <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   } else if( model != "lpm" ) {
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # effect of increasing to the next higher interval
-  effNextInt <- xCoef[ -1 ] - xCoef[ -nInt ]
+  effNextInt <- pFun[ -1 ] - pFun[ -nInt ]
   # expected proportions of observations that increase to the next interval
   shareNextInt <- 0.5 * xBound[ 2:nInt ] * 
     ( shareVec[ -nInt ] / ( xBound[ 2:nInt ] - xBound[ 1:(nInt-1) ] ) +
