@@ -361,8 +361,8 @@ Number of Fisher Scoring iterations: 4
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinElaInt( coef( estLogitInt ), xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit" )$derivCoef
-[1] -0.008028212 -0.005586697 -0.547491063  0.173305967  0.441473157
-[6] -0.098641458
+[1] -0.003229275 -0.002247198 -0.343125931 -0.030584540  0.336142758
+[6] -0.039677622
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
 +   t0 = coef( estLogitInt ), allXVal = xMeanInt,
@@ -377,13 +377,13 @@ Number of Fisher Scoring iterations: 4
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
 +   allCoefVcov = vcov( estLogitInt ) )
     semEla      stdEr 
--0.3777235  0.1382677 
+-0.3777235  0.1017187 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinElaInt( coef( estLogitInt ), xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "logit",
 +   allCoefVcov = sqrt( diag( vcov( estLogitInt ) ) ) )
     semEla      stdEr 
--0.3777235  0.1671207 
+-0.3777235  0.1140289 
 > # semi-elasticity of age based on partial derivatives calculated by the mfx package
 > estLogitIntMfx <- logitmfx( lfp ~ kids + age30.37 + age38.44 + age53.60 + educ, 
 +   data = Mroz87 )
@@ -648,4 +648,4 @@ In urbinEffInt(allCoef = estLogitQuadMfx$mfxest[, 1], allXVal = NULL, xPos = 2:3
 > 
 > proc.time()
    user  system elapsed 
-  0.571   0.036   0.601 
+  0.649   0.036   0.679 

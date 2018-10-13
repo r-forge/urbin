@@ -102,8 +102,10 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # vector of probabilities of y=1 for each interval
   if( model %in% c( "probit", "oprobit" ) ){
     pFun <- pnorm( xBeta )
+    dFun <- dnorm( xBeta )
   } else if( model == "logit" ){
     pFun <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
+    dFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )^2
   } else if( model == "MNL" ){
     pFun <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
   } else if( model != "lpm" ) {
@@ -128,8 +130,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
           shareNextInt[n-1] - shareNextInt[n]
       }
     }
-  } else if( model %in% c( "probit", "oprobit" ) ) {
-    dFun <- dnorm( xBeta )
+  } else if( model %in% c( "probit", "oprobit", "logit" ) ){
     derivCoef <- rep( 0, nCoef )
     derivCoef[ -xPos ] <- 
       sum( ( dFun[ -1 ] - dFun[ -nInt ] ) * shareNextInt ) * 
@@ -142,17 +143,6 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
           ( shareNextInt[n-1] - shareNextInt[n] )
       }
     }
-  } else if( model == "logit" ){
-    gradM <- matrix( 0, nCoef, nInt - 1 )
-    gradExpVec <- exp( xBeta )/( 1 + exp( xBeta ) )^2
-    for( m in 1:( nInt - 1 ) ) {
-      gradM[ -xPos, m ] <- 2 * ( gradExpVec[m+1] - gradExpVec[m] ) * 
-        allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
-      gradM[ xPos[m], m ] <- - 2 * gradExpVec[m] * xBound[m+1] / 
-        ( xBound[m+2] - xBound[m] )
-      gradM[ xPos[m+1], m ] <- 2 * gradExpVec[m+1] * xBound[m+1] / 
-        ( xBound[m+2] - xBound[m] )
-    } 
   } else if( model == "MNL" ){
     gradM <- array( 0, c( nXVal, nInt - 1, nYCat ) )
     gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
@@ -185,7 +175,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   }
   # partial derivative of the semi-elasticity 
   # w.r.t. all estimated coefficients
-  if( model %in% c( "logit", "MNL" ) ) {
+  if( model %in% c( "MNL" ) ) {
     derivCoef <- rep( 0, nCoef )
     for( m in 1:( nInt - 1 ) ){
       derivCoef <- derivCoef + weights[m] * gradM[ , m ]
