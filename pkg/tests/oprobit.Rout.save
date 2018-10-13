@@ -403,12 +403,12 @@ AIC: 1597.811
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef
-[1] -0.001369020 -0.886735879  0.279945927  0.726109373 -0.024172078
-[6]  0.001967312  0.000000000
+[1]  0.002103346 -0.001633227 -0.019069963 -0.019313861  0.037137708
+[6] -0.003022557  0.000000000
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef
-[1] -0.001369020 -0.886735879  0.279945927  0.726109373 -0.024172078
-[6]  0.001967312
+[1]  0.002103346 -0.001633227 -0.019069963 -0.019313861  0.037137708
+[6] -0.003022557
 > # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
 +   t0 = coef( summary( estOProbitInt ) )[,1], 
@@ -428,24 +428,24 @@ AIC: 1597.811
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = vcov( estOProbitInt ) )
-    semEla      stdEr 
--0.3517519  0.1257145 
+      semEla        stdEr 
+-0.351751891  0.004339124 
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = vcov( estOProbitInt )[-7,-7] )
-    semEla      stdEr 
--0.3517519  0.1257145 
+      semEla        stdEr 
+-0.351751891  0.004339124 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) ) )
-    semEla      stdEr 
--0.3517519  0.1516210 
+      semEla        stdEr 
+-0.351751891  0.003840544 
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) )[-7] )
-    semEla      stdEr 
--0.3517519  0.1516210 
+      semEla        stdEr 
+-0.351751891  0.003840544 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -763,4 +763,4 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.408   0.019   0.421 
+  0.386   0.020   0.399 
