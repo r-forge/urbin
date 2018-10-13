@@ -36,7 +36,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   }
   # check argument yCat
   if( model == "MNL" ) {
-    checkYCat( yCat, nYCat ) 
+    checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
@@ -118,7 +118,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     pFunRef <- exp( XBetaRef ) / sum( exp( XBetaRef ) )
     pFunEffect <- exp( XBetaEffect ) / sum( exp( XBetaEffect ) )
     # effect
-    effeG <- pFunEffect[ yCat ] - pFunRef[ yCat ]
+    effeG <- sum( pFunEffect[ yCat ] - pFunRef[ yCat ] )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -140,24 +140,26 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect[ -nCat ] - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef[ -nCat ]
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow = nXVal, ncol = nYCat )
+    derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
-      if( p == yCat ){
-        derivCoef[ -xPos, p ] <- 
-          ( pFunEffect[ p ] - pFunEffect[ p ]^2 - 
-              pFunRef[ p ] + pFunRef[ p ]^2 ) *
-          allXVal[ -xPos ]
-        derivCoef[ xPos, p ] <- 
-          ( pFunEffect[ p ] - pFunEffect[ p ]^2 ) * DEffect[-nCat] -
-          ( pFunRef[ p ] - pFunRef[ p ]^2 ) * DRef[-nCat]
-      } else{  
-        derivCoef[ -xPos, p ] <- 
-          ( pFunRef[ yCat ] * pFunRef[ p ] -
-              pFunEffect[ yCat ] * pFunEffect[ p ] ) *
-          allXVal[ -xPos ]
-        derivCoef[ xPos, p ] <- 
-          pFunRef[ yCat ] * pFunRef[ p ] * DRef[-nCat] -
-          pFunEffect[ yCat ] * pFunEffect[ p ] * DEffect[-nCat]
+      for( yCati in yCat ) {
+        if( p == yCati ){
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
+            ( pFunEffect[ p ] - pFunEffect[ p ]^2 - 
+                pFunRef[ p ] + pFunRef[ p ]^2 ) *
+            allXVal[ -xPos ]
+          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] +
+            ( pFunEffect[ p ] - pFunEffect[ p ]^2 ) * DEffect[-nCat] -
+            ( pFunRef[ p ] - pFunRef[ p ]^2 ) * DRef[-nCat]
+        } else {  
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
+            ( pFunRef[ yCati ] * pFunRef[ p ] -
+                pFunEffect[ yCati ] * pFunEffect[ p ] ) *
+            allXVal[ -xPos ]
+          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] +
+            pFunRef[ yCati ] * pFunRef[ p ] * DRef[-nCat] -
+            pFunEffect[ yCati ] * pFunEffect[ p ] * DEffect[-nCat]
+        }
       }     
     }
     derivCoef <- c( derivCoef )
