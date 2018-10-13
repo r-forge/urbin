@@ -475,6 +475,16 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt,
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
   yCat = 2 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
+  yCat = 0:1 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
+  yCat = 1:2 )
+all.equal( c( 0, NA ), unlist(
+  urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+    xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL",
+    yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # based on predicted values
 Mroz87Ref <- as.data.frame( t( replace( xMeanLin, 3, 35 ) ) )
@@ -494,6 +504,13 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0:1 )$derivCoef
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 8 ),
+  urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+    c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitLin )[ coefPermuteLin ],
@@ -507,6 +524,19 @@ numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
   t0 = coef( estMLogitLin )[ coefPermuteLin ],
   allXVal = xMeanLinInt, xPos = 3,
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 2 )
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitLin )[ coefPermuteLin ],
+  allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0:1 )
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitLin )[ coefPermuteLin ],
+  allXVal = xMeanLinInt, xPos = 3,
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 1:2 )
+all.equal( rep( 0, 8 ), c(
+  numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLinInt, xPos = 3,
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0:2 ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
@@ -521,6 +551,19 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
   yCat = 2 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
+  yCat = 0:1 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
+    c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+    allCoefVcov = vcov( estMLogitLin )[ coefPermuteLin, coefPermuteLin ], 
+    yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
@@ -535,6 +578,19 @@ urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt,
   xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
   allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
   yCat = 2 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
+  yCat = 0:1 )
+urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+  xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], allXVal = xMeanLinInt, 
+    xPos = 3, refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", 
+    allCoefVcov = sqrt( diag( vcov( estMLogitLin ) ) )[ coefPermuteLin ],
+    yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 
 
 ### effect of age changing between discrete intervals 
@@ -552,6 +608,17 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt,
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
   model = "MNL", yCat = 2 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", yCat = 0:1 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", yCat = 1:2 )
+all.equal( c( 0, NA ), unlist(
+  urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+    xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+    model = "MNL", yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), 
+  check.attributes = FALSE )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # based on predicted values
 Mroz87Ref <- as.data.frame( t( replace( xMeanQuad, 3:4, c( 35, 35^2 ) ) ) )
@@ -571,6 +638,13 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt,
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1 )$derivCoef
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 2 )$derivCoef
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0:1 )$derivCoef
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 10 ),
+  urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+    c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the effect wrt the coefficients
 numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
@@ -584,6 +658,19 @@ numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
   t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
   allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
   refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 2 )
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0:1 )
+numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 1:2 )
+all.equal( rep( 0, 10 ), c(
+  numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect }, 
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "MNL", yCat = 0:2 ) ) )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix) 
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
@@ -598,6 +685,19 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt,
   c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
   yCat = 2 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 0:1 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+  c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, 
+    c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+    allCoefVcov = vcov( estMLogitQuad )[ coefPermuteQuad, coefPermuteQuad ],
+    yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (only standard errors) 
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
@@ -612,6 +712,19 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt,
   xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
   model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   yCat = 2 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 0:1 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+  xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+  model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], allXVal = xMeanQuadInt, 
+    xPos = c( 3, 4 ), refBound = c( 30, 40 ), intBound = c( 50, 60 ), 
+    model = "MNL", sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+    yCat = 0:2 )[ c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (standard errors + mean value and standard deviation of age)
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
@@ -626,6 +739,20 @@ urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
   c( 30, 40 ), c( 50, 60 ), model = "MNL", 
   allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
   xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 2 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0:1 )
+urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
+  c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+  allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+  xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt, c( 3, 4 ),
+    c( 30, 40 ), c( 50, 60 ), model = "MNL", 
+    allCoefVcov = sqrt( diag( vcov( estMLogitQuad ) ) )[ coefPermuteQuad ],
+    xMeanSd = c( mean( Mroz87$age ), sd( Mroz87$age ) ), yCat = 0:2 )[
+      c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 
 
 ### grouping and re-basing categorical variables
