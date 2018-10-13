@@ -110,9 +110,11 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     XBetaEffect <- allXVal[ -xPos ] %*% mCoef[ -xPos, , drop = FALSE ] + 
       DEffect %*% xCoef
     checkXBeta( c( XBetaRef, XBetaEffect ) )
+    # probabilities
+    pFunRef <- exp( XBetaRef ) / ( 1 + sum( exp( XBetaRef ) ) )
+    pFunEffect <- exp( XBetaEffect ) / ( 1 + sum( exp( XBetaEffect ) ) )
     # effect
-    effeG <- exp( XBetaEffect[ yCat ] )/( 1 + sum( exp( XBetaEffect ) ) ) -
-      exp( XBetaRef[ yCat ] )/( 1 + sum( exp( XBetaRef ) ) )
+    effeG <- pFunEffect[ yCat ] - pFunRef[ yCat ]
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -138,30 +140,20 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     for( p in 1:nYCat ){
       if( p == yCat ){
         derivCoef[ -xPos, p ] <- 
-          ( exp( XBetaEffect[ p ] ) * 
-              ( 1 + sum( exp( XBetaEffect[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 -
-              exp( XBetaRef[ p ] ) * 
-              ( 1 + sum( exp( XBetaRef[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * allXVal[ -xPos ]
+          ( pFunEffect[ p ] - pFunEffect[ p ]^2 - 
+              pFunRef[ p ] + pFunRef[ p ]^2 ) *
+          allXVal[ -xPos ]
         derivCoef[ xPos, p ] <- 
-          ( exp( XBetaEffect[ p ] ) * 
-              ( 1 + sum( exp( XBetaEffect[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect[-nCat] -
-          ( exp( XBetaRef[ p ] ) * 
-              ( 1 + sum( exp( XBetaRef[ -yCat ] ) ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef[-nCat]
+          ( pFunEffect[ p ] - pFunEffect[ p ]^2 ) * DEffect[-nCat] -
+          ( pFunRef[ p ] - pFunRef[ p ]^2 ) * DRef[-nCat]
       } else{  
         derivCoef[ -xPos, p ] <- 
-          ( ( exp( XBetaRef[ yCat ] ) * exp( XBetaRef[ p ] ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 -
-              ( exp( XBetaEffect[ yCat ] ) * exp( XBetaEffect[ p ] ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * allXVal[ -xPos ]
+          ( pFunRef[ yCat ] * pFunRef[ p ] -
+              pFunEffect[ yCat ] * pFunEffect[ p ] ) *
+          allXVal[ -xPos ]
         derivCoef[ xPos, p ] <- 
-          ( ( exp( XBetaRef[ yCat ] ) * exp( XBetaRef[ p ] ) )/
-              ( 1 + sum( exp( XBetaRef ) ) )^2 ) * DRef[-nCat] -
-          ( ( exp( XBetaEffect[ yCat ] ) * exp( XBetaEffect[ p ] ) )/
-              ( 1 + sum( exp( XBetaEffect ) ) )^2 ) * DEffect[-nCat]
+          pFunRef[ yCat ] * pFunRef[ p ] * DRef[-nCat] -
+          pFunEffect[ yCat ] * pFunEffect[ p ] * DEffect[-nCat]
       }     
     }
     derivCoef <- c( derivCoef )
