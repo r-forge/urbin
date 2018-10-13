@@ -781,16 +781,16 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 > # semi-elasticity of age without standard errors
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )
- semEla   stdEr 
-0.47395      NA 
+   semEla     stdEr 
+0.3774332        NA 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
     semEla      stdEr 
--0.2965814         NA 
+-0.2512497         NA 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
     semEla      stdEr 
--0.1773686         NA 
+-0.1261834         NA 
 > # semi-elasticities based on numerical derivation
 > Mroz87Lower <- Mroz87
 > Mroz87Lower$age <- Mroz87$age * 0.95
@@ -843,69 +843,69 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )
      full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
-[1,]        0.0304168 0.02116654          0.301984       -0.09651127
+[1,]       0.02851926 0.01984607         0.1892607        0.01703203
      full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
-[1,]         -0.211598 0.3737268      -0.02139593 -0.01488907         0.2461712
+[1,]        -0.1611131 0.3504119       -0.0245605 -0.01709124         0.1542815
      part:age38.44TRUE part:age53.60TRUE  part:educ
-[1,]       -0.07700457        -0.2294467 -0.2628887
+[1,]        0.01358955        -0.1747033 -0.3017713
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
 +   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
-     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
-[1,]       -0.1452796 -0.1010976        -0.5240392         0.1649977
-     full:age53.60TRUE full:educ part:(intercept) part:kids part:age30.37TRUE
-[1,]         0.2748958 -1.785029        0.1148628 0.0799311         0.2220552
+     full:(intercept)   full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       -0.1203651 -0.08376008        -0.3284281       -0.02911833
+     full:age53.60TRUE full:educ part:(intercept)  part:kids part:age30.37TRUE
+[1,]         0.2093089 -1.478909       0.09184589 0.06391401         0.1391674
      part:age38.44TRUE part:age53.60TRUE part:educ
-[1,]       -0.06848645       -0.06329786  1.411302
+[1,]        0.01208629       -0.04819572  1.128497
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
 +   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
 +   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
-     full:(intercept) full:kids full:age30.37TRUE full:age38.44TRUE
-[1,]        0.1148628 0.0799311         0.2220552       -0.06848645
+     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       0.09184589 0.06391401         0.1391674        0.01208629
      full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
-[1,]       -0.06329786  1.411302      -0.09346688 -0.06504203        -0.4682264
-     part:age38.44TRUE part:age53.60TRUE part:educ
-[1,]          0.145491         0.2927445 -1.148414
+[1,]       -0.04819572  1.128497      -0.06728539 -0.04682277        -0.2934488
+     part:age38.44TRUE part:age53.60TRUE  part:educ
+[1,]       -0.02567584         0.2228991 -0.8267257
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
 +   yCat = 0 )
    semEla     stdEr 
-0.4739500 0.1388384 
+0.3774332 0.1388384 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
 +   yCat = 1 )
     semEla      stdEr 
--0.2965814  0.1128048 
+-0.2512497  0.1128048 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
 +   yCat = 2 )
     semEla      stdEr 
--0.1773686  0.1163208 
+-0.1261834  0.1163208 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
 +   yCat = 0 )
    semEla     stdEr 
-0.4739500 0.1457407 
+0.3774332 0.1457407 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
 +   yCat = 1 )
     semEla      stdEr 
--0.2965814  0.2220698 
+-0.2512497  0.2220698 
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
 +   allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
 +   yCat = 2 )
     semEla      stdEr 
--0.1773686  0.2014052 
+-0.1261834  0.2014052 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -1325,4 +1325,4 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.738   0.027   0.760 
+  0.757   0.015   0.773 

@@ -26,7 +26,7 @@ Loading required package: miscTools
 +   model = "logit" )
 > ela8a 
      semEla       stdEr 
--0.02442287          NA 
+0.008228764          NA 
 > 
 > ela8b <- urbinElaInt( allCoef = c( 0.33, 0.22, 0.05, 0.6 ), 
 +   allXVal = c( 1, 0.4, 0.12, 0.13 ), 
@@ -35,8 +35,8 @@ Loading required package: miscTools
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009 ),
 +   model = "logit" )
 > ela8b 
-      semEla        stdEr 
--0.024422872  0.006055436 
+     semEla       stdEr 
+0.008228764 0.006055436 
 > 
 > # Example
 > ela9a <- urbinElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -46,7 +46,7 @@ Loading required package: miscTools
 +   model = "MNL" )
 > ela9a
     semEla      stdEr 
-0.01775033         NA 
+0.04186674         NA 
 > 
 > ela9b <- urbinElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 0.4, 0.12 ), 
@@ -56,8 +56,8 @@ Loading required package: miscTools
 +   model = "MNL" )
 > ela9b
      semEla       stdEr 
-0.017750330 0.003286756 
+0.041866737 0.003286756 
 > 
 > proc.time()
    user  system elapsed 
-  0.089   0.028   0.111 
+  0.096   0.019   0.109 

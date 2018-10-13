@@ -109,14 +109,14 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else if( model != "lpm" ) {
     stop( "argument 'model' specifies an unknown type of model" )
   }
-  # semi-elasticities 'around' each inner boundary and their weights
-  semElaBound <- rep( NA, nInt - 1 )
-  for( m in 1:(nInt-1) ){
-    semElaBound[m] <- 2 * ( xCoef[ m+1 ] - xCoef[ m ] ) * xBound[ m+1 ] /
-      ( xBound[m+2] - xBound[m] )
-  }
-  # (average) semi-elasticity
-  semEla <- sum( semElaBound * weights )
+  # effect of increasing to the next higher interval
+  effNextInt <- xCoef[ -1 ] - xCoef[ -nInt ]
+  # expected proportions of observations that increase to the next interval
+  shareNextInt <- 0.5 * xBound[ 2:nInt ] * 
+    ( shareVec[ -nInt ] / ( xBound[ 2:nInt ] - xBound[ 1:(nInt-1) ] ) +
+        shareVec[ -1 ] / ( xBound[ 3:(nInt+1 ) ] - xBound[ 2:nInt ] ) )
+  # (approximate) semi-elasticity
+  semEla <- sum( effNextInt * shareNextInt )
   # partial derivatives of semi-elasticities wrt coefficients
   if( model == "lpm" ) {
     derivCoef <- rep( 0, nCoef )

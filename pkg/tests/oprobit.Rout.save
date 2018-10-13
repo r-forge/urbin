@@ -351,12 +351,12 @@ AIC: 1597.811
 > # semi-elasticity of age without standard errors
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-   semEla     stdEr 
--0.434181        NA 
+    semEla      stdEr 
+-0.3517519         NA 
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-   semEla     stdEr 
--0.434181        NA 
+    semEla      stdEr 
+-0.3517519         NA 
 > # semi-elasticities based on numerical derivation
 > Mroz87Lower <- Mroz87
 > Mroz87Lower$age <- Mroz87$age * 0.95
@@ -401,40 +401,38 @@ AIC: 1597.811
 +   t0 = coef( summary( estOProbitInt ) )[,1], 
 +   allXVal = xMeanInt, xPos = c( 2, 3, 0, 4 ), iPos = 6, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-             kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
-[1,] -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
-         no|part part|full
-[1,] 0.001967312         0
+            kids age30.37TRUE age38.44TRUE age53.60TRUE       educ      no|part
+[1,] 0.002103346   -0.5557389  -0.04940405    0.5528681 0.03713771 -0.003022557
+     part|full
+[1,]         0
 > numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
 +   t0 = coef( summary( estOProbitInt ) )[-7,1], 
 +   allXVal = xMeanInt[-7], xPos = c( 2, 3, 0, 4 ), iPos = 6, 
 +   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )
-             kids age30.37TRUE age38.44TRUE age53.60TRUE        educ
-[1,] -0.001369019   -0.8867359    0.2799459    0.7261094 -0.02417208
-         no|part
-[1,] 0.001967312
+            kids age30.37TRUE age38.44TRUE age53.60TRUE       educ      no|part
+[1,] 0.002103346   -0.5557389  -0.04940405    0.5528681 0.03713771 -0.003022557
 > # semi-elasticity of age with standard errors (full covariance matrix)
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = vcov( estOProbitInt ) )
     semEla      stdEr 
--0.4341810  0.1257145 
+-0.3517519  0.1257145 
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = vcov( estOProbitInt )[-7,-7] )
     semEla      stdEr 
--0.4341810  0.1257145 
+-0.3517519  0.1257145 
 > # semi-elasticity of age with standard errors (only standard errors)
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) ) )
-   semEla     stdEr 
--0.434181  0.151621 
+    semEla      stdEr 
+-0.3517519  0.1516210 
 > urbinElaInt( coef( summary( estOProbitInt ) )[-7,1], xMeanInt[-7],
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit",
 +   allCoefVcov = sqrt( diag( vcov( estOProbitInt ) ) )[-7] )
-   semEla     stdEr 
--0.434181  0.151621 
+    semEla      stdEr 
+-0.3517519  0.1516210 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -752,4 +750,4 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.371   0.036   0.401 
+  0.403   0.020   0.418 
