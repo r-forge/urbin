@@ -145,42 +145,50 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       }
     }
   } else if( model == "MNL" ){
-    gradM <- array( 0, c( nXVal, nInt - 1, nYCat ) )
-    gradExpVecP <- ( exp( xBeta[ , yCat ] ) * 
-        ( rowSums( exp( xBeta[ , -yCat, drop = FALSE ] ) ) ) )/
-      ( rowSums( exp( xBeta ) ) )^2 
+    derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
-      gradExpVecO <- ( exp( xBeta[ , yCat ] ) * exp( xBeta[ , p] ) )/
-        ( rowSums( exp( xBeta ) ) )^2
-      for( m in 1:( nInt - 1 ) ) {
-        if( p == yCat ){
-          gradM[ -xPos, m, p ] <- 2 * ( gradExpVecP[m+1] - gradExpVecP[m] ) *
-            allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
-          gradM[ xPos[ m ], m, p ] <- - 2 * gradExpVecP[m] * xBound[m+1] / 
-            ( xBound[m+2] - xBound[m] )
-          gradM[ xPos[ m + 1 ], m, p ] <- 2 * gradExpVecP[m+1] * xBound[m+1] / 
-            ( xBound[m+2] - xBound[m] )
-        } else {
-          gradM[ -xPos, m, p ] <- 2 * ( gradExpVecO[m] - gradExpVecO[m+1] ) *
-            allXVal[ -xPos ] * xBound[m+1] / ( xBound[m+2] - xBound[m] )
-          gradM[ xPos[ m ], m, p ] <- 2 * gradExpVecO[m] * xBound[m+1] / 
-            ( xBound[m+2] - xBound[m] )
-          gradM[ xPos[ m + 1 ], m, p ] <- - 2 * gradExpVecO[m+1] * xBound[m+1] / 
-            ( xBound[m+2] - xBound[m] )
-        }  
-      }
+      for( yCati in yCat ) {
+        if( p == yCati ){
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
+            sum( ( pFunMat[ -1, p ] - pFunMat[ -1, p ]^2 -
+                pFunMat[ -nInt, p ] + pFunMat[ -nInt, p ]^2 ) *
+                shareNextInt ) * allXVal[ -xPos ]
+          derivCoef[ xPos[1], p ] <- derivCoef[ xPos[1], p ] + 
+            ( - pFunMat[ 1, p ] + pFunMat[ 1, p ]^2 ) * 
+            shareNextInt[1]
+          derivCoef[ xPos[nInt], p ] <- derivCoef[ xPos[nInt], p ] +
+            ( pFunMat[ nInt, p ] - pFunMat[ nInt, p ]^2 ) * 
+            shareNextInt[nInt-1]
+          if( nInt > 2 ) {
+            for( n in 2:( nInt-1 ) ) {
+              derivCoef[ xPos[n], p ] <- derivCoef[ xPos[n], p ] +
+                ( pFunMat[ n, p ] - pFunMat[ n, p ]^2 ) * 
+                ( shareNextInt[n-1] - shareNextInt[n] )
+            }
+          }
+        } else {  
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
+            sum( ( pFunMat[ -nInt, yCati ] * pFunMat[ -nInt, p ] -
+                pFunMat[ -1, yCati ] * pFunMat[ -1, p ] ) *
+                shareNextInt ) * allXVal[ -xPos ]
+          derivCoef[ xPos[1], p ] <- derivCoef[ xPos[1], p ] +
+            ( pFunMat[ 1, yCati ] * pFunMat[ 1, p ] ) * shareNextInt[1]
+          derivCoef[ xPos[nInt], p ] <- derivCoef[ xPos[nInt], p ] -
+            ( pFunMat[ nInt, yCati ] * pFunMat[ nInt, p ] ) * 
+            shareNextInt[nInt-1]
+          if( nInt > 2 ) {
+            for( n in 2:( nInt-1 ) ) {
+              derivCoef[ xPos[n], p ] <- derivCoef[ xPos[n], p ] +
+                ( pFunMat[ n, yCati ] * pFunMat[ n, p ] ) * 
+                ( shareNextInt[n] - shareNextInt[n-1] )
+            }
+          }
+        }
+      }     
     }
-    gradM <- apply( gradM, 2, function( x ) x )
+    derivCoef <- c( derivCoef )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
-  }
-  # partial derivative of the semi-elasticity 
-  # w.r.t. all estimated coefficients
-  if( model %in% c( "MNL" ) ) {
-    derivCoef <- rep( 0, nCoef )
-    for( m in 1:( nInt - 1 ) ){
-      derivCoef <- derivCoef + weights[m] * gradM[ , m ]
-    }
   }
 
   # approximate standard error of the semi-elasticity

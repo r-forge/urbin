@@ -55,9 +55,9 @@ Loading required package: miscTools
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
 +   model = "MNL" )
 > ela9b
-     semEla       stdEr 
-0.041866737 0.003286756 
+    semEla      stdEr 
+0.04186674 0.09570526 
 > 
 > proc.time()
    user  system elapsed 
-  0.099   0.019   0.113 
+  0.096   0.016   0.106 
