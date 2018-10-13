@@ -10,7 +10,7 @@
   These four functions calculate 
   the semi-elasticities and effects of explanatory variables
   in linear probability models, binary probit models,
-  ordered probit models, binary logit models,
+  ordered probit models, multivariate probit models, binary logit models,
   and multinomial logit models.
 
   \code{urbinEla()} calculates 
@@ -109,7 +109,8 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
     \code{"lpm"} = linear probability model (see \bold{Details} section below), 
-    \code{"probit"} = binary probit model,
+    \code{"probit"} = binary probit model or multivariate probit model
+      (for multivariate probit models see \bold{Details} section below),
     \code{"oprobit"} = ordered probit model (see \bold{Details} section below), 
     \code{"logit"} = binary logit model, or
     \code{"MNL"} = multinomial logit model (see \bold{Details} section below).}
@@ -232,6 +233,18 @@ While the \eqn{p}'s threshold must be specified in argument \code{allCoef},
 all other thresholds can be omitted.
 In this case, arguments \code{allXVal} and \code{allCoefVcov}
 must be adjusted accordingly.
+
+\bold{Multivariate Probit Model}:
+This type of model has \eqn{P \geq 2}{P>=2} dependent variables.
+The \code{urbin*()} functions
+can calculate unconditional (but not conditional) semi-elasticities and effects
+based on the estimation results from multivariate probit models.
+Argument \code{allCoef} must include all coefficients
+of the regression equation of the dependent variable of interest,
+while the coefficients of the regression equations 
+of the other dependent variables as well as the correlation parameters
+must be omitted.
+Argument \code{allCoefVcov} must be specified accordingly.
 
 \bold{Multinomial Logit Model}:
 The dependent variable has \eqn{P>2} distinct categories
