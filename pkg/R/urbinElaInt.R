@@ -120,15 +120,12 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   # partial derivatives of semi-elasticities wrt coefficients
   if( model == "lpm" ) {
     derivCoef <- rep( 0, nCoef )
-    derivCoef[ xPos[1] ] <- 
-      -2 * weights[1] * xBound[2] / ( xBound[3] - xBound[1] )
-    derivCoef[ xPos[nInt] ] <- 
-      2 * weights[nInt-1] * xBound[nInt] / ( xBound[nInt+1] - xBound[nInt-1] ) 
+    derivCoef[ xPos[1] ] <- - shareNextInt[1]
+    derivCoef[ xPos[nInt] ] <- shareNextInt[nInt-1]
     if( nInt > 2 ) {
       for( n in 2:( nInt-1 ) ) {
         derivCoef[ xPos[n] ] <- 
-          2 * weights[n-1] * xBound[n] / ( xBound[n+1] - xBound[n-1] ) -
-          2 * weights[n]   * xBound[n+1] / ( xBound[n+2] - xBound[n] )
+          shareNextInt[n-1] - shareNextInt[n]
       }
     }
   } else if( model %in% c( "probit", "oprobit" ) ) {

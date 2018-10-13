@@ -391,12 +391,12 @@ Number of Fisher Scoring iterations: 4
 +   c( 1, 2, 0, 3 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
 +   estProbitIntMfx$mfxest[ 2:4, 2 ] )
     semEla      stdEr 
--0.3770263  0.1701392 
+-0.3770263  0.1161989 
 > urbinElaInt( estProbitIntMfx$mfxest[ , 1 ], xMeanInt[ -1 ], 
 +   c( 2, 3, 0, 4 ), iPos = 0, c( 30, 37.5, 44.5, 52.5, 60 ), model = "lpm", 
 +   estProbitIntMfx$mfxest[ , 2 ] )
     semEla      stdEr 
--0.3770263  0.1701392 
+-0.3770263  0.1161989 
 > 
 > 
 > ### effect of age changing between discrete intervals 
@@ -650,4 +650,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = NULL, xPos = 2:
 > 
 > proc.time()
    user  system elapsed 
-  0.564   0.047   0.605 
+  0.572   0.040   0.606 
