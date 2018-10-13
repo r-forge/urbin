@@ -375,6 +375,14 @@ urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:1 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1:2 )
+all.equal( c( 0, NA ), unlist(
+  urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+    c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:2 )[
+      c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 # semi-elasticities based on numerical derivation
 Mroz87Lower <- Mroz87
 Mroz87Lower$age <- Mroz87$age * 0.95
@@ -419,6 +427,13 @@ urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1 )$derivCoef
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )$derivCoef
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:1 )$derivCoef
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1:2 )$derivCoef
+all.equal( rep( 0, 12 ),
+  urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+    c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
 numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
@@ -432,6 +447,19 @@ numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
   t0 = coef( estMLogitInt )[ coefPermuteInt ], 
   allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
   xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 2 )
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:1 )
+numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+  t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
+  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 1:2 )
+all.equal( rep( 0, 12 ), c(
+  numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla }, 
+    t0 = coef( estMLogitInt )[ coefPermuteInt ], 
+    allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ), 
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0:2 ) ) )
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
@@ -445,6 +473,19 @@ urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
   allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
   yCat = 2 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+  allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
+  yCat = 0:1 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+  allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+    c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+    allCoefVcov = vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
+    yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), check.attributes = FALSE ) 
 # semi-elasticity of age with standard errors (only standard errors)
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
@@ -458,6 +499,19 @@ urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
   allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
   yCat = 2 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+  allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
+  yCat = 0:1 )
+urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+  c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+  allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
+  yCat = 1:2 )
+all.equal( rep( 0, 2 ), unlist(
+  urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
+    c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL",
+    allCoefVcov = sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ],
+    yCat = 0:2 )[ c( "semEla", "stdEr" ) ] ), check.attributes = FALSE )
 
 
 ### effect of age changing between discrete intervals 
