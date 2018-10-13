@@ -199,6 +199,16 @@ elaIntNum <- 10 * ( colMeans(
       predict( estOProbitInt, newdata = Mroz87Lower, type = "probs" ) ) )
 print( elaIntNum )
 print( sum( elaIntNum[ c( "part", "full" ) ] ) )
+Mroz87LowerMean <- Mroz87Lower
+Mroz87UpperMean <- Mroz87Upper
+Mroz87LowerMean$kids <- Mroz87UpperMean$kids <- xMeanInt[ "kids" ]
+Mroz87LowerMean$educ <- Mroz87UpperMean$educ <- xMeanInt[ "educ" ]
+elaIntNumMean <- 10 * ( colMeans( 
+  predict( estOProbitInt, newdata = Mroz87UpperMean, type = "probs" ) ) -
+    colMeans(
+      predict( estOProbitInt, newdata = Mroz87LowerMean, type = "probs" ) ) )
+print( elaIntNumMean )
+print( sum( elaIntNumMean[ c( "part", "full" ) ] ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef

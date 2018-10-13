@@ -351,6 +351,13 @@ Number of Fisher Scoring iterations: 4
 > 10 * mean( predict( estProbitInt, newdata = Mroz87Upper, type = "response" ) -
 +     predict( estProbitInt, newdata = Mroz87Lower, type = "response" ) )
 [1] -0.3517456
+> Mroz87LowerMean <- Mroz87Lower
+> Mroz87UpperMean <- Mroz87Upper
+> Mroz87LowerMean$kids <- Mroz87UpperMean$kids <- xMeanInt[ "kids" ]
+> Mroz87LowerMean$educ <- Mroz87UpperMean$educ <- xMeanInt[ "educ" ]
+> 10 * mean( predict( estProbitInt, newdata = Mroz87UpperMean, type = "response" ) -
++     predict( estProbitInt, newdata = Mroz87LowerMean, type = "response" ) )
+[1] -0.3664479
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinElaInt( coef( estProbitInt ), xMeanInt, 
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "probit" )$derivCoef
@@ -643,4 +650,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = NULL, xPos = 2:
 > 
 > proc.time()
    user  system elapsed 
-  0.575   0.043   0.612 
+  0.564   0.047   0.605 

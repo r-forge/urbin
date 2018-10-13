@@ -136,6 +136,12 @@ all.equal(
     Mroz87Upper$age53.60, rep( 1, nrow( Mroz87 ) ) )
 10 * mean( predict( estLpmInt, newdata = Mroz87Upper ) -
     predict( estLpmInt, newdata = Mroz87Lower ) )
+Mroz87LowerMean <- Mroz87Lower
+Mroz87UpperMean <- Mroz87Upper
+Mroz87LowerMean$kids <- Mroz87UpperMean$kids <- xMeanInt[ "kids" ]
+Mroz87LowerMean$educ <- Mroz87UpperMean$educ <- xMeanInt[ "educ" ]
+10 * mean( predict( estLpmInt, newdata = Mroz87UpperMean ) -
+    predict( estLpmInt, newdata = Mroz87LowerMean ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbinElaInt( coef( estLpmInt )[3:5], xMeanInt[3:5], 
   c( 30, 37.5, 44.5, 52.5, 60 ), xPos = c( 1, 2, 0, 3 ), iPos = 0, 

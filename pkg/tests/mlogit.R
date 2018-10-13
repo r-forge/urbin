@@ -404,6 +404,14 @@ Mroz87mUpper <- mlogit.data( Mroz87Upper, shape = "wide",
   predict( estMLogitInt, newdata = Mroz87mUpper, type = "response" ) ) -
     colMeans(
       predict( estMLogitInt, newdata = Mroz87mLower, type = "response" ) ) )
+Mroz87mLowerMean <- Mroz87mLower
+Mroz87mUpperMean <- Mroz87mUpper
+Mroz87mLowerMean$kids <- Mroz87mUpperMean$kids <- xMeanInt[ "kids" ]
+Mroz87mLowerMean$educ <- Mroz87mUpperMean$educ <- xMeanInt[ "educ" ]
+10 * ( colMeans( 
+  predict( estMLogitInt, newdata = Mroz87mUpperMean, type = "response" ) ) -
+    colMeans(
+      predict( estMLogitInt, newdata = Mroz87mLowerMean, type = "response" ) ) )
 # partial derivatives of the semi-elasticity wrt the coefficients
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )$derivCoef

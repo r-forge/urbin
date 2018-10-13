@@ -387,6 +387,19 @@ AIC: 1597.811
  0.33506537 -0.05298153 -0.28208385 
 > print( sum( elaIntNum[ c( "part", "full" ) ] ) )
 [1] -0.3350654
+> Mroz87LowerMean <- Mroz87Lower
+> Mroz87UpperMean <- Mroz87Upper
+> Mroz87LowerMean$kids <- Mroz87UpperMean$kids <- xMeanInt[ "kids" ]
+> Mroz87LowerMean$educ <- Mroz87UpperMean$educ <- xMeanInt[ "educ" ]
+> elaIntNumMean <- 10 * ( colMeans( 
++   predict( estOProbitInt, newdata = Mroz87UpperMean, type = "probs" ) ) -
++     colMeans(
++       predict( estOProbitInt, newdata = Mroz87LowerMean, type = "probs" ) ) )
+> print( elaIntNumMean )
+         no        part        full 
+ 0.34596806 -0.07528306 -0.27068500 
+> print( sum( elaIntNumMean[ c( "part", "full" ) ] ) )
+[1] -0.3459681
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinElaInt( coef( summary( estOProbitInt ) )[,1], xMeanInt,
 +   c( 2, 3, 0, 4 ), iPos = 6, c( 30, 37.5, 44.5, 52.5, 60 ), model = "oprobit" )$derivCoef
@@ -750,4 +763,4 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.403   0.020   0.418 
+  0.408   0.019   0.421 

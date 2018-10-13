@@ -824,6 +824,16 @@ Likelihood ratio test : chisq = 50.688 (p.value = 1.9936e-07)
 +       predict( estMLogitInt, newdata = Mroz87mLower, type = "response" ) ) )
          no        full        part 
  0.35009151 -0.25792475 -0.09216676 
+> Mroz87mLowerMean <- Mroz87mLower
+> Mroz87mUpperMean <- Mroz87mUpper
+> Mroz87mLowerMean$kids <- Mroz87mUpperMean$kids <- xMeanInt[ "kids" ]
+> Mroz87mLowerMean$educ <- Mroz87mUpperMean$educ <- xMeanInt[ "educ" ]
+> 10 * ( colMeans( 
++   predict( estMLogitInt, newdata = Mroz87mUpperMean, type = "response" ) ) -
++     colMeans(
++       predict( estMLogitInt, newdata = Mroz87mLowerMean, type = "response" ) ) )
+        no       full       part 
+ 0.3687841 -0.2511801 -0.1176041 
 > # partial derivatives of the semi-elasticity wrt the coefficients
 > urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
 +   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "MNL", yCat = 0 )$derivCoef
@@ -1325,4 +1335,4 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.757   0.015   0.773 
+  0.729   0.039   0.762 
