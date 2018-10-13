@@ -43,7 +43,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   }
   # check argument yCat
   if( model == "MNL" ) {
-    checkYCat( yCat, nYCat ) 
+    checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
     warning( "argument 'yCat' is ignored" )
@@ -104,7 +104,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   } else if( model == "MNL" ){
     pFunRef <- exp( refXbeta ) / sum( exp( refXbeta ) )
     pFunInt <- exp( intXbeta ) / sum( exp( intXbeta ) )
-    eff <- pFunInt[ yCat ] - pFunRef[ yCat ]
+    eff <- sum( pFunInt[ yCat ] - pFunRef[ yCat ] )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   }
@@ -127,23 +127,25 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
   } else if( model == "MNL" ){
-    derivCoef <- matrix( NA, nrow = nXVal, ncol = nYCat )
+    derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
-      if( p == yCat ){
-        derivCoef[ -xPos, p ] <- 
-          ( pFunInt[ p ] - pFunInt[ p ]^2 - pFunRef[ p ] + pFunRef[ p ]^2 ) *
-          allXVal[ - xPos ]
-        derivCoef[ xPos, p ] <- 
-          ( pFunInt[ p ] - pFunInt[ p ]^2 ) * intX -
-          ( pFunRef[ p ] - pFunRef[ p ]^2 ) * refX
-      } else{  
-        derivCoef[ -xPos, p ] <- 
-          ( pFunRef[ yCat ] * pFunRef[ p ] - pFunInt[ yCat ] * pFunInt[ p ] ) *
-          allXVal[ - xPos ]
-        derivCoef[ xPos, p ] <- 
-          pFunRef[ yCat ] * pFunRef[ p ] * refX -
-          pFunInt[ yCat ] * pFunInt[ p ] * intX
-      }     
+      for( yCati in yCat ) {
+        if( p == yCati ){
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] + 
+            ( pFunInt[ p ] - pFunInt[ p ]^2 - pFunRef[ p ] + pFunRef[ p ]^2 ) *
+            allXVal[ - xPos ]
+          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] + 
+            ( pFunInt[ p ] - pFunInt[ p ]^2 ) * intX -
+            ( pFunRef[ p ] - pFunRef[ p ]^2 ) * refX
+        } else{  
+          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] + 
+            ( pFunRef[ yCati ] * pFunRef[ p ] - pFunInt[ yCati ] * pFunInt[ p ] ) *
+            allXVal[ - xPos ]
+          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] + 
+            pFunRef[ yCati ] * pFunRef[ p ] * refX -
+            pFunInt[ yCati ] * pFunInt[ p ] * intX
+        }
+      }
     }
     derivCoef <- c( derivCoef )
   } else {
