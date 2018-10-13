@@ -10,7 +10,8 @@
   These four functions calculate 
   the semi-elasticities and effects of explanatory variables
   in linear probability models, binary probit models,
-  ordered probit models, and binary logit models.
+  ordered probit models, binary logit models,
+  and multinomial logit models.
 
   \code{urbinEla()} calculates 
   the semi-elasticity of a continuous variable
@@ -107,11 +108,11 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     as indicated by argument \code{xPos}.}
   \item{model}{a character string that indicates the type of model 
     that was estimated to obtain the parameter estimates:
-    \code{"lpm"} = binary probit model (see \bold{Details} section below), 
+    \code{"lpm"} = linear probability model (see \bold{Details} section below), 
     \code{"probit"} = binary probit model,
     \code{"oprobit"} = ordered probit model (see \bold{Details} section below), 
     \code{"logit"} = binary logit model, or
-    \code{"MNL"} = multinomial logit model.}
+    \code{"MNL"} = multinomial logit model (see \bold{Details} section below).}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
@@ -138,8 +139,11 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
     in arguments \code{allCoef}, \code{allXVal}, 
     and eventually \code{allCoefVcov}.
     A value of zero indicates that the model does not have an intercept.}
-  \item{yCat}{
-    will be documented later}
+  \item{yCat}{a non-negative integer or a vector of non-negative integers
+    that indicate(s) which category/categories of the dependent variable
+    of a multinomial logit model should indicate a binary outcome of one.
+    A zero indicates the base category of the dependent variable
+    (see \bold{Details} section below).}
 }
 
 \details{
@@ -199,11 +203,12 @@ and unsuitable for all other types of models.
 
 \bold{Ordered Probit Model}:
 The dependent variable has \eqn{P>2} distinct and strictly ordered categories.
-A user needs to choose a number \eqn{p \in \{1,\ldots, P-1\}}
+In order to aggregate these \eqn{P} cateories into a binary outcome,
+a user needs to choose a number \eqn{p \in \{1, \ldots, P-1\}}
 that separates the \eqn{P} ordered categories 
 into two mutually exclusive combined categories,
-where the lower \eqn{p} categories indicate a binary variable with value zero
-and the upper \eqn{P-p} categories indicate a binary variable with value one.
+where the lower \eqn{p} categories indicate a binary outcome of zero
+and the upper \eqn{P-p} categories indicate a binary outcome of one.
 An ordered probit model does not have an intercept
 but it has \eqn{P-1} thresholds between the \eqn{P} ordered categories.
 If a user wants to calculate the semi-elasticity 
@@ -227,6 +232,38 @@ While the \eqn{p}'s threshold must be specified in argument \code{allCoef},
 all other thresholds can be omitted.
 In this case, arguments \code{allXVal} and \code{allCoefVcov}
 must be adjusted accordingly.
+
+\bold{Multinomial Logit Model}:
+The dependent variable has \eqn{P>2} distinct categories
+(without any logical order).
+For each category of the dependent variable
+(except for the base category),
+the multinomial logit model has a different set of coefficients.
+Argument \code{allCoef} must be a vector of all these coefficients
+with the following ordering:
+\code{c(} coefficients of all explanatory variables 
+for the first category of the dependent variable,
+coefficients of all explanatory variables 
+for the second category of the dependent variable, ...,
+coefficients of all explanatory variables 
+for the last category of the dependent variable \code{)},
+where the coefficients of the base category
+(that are all normalized to zero)
+should not be included in argument \code{allCoef}.
+The order of the coefficients for each and every category
+must be the same as the order of the corresponding explanatory variables
+in argument \code{allXVal}.
+The order of the coefficients in argument \code{allCoefCov}
+must be the same as the order of the coefficients in argument \code{allCoef}.
+In order to aggregate the \eqn{P} cateories of the dependent variable 
+into a binary outcome,
+a user needs to use argument \code{yCat} to select 
+\eqn{p \in \{1, \ldots, P-1\}} categories
+that should indicate a binary outcome of one,
+where a zero indicates the base category.
+All other categories,
+i.e., all categories that are not specified by argument \code{yCat}, 
+indicate a binary outcome of zero.
 }
 
 \value{
