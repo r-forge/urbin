@@ -1380,6 +1380,10 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > ### effects of age changing from the 30-44 category to the 53-60 category
 > # without standard errors
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ), model = "MNL", yCat = 0 )
+   effect     stdEr 
+0.2534418        NA 
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
 +   xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )
     effect      stdEr 
 -0.1669494         NA 
@@ -1410,6 +1414,10 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
  0.25344121 -0.16694105 -0.08650017 
 > # partial derivatives of the effect wrt the coefficients
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 0 )$derivCoef
+ [1]  0.01929513  0.01342715  0.07671298  0.05379078 -0.11120863  0.23707639
+ [7] -0.01514163 -0.01053681  0.06198445  0.04346320 -0.12058929 -0.18604304
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
 +   c( 3:5 ), c( -1, -1, 1, 0 ), model = "MNL", yCat = 1 )$derivCoef
  [1] -0.08059322 -0.05608346 -0.13230053 -0.09276850  0.14447582 -0.99023703
  [7]  0.06129809  0.04265631  0.05558755  0.03897772 -0.03326718  0.75316064
@@ -1418,6 +1426,16 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
  [1]  0.06129809  0.04265631  0.05558755  0.03897772 -0.03326718  0.75316064
  [7] -0.04615646 -0.03211950 -0.11757200 -0.08244093  0.15385647 -0.56711760
 > # numerically computed partial derivatives of the effect wrt the coefficients
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
++   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
++   model = "MNL", yCat = 0 )
+     full:(intercept)  full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]       0.01929513 0.01342715        0.07671298        0.05379078
+     full:age53.60TRUE full:educ part:(intercept)   part:kids part:age30.37TRUE
+[1,]        -0.1112086 0.2370764      -0.01514164 -0.01053681        0.06198445
+     part:age38.44TRUE part:age53.60TRUE part:educ
+[1,]         0.0434632        -0.1205893 -0.186043
 > numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
 +   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
@@ -1441,6 +1459,11 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > # with full covariance matrix
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( -1, -1, 1, 0 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
++   model = "MNL", yCat = 0 )
+    effect      stdEr 
+0.25344176 0.06611689 
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
++   c( -1, -1, 1, 0 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
 +   model = "MNL", yCat = 1 )
      effect       stdEr 
 -0.16694944  0.05015728 
@@ -1450,6 +1473,11 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
      effect       stdEr 
 -0.08649232  0.05409169 
 > # with standard errors only
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
++   c( -1, -1, 1, 0 ), sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ], 
++   model = "MNL", yCat = 0 )
+    effect      stdEr 
+0.25344176 0.06405862 
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( -1, -1, 1, 0 ), sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ], 
 +   model = "MNL", yCat = 1 )
@@ -1462,6 +1490,10 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 -0.08649232  0.08816398 
 > ### effects of age changing from the 53-60 category to the 38-52 category
 > # without standard errors
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
++   c( 0, 1, -1, 1 ), model = "MNL", yCat = 0 )
+    effect      stdEr 
+-0.2220512         NA 
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )
    effect     stdEr 
@@ -1480,6 +1512,11 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 -0.22244736  0.12866860  0.09377876 
 > # partial derivatives of the effect wrt the coefficients
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
++   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 0 )$derivCoef
+ [1] -0.013811476 -0.009611173  0.000000000 -0.054329727  0.111208634
+ [6] -0.169699565  0.003202117  0.002228299  0.000000000 -0.051012699
+[11]  0.120589293  0.039343934
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, 
 +   c( 3:5 ), c( 0, 1, -1, 1 ), model = "MNL", yCat = 1 )$derivCoef
  [1]  0.06664107  0.04637440  0.00000000  0.09174462 -0.14447582  0.81880898
  [7] -0.05282959 -0.03676322  0.00000000 -0.03741489  0.03326718 -0.64910941
@@ -1488,6 +1525,16 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
  [1] -0.05282959 -0.03676322  0.00000000 -0.03741489  0.03326718 -0.64910941
  [7]  0.04962748  0.03453492  0.00000000  0.08842759 -0.15385647  0.60976548
 > # numerically computed partial derivatives of the effect wrt the coefficients
+> numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
++   t0 = coef( estMLogitInt )[ coefPermuteInt ],
++   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
++   model = "MNL", yCat = 0 )
+     full:(intercept)    full:kids full:age30.37TRUE full:age38.44TRUE
+[1,]      -0.01381148 -0.009611173                 0       -0.05432973
+     full:age53.60TRUE  full:educ part:(intercept)   part:kids
+[1,]         0.1112086 -0.1696996      0.003202117 0.002228299
+     part:age30.37TRUE part:age38.44TRUE part:age53.60TRUE  part:educ
+[1,]                 0        -0.0510127         0.1205893 0.03934393
 > numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect }, 
 +   t0 = coef( estMLogitInt )[ coefPermuteInt ],
 +   allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ), 
@@ -1511,6 +1558,11 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > # with full covariance matrix
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( 0, 1, -1, 1 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
++   model = "MNL", yCat = 0 )
+     effect       stdEr 
+-0.22205124  0.06140903 
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
++   c( 0, 1, -1, 1 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ], 
 +   model = "MNL", yCat = 1 )
     effect      stdEr 
 0.12765684 0.04451157 
@@ -1520,6 +1572,11 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
     effect      stdEr 
 0.09439440 0.05057501 
 > # with standard errors only
+> urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
++   c( 0, 1, -1, 1 ), sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ], 
++   model = "MNL", yCat = 0 )
+     effect       stdEr 
+-0.22205124  0.05777841 
 > urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ), 
 +   c( 0, 1, -1, 1 ), sqrt( diag( vcov( estMLogitInt ) ) )[ coefPermuteInt ], 
 +   model = "MNL", yCat = 1 )
@@ -1534,4 +1591,4 @@ In urbinEffInt(allCoef = coef(estMLogitQuad)[coefPermuteQuad], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.887   0.020   0.900 
+  0.844   0.021   0.859 
