@@ -104,10 +104,10 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     pFun <- pnorm( xBeta )
     dFun <- dnorm( xBeta )
   } else if( model == "logit" ){
-    pFun <- as.vector( exp( xBeta )/( 1 + exp( xBeta ) ) )  
+    pFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )
     dFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )^2
   } else if( model == "MNL" ){
-    pFun <- as.vector( exp( xBeta[ , yCat ])/( rowSums( exp( xBeta ) ) ) )
+    pFun <- exp( xBeta[ , yCat ] ) / rowSums( exp( xBeta ) )
   } else if( model != "lpm" ) {
     stop( "argument 'model' specifies an unknown type of model" )
   }
