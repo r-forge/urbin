@@ -130,16 +130,16 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     }
   } else if( model %in% c( "probit", "oprobit" ) ) {
     dFun <- dnorm( xBeta )
-    dFunNextInt <- dFun[ -1 ] - dFun[ -nInt ]
     derivCoef <- rep( 0, nCoef )
-    derivCoef[ -xPos ] <- sum( dFunNextInt * shareNextInt ) *
+    derivCoef[ -xPos ] <- 
+      sum( ( dFun[ -1 ] - dFun[ -nInt ] ) * shareNextInt ) * 
       allXVal[ -xPos ]
-    derivCoef[ xPos[1] ] <- - dFunNextInt[1] * shareNextInt[1]
-    derivCoef[ xPos[nInt] ] <- dFunNextInt[nInt-1] * shareNextInt[nInt-1]
+    derivCoef[ xPos[1] ] <- - dFun[1] * shareNextInt[1]
+    derivCoef[ xPos[nInt] ] <- dFun[nInt] * shareNextInt[nInt-1]
     if( nInt > 2 ) {
       for( n in 2:( nInt-1 ) ) {
-        derivCoef[ xPos[n] ] <- dFunNextInt[n-1] * shareNextInt[n-1] - 
-          dFunNextInt[n] * shareNextInt[n]
+        derivCoef[ xPos[n] ] <- dFun[n] * 
+          ( shareNextInt[n-1] - shareNextInt[n] )
       }
     }
   } else if( model == "logit" ){
