@@ -277,6 +277,18 @@ where a zero indicates the base category.
 All other categories,
 i.e., all categories that are not specified by argument \code{yCat}, 
 indicate a binary outcome of zero.
+
+\bold{Marginal Effects}:
+If you know the marginal effects of the explanatory variable(s) of interest
+on the dependent variable,
+you can use these marginal effects 
+as if they were coefficients of a linear probability model 
+and calculate approximate semi-elasticities and effects
+with \code{urbin*( ..., model = "lpm" )}
+with argument \code{allCoef} equal to the marginal effect(s)
+and eventually argument \code{allCoefVcov} 
+equal to the variance covariance matrix or the standard errors
+of the marginal effects.
 }
 
 \value{
