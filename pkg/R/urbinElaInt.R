@@ -10,7 +10,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     if( nXVal != nCoef ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     # number of alternative categories of the dependent variable
     nYCat <- round( nCoef / nXVal )
     if( nCoef != nXVal * nYCat ) {
@@ -25,7 +25,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model == "MNL" ) {
+  if( model == "mlogit" ) {
     checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
@@ -33,7 +33,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   }
   # Check position vector
   checkXPos( xPos, minLength = 2, maxLength = nCoef + 1, 
-    minVal = 0, maxVal = ifelse( model == "MNL", nXVal, nCoef ), 
+    minVal = 0, maxVal = ifelse( model == "mlogit", nXVal, nCoef ), 
     requiredVal = 0 )
   # check position of the intercept
   checkIPos( iPos, xPos, allXVal, model ) 
@@ -84,7 +84,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
       xBeta[ i ] <- sum( allCoef * allXValTemp )
     }
     checkXBeta( xBeta )
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     xBeta <- matrix( NA, nrow = nInt, ncol = nYCat + 1 ) 
     for( p in 1:( nYCat + 1 ) ){
       for( i in 1:nInt ){
@@ -106,7 +106,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
   } else if( model == "logit" ){
     pFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )
     dFun <- exp( xBeta ) / ( 1 + exp( xBeta ) )^2
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     pFunMat <- exp( xBeta ) / rowSums( exp( xBeta ) )
     pFun <- rowSums( pFunMat[ , yCat, drop = FALSE ] )
   } else if( model != "lpm" ) {
@@ -144,7 +144,7 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
           ( shareNextInt[n-1] - shareNextInt[n] )
       }
     }
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
       for( yCati in yCat ) {

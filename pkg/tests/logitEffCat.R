@@ -19,13 +19,13 @@ eff10b
 eff11a <- urbinEffCat( allCoef = c( 0.28, 0.003, 0.0075, -0.034, 
   -0.005, 0.89, 0.005, 0.06, 1.7 ),
   allXVal = c( 1, 0.5, 0.3 ), xPos = c( 2:3 ), 
-  xGroups = c( -1, -1, 1 ), yCat = 2, model = "MNL" )
+  xGroups = c( -1, -1, 1 ), yCat = 2, model = "mlogit" )
 eff11a
 
 eff11b <- urbinEffCat( allCoef = c( 0.28, 0.003, 0.0075, -0.034, 
   -0.005, 0.89, 0.005, 0.06, 1.7 ),
   allXVal = c( 1, 0.5, 0.3 ), xPos = c( 2:3 ), 
-  xGroups = c( -1, -1, 1 ), yCat = 2, model = "MNL", 
+  xGroups = c( -1, -1, 1 ), yCat = 2, model = "mlogit", 
   allCoefVcov = c( 0.03, 0.0001, 0.005, 0.01, 0.004, 
     0.05, 0.004, 0.5, 0.0078 ) )
 eff11b

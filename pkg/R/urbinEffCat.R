@@ -7,7 +7,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
   nXVal <- length( allXVal )
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = nCoef, minVal = 1, 
-    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+    maxVal = ifelse( model == "mlogit", nXVal, nCoef ) )
   # check position of the intercept
   checkIPos( iPos, xPos, allXVal, model ) 
   # number of categories
@@ -18,7 +18,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     if( nXVal != nCoef ){
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     }  
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     # number of alternative categories of the dependent variable
     nYCat <- round( nCoef / nXVal )
     if( nCoef != nXVal * nYCat ) {
@@ -35,7 +35,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model == "MNL" ) {
+  if( model == "mlogit" ) {
     checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
@@ -102,7 +102,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
           exp( XBetaRef )/( 1 + exp( XBetaRef ) )
       }
     }
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     # D_mr  
     DRef <- ifelse( xGroups == -1, xShares, 0 ) / 
       sum( xShares[ xGroups == -1 ] )
@@ -139,7 +139,7 @@ urbinEffCat <- function( allCoef, allXVal, xPos, xGroups, model,
       allXVal[ -xPos ] 
     derivCoef[ xPos ] <- exp( XBetaEffect )/( 1 + exp( XBetaEffect))^2 * DEffect[ -nCat ] - 
       exp( XBetaRef )/( 1 + exp( XBetaRef ))^2 * DRef[ -nCat ]
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
       for( yCati in yCat ) {

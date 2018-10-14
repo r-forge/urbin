@@ -62,7 +62,7 @@ In urbinEffInt(allCoef = c(0.33, 0.022, 0.005, 0.6), allXVal = c(1, NA, NA, 0.13
 +   allXVal = c( 1, NA, 0.12 ), 
 +   xPos = 2, 
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
-+   yCat = 2, model = "MNL" )
++   yCat = 2, model = "mlogit" )
 > eff8a
     effect      stdEr 
 -0.1372913         NA 
@@ -73,7 +73,7 @@ In urbinEffInt(allCoef = c(0.33, 0.022, 0.005, 0.6), allXVal = c(1, NA, NA, 0.13
 +   refBound = c( 8, 12 ), intBound = c( 13, 15 ),
 +   yCat = 2, 
 +   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
-+   model = "MNL" )
++   model = "mlogit" )
 > eff8b
      effect       stdEr 
 -0.13729127  0.01564281 
@@ -83,7 +83,7 @@ In urbinEffInt(allCoef = c(0.33, 0.022, 0.005, 0.6), allXVal = c(1, NA, NA, 0.13
 +   allXVal = c( 1, NA, NA ), 
 +   xPos = c( 2, 3 ), 
 +   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
-+   yCat = 2, model = "MNL" )
++   yCat = 2, model = "mlogit" )
 > eff9a
    effect     stdEr 
 0.1584863        NA 
@@ -94,9 +94,9 @@ In urbinEffInt(allCoef = c(0.33, 0.022, 0.005, 0.6), allXVal = c(1, NA, NA, 0.13
 +   refBound = c( 1, 12 ), intBound = c( 13, 25 ),
 +   yCat = 2, 
 +   allCoefVcov = c( 0.03, 0.025, 0.0007, 0.009, 0.008, 0.0009 ),
-+   model = "MNL" )
++   model = "mlogit" )
 Warning message:
-In urbinEffInt(allCoef = c(0.2, 0.03, 0.005, -0.2, 0.03, 0.006), allXVal = c(1, NA, NA), xPos = c(2, 3), refBound = c(1, 12), intBound = c(13, 25), model = "MNL", allCoefVcov = c(0.03, 0.025, 7e-04, 0.009, 0.008, 9e-04), yCat = 2) :
+In urbinEffInt(allCoef = c(0.2, 0.03, 0.005, -0.2, 0.03, 0.006), allXVal = c(1, NA, NA), xPos = c(2, 3), refBound = c(1, 12), intBound = c(13, 25), model = "mlogit", allCoefVcov = c(0.03, 0.025, 7e-04, 0.009, 0.008, 9e-04), yCat = 2) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > eff9b
    effect     stdEr 
@@ -104,4 +104,4 @@ In urbinEffInt(allCoef = c(0.2, 0.03, 0.005, -0.2, 0.03, 0.006), allXVal = c(1, 
 > 
 > proc.time()
    user  system elapsed 
-  0.112   0.003   0.110 
+  0.128   0.003   0.126 

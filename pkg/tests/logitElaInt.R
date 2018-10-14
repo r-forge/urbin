@@ -21,7 +21,7 @@ ela9a <- urbinElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   allXVal = c( 1, 0.4, 0.12 ), 
   xPos = c( 2, 0, 3 ), 
   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
-  model = "MNL" )
+  model = "mlogit" )
 ela9a
 
 ela9b <- urbinElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
@@ -29,5 +29,5 @@ ela9b <- urbinElaInt( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ),
   xPos = c( 2, 0, 3 ), 
   xBound = c( 0, 500, 1000, Inf ), yCat = 2, 
   allCoefVcov = c( 0.003, 0.045, 0.007, 0.009, 0.0008, 0.9 ),
-  model = "MNL" )
+  model = "mlogit" )
 ela9b

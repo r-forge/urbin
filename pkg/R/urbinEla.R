@@ -34,7 +34,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     if( nXVal != nCoef ) {
       stop( "arguments 'allCoef' and 'allXVal' must have the same length" )
     } 
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     # number of alternative categories of the dependent variable
     nYCat <- round( nCoef / nXVal )
     if( nCoef != nXVal * nYCat ) {
@@ -49,7 +49,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model == "MNL" ) {
+  if( model == "mlogit" ) {
     checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
@@ -57,7 +57,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   }
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
-    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+    maxVal = ifelse( model == "mlogit", nXVal, nCoef ) )
   # check position of the intercept
   checkIPos( iPos, xPos, allXVal, model ) 
   # check and prepare allCoefVcov
@@ -71,7 +71,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
           " to the squared value of 'allXVal[ xPos[1] ]'" )
       }
-    } else if( model == "MNL" ){
+    } else if( model == "mlogit" ){
       xCoef <- mCoef[ xPos, ]
       if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
         stop( "the value of 'allXVal[ xPos[2] ]' must be equal",
@@ -83,7 +83,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
   } else if( length( xPos ) == 1 ) {
     if( model %in% c( "lpm", "probit", "oprobit", "logit" ) ){
       xCoef <- c( allCoef[ xPos ], 0 )
-    } else if( model == "MNL" ){
+    } else if( model == "mlogit" ){
       xCoef <- rbind( mCoef[ xPos, ], 0 ) 
     } else {
       stop( "argument 'model' specifies an unknown type of model" )
@@ -107,7 +107,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     checkXBeta( xBeta )
     dfun <- exp( xBeta )/( 1 + exp( xBeta ) )^2
     semEla <- ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal * dfun
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     xVal <- allXVal[ xPos[1] ]
     xCoefLinQuad <- xCoef[ 1, ] + 2 * xCoef[ 2, ] * xVal
     xBeta <- allXVal %*% mCoef
@@ -147,7 +147,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     if( length( xPos ) == 2 ) {
       derivCoef[ xPos[2] ] <- derivCoef[ xPos[2] ] + dfun * 2 * xVal^2
     }
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     derivCoef <- rep( 0, length( allCoef ) )
     if( seSimplify ) {
       for( yCati in yCat ) {

@@ -25,25 +25,25 @@ ela7b
 # Example
 ela8a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
   allXVal = c( 1, 8.4, 0.06 ), xPos = 3,
-  model = "MNL", yCat = 2 )
+  model = "mlogit", yCat = 2 )
 ela8a
 
 ela8b <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
   allXVal = c( 1, 8.4, 0.06 ), 
   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
   xPos = 3, 
-  model = "MNL", yCat = 2 )
+  model = "mlogit", yCat = 2 )
 ela8b
 
 # Example
 ela9a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
   allXVal = c( 1, 0.04, 0.0016 ), xPos = c( 2, 3 ),
-  model = "MNL", yCat = 2 )
+  model = "mlogit", yCat = 2 )
 ela9a
 
 ela9b <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
   allXVal = c( 1, 0.04, 0.0016 ), 
   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
   xPos = c( 2, 3 ), 
-  model = "MNL", yCat = 2 )
+  model = "mlogit", yCat = 2 )
 ela9b

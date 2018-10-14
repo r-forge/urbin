@@ -27,7 +27,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     #   warning( "values of argument 'allXVal[ xPos ]' are ignored",
     #     " (set these values to 'NA' to avoid this warning)" )
     # }
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     # number of alternative categories of the dependent variable
     nYCat <- round( nCoef / nXVal )
     if( nCoef != nXVal * nYCat ) {
@@ -42,7 +42,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     stop( "argument 'model' specifies an unknown type of model" )
   }
   # check argument yCat
-  if( model == "MNL" ) {
+  if( model == "mlogit" ) {
     checkYCat( yCat, nYCat, maxLength = nYCat + 1 ) 
     yCat[ yCat == 0 ] <- nYCat + 1
   } else if( !is.null( yCat ) ) {
@@ -50,7 +50,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   }
   # Check position vector
   checkXPos( xPos, minLength = 1, maxLength = 2, minVal = 1, 
-    maxVal = ifelse( model == "MNL", nXVal, nCoef ) )
+    maxVal = ifelse( model == "mlogit", nXVal, nCoef ) )
   # Check value of quadratic term in argument allXVal
   if( length( xPos ) == 2 ){
     if( !isTRUE( all.equal( allXVal[xPos[2]], allXVal[xPos[1]]^2 ) ) ) {
@@ -85,7 +85,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     if( model != "lpm" ) {
       checkXBeta( c( intXbeta, refXbeta ) )
     }
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     intXbeta <- replace( allXVal, xPos, intX ) %*% mCoef
     refXbeta <- replace( allXVal, xPos, refX ) %*% mCoef
     checkXBeta( c( intXbeta, refXbeta ) )
@@ -101,7 +101,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
   } else   if( model == "logit" ){  
     eff <- exp( intXbeta )/( 1 + exp( intXbeta ) ) - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     pFunRef <- exp( refXbeta ) / sum( exp( refXbeta ) )
     pFunInt <- exp( intXbeta ) / sum( exp( intXbeta ) )
     eff <- sum( pFunInt[ yCat ] - pFunRef[ yCat ] )
@@ -126,7 +126,7 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
       allXVal[ -xPos ] 
     derivCoef[ xPos ] <- exp( intXbeta )/( 1 + exp( intXbeta ) )^2 * intX - 
       exp( refXbeta )/( 1 + exp( refXbeta ) )^2 * refX
-  } else if( model == "MNL" ){
+  } else if( model == "mlogit" ){
     derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
       for( yCati in yCat ) {

@@ -1,6 +1,6 @@
 checkYCat <- function( yCat, nYCat, maxLength = 1 ) {
   if( is.null( yCat ) ) {
-    stop( "argument 'yCat' must be be specified for MNL models" )
+    stop( "argument 'yCat' must be be specified for 'mlogit' models" )
   }
   if( any( yCat != round( yCat ) ) ) {
     stop( "argument 'yCat' must be a vector of integers" )

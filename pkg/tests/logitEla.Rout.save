@@ -54,7 +54,7 @@ In urbinEla(allCoef = c(0.445, 0.03, 2e-05, 0.067, 0.89, 0.124), allXVal = c(1, 
 > # Example
 > ela8a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 8.4, 0.06 ), xPos = 3,
-+   model = "MNL", yCat = 2 )
++   model = "mlogit", yCat = 2 )
 > ela8a
       semEla        stdEr 
 0.0004508535           NA 
@@ -63,7 +63,7 @@ In urbinEla(allCoef = c(0.445, 0.03, 2e-05, 0.067, 0.89, 0.124), allXVal = c(1, 
 +   allXVal = c( 1, 8.4, 0.06 ), 
 +   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
 +   xPos = 3, 
-+   model = "MNL", yCat = 2 )
++   model = "mlogit", yCat = 2 )
 > ela8b
       semEla        stdEr 
 0.0004508535 0.0002776620 
@@ -71,7 +71,7 @@ In urbinEla(allCoef = c(0.445, 0.03, 2e-05, 0.067, 0.89, 0.124), allXVal = c(1, 
 > # Example
 > ela9a <- urbinEla( allCoef = c( 0.2, 0.3, 0.5, -0.2, 0.03, 0.6 ), 
 +   allXVal = c( 1, 0.04, 0.0016 ), xPos = c( 2, 3 ),
-+   model = "MNL", yCat = 2 )
++   model = "mlogit", yCat = 2 )
 > ela9a
        semEla         stdEr 
 -0.0008640351            NA 
@@ -80,9 +80,9 @@ In urbinEla(allCoef = c(0.445, 0.03, 2e-05, 0.067, 0.89, 0.124), allXVal = c(1, 
 +   allXVal = c( 1, 0.04, 0.0016 ), 
 +   allCoefVcov = c( 0.002, 0.003, 0.004, 0.006, 0.00001, 0.08 ), 
 +   xPos = c( 2, 3 ), 
-+   model = "MNL", yCat = 2 )
++   model = "mlogit", yCat = 2 )
 Warning message:
-In urbinEla(allCoef = c(0.2, 0.3, 0.5, -0.2, 0.03, 0.6), allXVal = c(1, 0.04, 0.0016), xPos = c(2, 3), model = "MNL", allCoefVcov = c(0.002, 0.003, 0.004, 0.006, 1e-05, 0.08), yCat = 2) :
+In urbinEla(allCoef = c(0.2, 0.3, 0.5, -0.2, 0.03, 0.6), allXVal = c(1, 0.04, 0.0016), xPos = c(2, 3), model = "mlogit", allCoefVcov = c(0.002, 0.003, 0.004, 0.006, 1e-05, 0.08), yCat = 2) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > ela9b
        semEla         stdEr 
@@ -90,4 +90,4 @@ In urbinEla(allCoef = c(0.2, 0.3, 0.5, -0.2, 0.03, 0.6), allXVal = c(1, 0.04, 0.
 > 
 > proc.time()
    user  system elapsed 
-  0.112   0.004   0.111 
+  0.097   0.020   0.110 

@@ -113,7 +113,7 @@ urbinEffCat( allCoef, allXVal, xPos, xGroups, model,
       (for multivariate probit models see \bold{Details} section below),
     \code{"oprobit"} = ordered probit model (see \bold{Details} section below), 
     \code{"logit"} = binary logit model, or
-    \code{"MNL"} = multinomial logit model (see \bold{Details} section below).}
+    \code{"mlogit"} = multinomial logit model (see \bold{Details} section below).}
   \item{allCoefVcov}{an optional argument
     that can be the variance-covariance matrix of all estimated coefficients
     OR the vector of the standard errors of all estimated coefficients
