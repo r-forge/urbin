@@ -15,10 +15,11 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       " it is NOT recommended to set argument 'seSimplify' to TRUE" )    
   } else if( !seSimplify && !is.null( allCoefVcov) && 
       !is.matrix( allCoefVcov ) ) {
-    warning( "the returned standard error is likely upward biased;",
+    warning( "the returned standard error is likely very imprecise;",
       " you can provide the full covariance matrix", 
-      " via argument 'allCoefVcov' to avoid this bias",
-      " or do NOT set argument 'seSimplify' to FALSE" )
+      " via argument 'allCoefVcov'",
+      " or do NOT set argument 'seSimplify' to FALSE",
+      " to obtain a more precise standard error" )
   }
   # number of coefficients
   nCoef <- length( allCoef )

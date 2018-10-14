@@ -130,7 +130,7 @@ AIC: 1599.68
 -0.3097687  0.1220274 
 Warning message:
 In urbinEla(coef(summary(estOProbitLin))[, 1], xMeanLin, xPos = 2,  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > urbinEla( coef( summary( estOProbitLin ) )[-5,1], xMeanLin[-5], 
 +   xPos = 2, iPos = 4, model = "oprobit", 
 +   sqrt( diag( vcov( estOProbitLin ) ) )[-5], seSimplify = FALSE )
@@ -138,7 +138,7 @@ In urbinEla(coef(summary(estOProbitLin))[, 1], xMeanLin, xPos = 2,  :
 -0.3097687  0.1220274 
 Warning message:
 In urbinEla(coef(summary(estOProbitLin))[-5, 1], xMeanLin[-5], xPos = 2,  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( summary( estOProbitLin ) )[,1], xMeanLin, 
 +   xPos = 2, iPos = 4, model = "oprobit", 
@@ -246,7 +246,7 @@ AIC: 1590.934
 -0.312823  0.544235 
 Warning messages:
 1: In urbinEla(coef(summary(estOProbitQuad))[, 1], xMeanQuad, xPos = c(2,  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 2: In urbinEla(allCoef = coef(summary(estOProbitQuad))[, 1], allXVal = xMeanQuad, xPos = c(2, 3), model = "oprobit", allCoefVcov = sqrt(diag(vcov(estOProbitQuad))), seSimplify = FALSE, iPos = 5) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
@@ -256,7 +256,7 @@ Warning messages:
 -0.312823  0.544235 
 Warning messages:
 1: In urbinEla(coef(summary(estOProbitQuad))[-6, 1], xMeanQuad[-6],  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 2: In urbinEla(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQuad[-6], xPos = c(2, 3), model = "oprobit", allCoefVcov = sqrt(diag(vcov(estOProbitQuad)))[-6], seSimplify = FALSE, iPos = 5) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
@@ -286,7 +286,7 @@ In urbinEla(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQuad[
 -0.3128230  0.1204706 
 Warning message:
 In urbinEla(coef(summary(estOProbitQuad))[, 1], xMeanQuad, xPos = c(2,  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > urbinEla( coef( summary( estOProbitQuad ) )[-6,1], xMeanQuad[-6], 
 +   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
 +   sqrt( diag( vcov( estOProbitQuad ) ) )[-6],
@@ -296,7 +296,7 @@ In urbinEla(coef(summary(estOProbitQuad))[, 1], xMeanQuad, xPos = c(2,  :
 -0.3128230  0.1204706 
 Warning message:
 In urbinEla(coef(summary(estOProbitQuad))[-6, 1], xMeanQuad[-6],  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 > urbinEla( coef( summary( estOProbitQuad ) )[,1], xMeanQuad, 
 +   xPos = c( 2, 3 ), iPos = 5, model = "oprobit", 
@@ -763,4 +763,4 @@ In urbinEffInt(allCoef = coef(summary(estOProbitQuad))[-6, 1], allXVal = xMeanQu
 > 
 > proc.time()
    user  system elapsed 
-  0.404   0.016   0.415 
+  0.390   0.024   0.409 

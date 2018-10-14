@@ -117,7 +117,7 @@ Number of Fisher Scoring iterations: 4
 -0.3199102  0.1370817 
 Warning message:
 In urbinEla(coef(estProbitLin), xMeanLin, 3, model = "probit", sqrt(diag(vcov(estProbitLin))),  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
 > urbinEla( coef( estProbitLin ), xMeanLin, 3, model = "probit", 
 +   sqrt( diag( vcov( estProbitLin ) ) ) )
@@ -212,7 +212,7 @@ Number of Fisher Scoring iterations: 4
 -0.3193114  1.8253970 
 Warning messages:
 1: In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 2: In urbinEla(allCoef = coef(estProbitQuad), allXVal = xMeanQuad, xPos = c(3, 4), model = "probit", allCoefVcov = sqrt(diag(vcov(estProbitQuad))), seSimplify = FALSE) :
   the returned standard error is likely largely upward biased and, thus, in most cases meaningless; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or use argument 'xMeanSd' to substantially reduce this bias 
 > # semi-elasticity of age with standard errors (only standard errors, simplified)
@@ -232,7 +232,7 @@ In urbinEla(allCoef = coef(estProbitQuad), allXVal = xMeanQuad, xPos = c(3, 4), 
 -0.3193114  0.1104750 
 Warning message:
 In urbinEla(coef(estProbitQuad), xMeanQuad, c(3, 4), model = "probit",  :
-  the returned standard error is likely upward biased; you can provide the full covariance matrix via argument 'allCoefVcov' to avoid this bias or do NOT set argument 'seSimplify' to FALSE
+  the returned standard error is likely very imprecise; you can provide the full covariance matrix via argument 'allCoefVcov' or do NOT set argument 'seSimplify' to FALSE to obtain a more precise standard error
 > # semi-elasticity of age with standard errors (only standard errors, xMeanSd, simplified)
 > urbinEla( coef( estProbitQuad ), xMeanQuad, c( 3, 4 ), model = "probit", 
 +   sqrt( diag( vcov( estProbitQuad ) ) ),
@@ -650,4 +650,4 @@ In urbinEffInt(allCoef = estProbitQuadMfx$mfxest[, 1], allXVal = NULL, xPos = 2:
 > 
 > proc.time()
    user  system elapsed 
-  0.562   0.032   0.588 
+  0.591   0.016   0.600 
