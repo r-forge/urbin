@@ -130,8 +130,7 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     if( seSimplify ) {
       derivCoef <- rep( 0, length( allCoef ) )
     } else {
-      derivCoef <- - dnorm( xBeta ) * xBeta * allXVal * 
-        ( xCoef[ 1 ] + 2 * xCoef[ 2 ] * xVal ) * xVal
+      derivCoef <- - semEla * xBeta * allXVal
     }
     derivCoef[ xPos[1] ] <- derivCoef[ xPos[1] ] + dnorm( xBeta ) * xVal
     if( length( xPos ) == 2 ) {
