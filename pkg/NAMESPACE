@@ -3,7 +3,6 @@ export( "urbinEffInt" )
 export( "urbinEla" )
 export( "urbinElaInt" )
 
-importFrom( "miscTools", "ddnorm" )
 importFrom( "stats", "dnorm" )
 importFrom( "stats", "pnorm" )
 importFrom( "stats", "rnorm" )
