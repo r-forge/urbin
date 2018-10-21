@@ -149,31 +149,29 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     }
   } else if( model == "mlogit" ){
     derivCoef <- rep( 0, length( allCoef ) )
-    if( seSimplify ) {
+    for( p in 1:nYCat ) {
+      coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
       for( yCati in yCat ) {
-        derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] <- 
-          derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[1] ] -
-          pfun[ yCati ] * xVal * pfun[ 1:nYCat ]
-        if( yCati <= nYCat ) {
-          derivCoef[ ( yCati - 1 ) * nXVal + xPos[1] ] <- 
-            derivCoef[ ( yCati - 1 ) * nXVal + xPos[1] ] + 
-            pfun[ yCati ] * xVal
-        }
-        if( length( xPos ) == 2 ) {
-          derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] <- 
-            derivCoef[ ( 0:( nYCat - 1 ) ) * nXVal + xPos[2] ] -
-            pfun[ yCati ] * 2 * xVal^2 * pfun[ 1:nYCat ]
-          if( yCati <= nYCat ) {
-            derivCoef[ ( yCati - 1 ) * nXVal + xPos[2] ] <- 
-              derivCoef[ ( yCati - 1 ) * nXVal + xPos[2] ] +
-              pfun[ yCati ] * 2 * xVal^2
+        if( seSimplify ) {
+          derivCoef[ coefNoYCat ][ xPos[1] ] <- 
+            derivCoef[ coefNoYCat ][ xPos[1] ] -
+            pfun[ yCati ] * xVal * pfun[ p ]
+          if( p == yCati ) {
+            derivCoef[ coefNoYCat ][ xPos[1] ] <- 
+              derivCoef[ coefNoYCat ][ xPos[1] ] + 
+              pfun[ yCati ] * xVal
           }
-        }
-      }
-    } else {
-      for( p in 1:nYCat ) {
-        coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
-        for( yCati in yCat ) {
+          if( length( xPos ) == 2 ) {
+            derivCoef[ coefNoYCat ][ xPos[2] ] <- 
+              derivCoef[ coefNoYCat ][ xPos[2] ] -
+              pfun[ yCati ] * 2 * xVal^2 * pfun[ p ]
+            if( p == yCati ) {
+              derivCoef[ coefNoYCat ][ xPos[2] ] <- 
+                derivCoef[ coefNoYCat ][ xPos[2] ] +
+                pfun[ yCati ] * 2 * xVal^2
+            }
+          }
+        } else {
           if( p == yCati ) {
             derivCoef[ coefNoYCat ][ -xPos ] <-
               derivCoef[ coefNoYCat ][ -xPos ] +
