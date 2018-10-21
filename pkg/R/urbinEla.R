@@ -153,26 +153,15 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
       coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
       for( yCati in yCat ) {
         if( seSimplify ) {
-          if( p == yCati ) {
-            derivCoef[ coefNoYCat ][ xPos[1] ] <- 
-              derivCoef[ coefNoYCat ][ xPos[1] ] -
-              pfun[ yCati ] * xVal * pfun[ p ] + 
-              pfun[ yCati ] * xVal
-            if( length( xPos ) == 2 ) {
-              derivCoef[ coefNoYCat ][ xPos[2] ] <- 
-                derivCoef[ coefNoYCat ][ xPos[2] ] -
-                pfun[ yCati ] * 2 * xVal^2 * pfun[ p ] +
-                pfun[ yCati ] * 2 * xVal^2
-            }
-          } else {
-            derivCoef[ coefNoYCat ][ xPos[1] ] <- 
-              derivCoef[ coefNoYCat ][ xPos[1] ] -
-              pfun[ yCati ] * xVal * pfun[ p ]
-            if( length( xPos ) == 2 ) {
-              derivCoef[ coefNoYCat ][ xPos[2] ] <- 
-                derivCoef[ coefNoYCat ][ xPos[2] ] -
-                pfun[ yCati ] * 2 * xVal^2 * pfun[ p ]
-            }
+          derivCoef[ coefNoYCat ][ xPos[1] ] <- 
+            derivCoef[ coefNoYCat ][ xPos[1] ] -
+            pfun[ yCati ] * xVal * pfun[ p ] + 
+            ( p == yCati ) * pfun[ yCati ] * xVal
+          if( length( xPos ) == 2 ) {
+            derivCoef[ coefNoYCat ][ xPos[2] ] <- 
+              derivCoef[ coefNoYCat ][ xPos[2] ] -
+              pfun[ yCati ] * 2 * xVal^2 * pfun[ p ] +
+              ( p == yCati ) * pfun[ yCati ] * 2 * xVal^2
           }
         } else {
           if( p == yCati ) {
