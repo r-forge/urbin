@@ -155,21 +155,24 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
         if( seSimplify ) {
           if( p == yCati ) {
             derivCoef[ coefNoYCat ][ xPos[1] ] <- 
-              derivCoef[ coefNoYCat ][ xPos[1] ] + 
+              derivCoef[ coefNoYCat ][ xPos[1] ] -
+              pfun[ yCati ] * xVal * pfun[ p ] + 
               pfun[ yCati ] * xVal
             if( length( xPos ) == 2 ) {
               derivCoef[ coefNoYCat ][ xPos[2] ] <- 
-                derivCoef[ coefNoYCat ][ xPos[2] ] +
+                derivCoef[ coefNoYCat ][ xPos[2] ] -
+                pfun[ yCati ] * 2 * xVal^2 * pfun[ p ] +
                 pfun[ yCati ] * 2 * xVal^2
             }
-          }
-          derivCoef[ coefNoYCat ][ xPos[1] ] <- 
-            derivCoef[ coefNoYCat ][ xPos[1] ] -
-            pfun[ yCati ] * xVal * pfun[ p ]
-          if( length( xPos ) == 2 ) {
-            derivCoef[ coefNoYCat ][ xPos[2] ] <- 
-              derivCoef[ coefNoYCat ][ xPos[2] ] -
-              pfun[ yCati ] * 2 * xVal^2 * pfun[ p ]
+          } else {
+            derivCoef[ coefNoYCat ][ xPos[1] ] <- 
+              derivCoef[ coefNoYCat ][ xPos[1] ] -
+              pfun[ yCati ] * xVal * pfun[ p ]
+            if( length( xPos ) == 2 ) {
+              derivCoef[ coefNoYCat ][ xPos[2] ] <- 
+                derivCoef[ coefNoYCat ][ xPos[2] ] -
+                pfun[ yCati ] * 2 * xVal^2 * pfun[ p ]
+            }
           }
         } else {
           if( p == yCati ) {
