@@ -114,8 +114,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     xBeta <- allXVal %*% mCoef
     checkXBeta( xBeta )
     pfun <- exp( xBeta ) / sum( exp( xBeta ) )
-    semEla <- sum( xVal * pfun[ yCat ] * 
-      ( xCoefLinQuad[ yCat ] - sum( xCoefLinQuad * pfun ) ) )
+    semElaCat <- xVal * pfun * 
+      ( xCoefLinQuad - sum( xCoefLinQuad * pfun ) )
+    semEla <- sum( semElaCat[ yCat ] )
   } else {
     stop( "argument 'model' specifies an unknown type of model" )
   } 
@@ -167,11 +168,8 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
           if( p == yCati ) {
             derivCoef[ coefNoYCat ][ -xPos ] <-
               derivCoef[ coefNoYCat ][ -xPos ] +
-              ( xCoefLinQuad[ yCati ] * pfun[ yCati ] *
-                  ( 1 - 2 * pfun[ yCati ] ) + 
-                  ( 2 * pfun[ yCati ]^2 - pfun[ yCati ] ) *
-                  sum( xCoefLinQuad * pfun ) ) * 
-              xVal * allXVal[ -xPos ]
+              ( - 2 * pfun[ p ] * semElaCat[ p ] + semElaCat[ p ]  ) * 
+              allXVal[ -xPos ]
             derivCoef[ coefNoYCat ][ xPos[1] ] <-
               derivCoef[ coefNoYCat ][ xPos[1] ] +
               ( pfun[ yCati ] *
@@ -190,11 +188,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
             }
           } else {
             derivCoef[ coefNoYCat ][ -xPos ] <-
-              derivCoef[ coefNoYCat ][ -xPos ] +
-              pfun[ yCati ] * pfun[ p ] *
-              ( 2 * sum( xCoefLinQuad * pfun ) -
-                  xCoefLinQuad[ yCati ] - xCoefLinQuad[ p ] ) *
-              xVal * allXVal[ -xPos ]
+              derivCoef[ coefNoYCat ][ -xPos ] -
+              ( pfun[ yCati ] * semElaCat[ p ] +
+                pfun[ p ] * semElaCat[ yCati ] ) *
+              allXVal[ -xPos ]
             derivCoef[ coefNoYCat ][ xPos[1] ] <-
               derivCoef[ coefNoYCat ][ xPos[1] ] +
               pfun[ yCati ] * pfun[ p ] *
