@@ -153,18 +153,17 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
     for( p in 1:nYCat ) {
       coefNoYCat <- ( 1 + (p-1)*nXVal ):( p * nXVal ) 
       for( yCati in yCat ) {
-        if( seSimplify ) {
-          derivCoef[ coefNoYCat ][ xPos[1] ] <- 
-            derivCoef[ coefNoYCat ][ xPos[1] ] -
-            pfun[ yCati ] * xVal * pfun[ p ] + 
-            ( p == yCati ) * pfun[ yCati ] * xVal
-          if( length( xPos ) == 2 ) {
-            derivCoef[ coefNoYCat ][ xPos[2] ] <- 
-              derivCoef[ coefNoYCat ][ xPos[2] ] -
-              pfun[ yCati ] * 2 * xVal^2 * pfun[ p ] +
-              ( p == yCati ) * pfun[ yCati ] * 2 * xVal^2
-          }
-        } else {
+        derivCoef[ coefNoYCat ][ xPos[1] ] <- 
+          derivCoef[ coefNoYCat ][ xPos[1] ] -
+          pfun[ yCati ] * xVal * pfun[ p ] + 
+          ( p == yCati ) * pfun[ yCati ] * xVal
+        if( length( xPos ) == 2 ) {
+          derivCoef[ coefNoYCat ][ xPos[2] ] <- 
+            derivCoef[ coefNoYCat ][ xPos[2] ] -
+            pfun[ yCati ] * 2 * xVal^2 * pfun[ p ] +
+            ( p == yCati ) * pfun[ yCati ] * 2 * xVal^2
+        }
+        if( !seSimplify ) {
           derivCoef[ coefNoYCat ][ -xPos ] <-
             derivCoef[ coefNoYCat ][ -xPos ] +
             ( - pfun[ yCati ] * semElaCat[ p ] -
@@ -174,17 +173,15 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
           derivCoef[ coefNoYCat ][ xPos[1] ] <-
             derivCoef[ coefNoYCat ][ xPos[1] ] +
             ( - pfun[ yCati ] * semElaCat[ p ] -
-                pfun[ p ] * semElaCat[ yCati ] -
-                pfun[ p ] * pfun[ yCati ] +
-                ( p == yCati ) * ( pfun[ p ] + semElaCat[ p ] ) ) * 
+                pfun[ p ] * semElaCat[ yCati ] +
+                ( p == yCati ) * semElaCat[ p ] ) * 
             xVal
           if( length( xPos ) == 2 ) {
             derivCoef[ coefNoYCat ][ xPos[2] ] <-
               derivCoef[ coefNoYCat ][ xPos[2] ] +
               ( - pfun[ yCati ] * semElaCat[ p ] -
-                  pfun[ p ] * semElaCat[ yCati ] -
-                  2 * pfun[ p ] * pfun[ yCati ] + 
-                  ( p == yCati ) * ( 2 * pfun[ p ] + semElaCat[ p ] ) ) * 
+                  pfun[ p ] * semElaCat[ yCati ] + 
+                  ( p == yCati ) * semElaCat[ p ] ) * 
               xVal^2
           }
         }
