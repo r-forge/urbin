@@ -179,10 +179,10 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
             if( length( xPos ) == 2 ) {
               derivCoef[ coefNoYCat ][ xPos[2] ] <-
                 derivCoef[ coefNoYCat ][ xPos[2] ] +
-                ( pfun[ yCati ] * ( 2 * xVal * ( 1 - pfun[ yCati ] ) +
-                    xCoefLinQuad[ yCati ] * xVal^2 * ( 1 - 2 * pfun[ yCati ] ) ) +
-                    pfun[ yCati ] * xVal^2 * ( 2 * pfun[ yCati ] - 1 ) *
-                    sum( xCoefLinQuad * pfun ) ) * xVal
+                ( - pfun[ yCati ] * semElaCat[ p ] -
+                    pfun[ p ] * semElaCat[ yCati ] -
+                    2 * pfun[ p ] * pfun[ yCati ] + 
+                    2 * pfun[ p ] + semElaCat[ p ] ) * xVal^2
             }
           } else {
             derivCoef[ coefNoYCat ][ -xPos ] <-
@@ -198,9 +198,9 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
             if( length( xPos ) == 2 ) {
               derivCoef[ coefNoYCat ][ xPos[2] ] <-
                 derivCoef[ coefNoYCat ][ xPos[2] ] +
-                pfun[ yCati ] * pfun[ p ] *
-                ( - xCoefLinQuad[ yCati ] * xVal^2 - xCoefLinQuad[ p ] * xVal^2 - 
-                    2 * xVal + 2 * xVal^2 * sum( xCoefLinQuad * pfun ) ) * xVal
+                ( - pfun[ yCati ] * semElaCat[ p ] -
+                    pfun[ p ] * semElaCat[ yCati ] -
+                    2 * pfun[ p ] * pfun[ yCati ] ) * xVal^2
             }
           }
         }
