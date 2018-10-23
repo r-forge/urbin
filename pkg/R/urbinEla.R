@@ -165,43 +165,27 @@ urbinEla <- function( allCoef, allXVal, xPos, model,
               ( p == yCati ) * pfun[ yCati ] * 2 * xVal^2
           }
         } else {
-          if( p == yCati ) {
-            derivCoef[ coefNoYCat ][ -xPos ] <-
-              derivCoef[ coefNoYCat ][ -xPos ] +
-              ( - 2 * pfun[ p ] * semElaCat[ p ] + semElaCat[ p ]  ) * 
-              allXVal[ -xPos ]
-            derivCoef[ coefNoYCat ][ xPos[1] ] <-
-              derivCoef[ coefNoYCat ][ xPos[1] ] +
+          derivCoef[ coefNoYCat ][ -xPos ] <-
+            derivCoef[ coefNoYCat ][ -xPos ] +
+            ( - pfun[ yCati ] * semElaCat[ p ] -
+                pfun[ p ] * semElaCat[ yCati ] +
+                ( p == yCati ) * semElaCat[ p ] ) *
+            allXVal[ -xPos ]
+          derivCoef[ coefNoYCat ][ xPos[1] ] <-
+            derivCoef[ coefNoYCat ][ xPos[1] ] +
+            ( - pfun[ yCati ] * semElaCat[ p ] -
+                pfun[ p ] * semElaCat[ yCati ] -
+                pfun[ p ] * pfun[ yCati ] +
+                ( p == yCati ) * ( pfun[ p ] + semElaCat[ p ] ) ) * 
+            xVal
+          if( length( xPos ) == 2 ) {
+            derivCoef[ coefNoYCat ][ xPos[2] ] <-
+              derivCoef[ coefNoYCat ][ xPos[2] ] +
               ( - pfun[ yCati ] * semElaCat[ p ] -
                   pfun[ p ] * semElaCat[ yCati ] -
-                  pfun[ p ] * pfun[ yCati ] + 
-                  pfun[ p ] + semElaCat[ p ] ) * xVal
-            if( length( xPos ) == 2 ) {
-              derivCoef[ coefNoYCat ][ xPos[2] ] <-
-                derivCoef[ coefNoYCat ][ xPos[2] ] +
-                ( - pfun[ yCati ] * semElaCat[ p ] -
-                    pfun[ p ] * semElaCat[ yCati ] -
-                    2 * pfun[ p ] * pfun[ yCati ] + 
-                    2 * pfun[ p ] + semElaCat[ p ] ) * xVal^2
-            }
-          } else {
-            derivCoef[ coefNoYCat ][ -xPos ] <-
-              derivCoef[ coefNoYCat ][ -xPos ] -
-              ( pfun[ yCati ] * semElaCat[ p ] +
-                pfun[ p ] * semElaCat[ yCati ] ) *
-              allXVal[ -xPos ]
-            derivCoef[ coefNoYCat ][ xPos[1] ] <-
-              derivCoef[ coefNoYCat ][ xPos[1] ] +
-              ( - pfun[ yCati ] * semElaCat[ p ] -
-                  pfun[ p ] * semElaCat[ yCati ] -
-                  pfun[ p ] * pfun[ yCati ] ) * xVal
-            if( length( xPos ) == 2 ) {
-              derivCoef[ coefNoYCat ][ xPos[2] ] <-
-                derivCoef[ coefNoYCat ][ xPos[2] ] +
-                ( - pfun[ yCati ] * semElaCat[ p ] -
-                    pfun[ p ] * semElaCat[ yCati ] -
-                    2 * pfun[ p ] * pfun[ yCati ] ) * xVal^2
-            }
+                  2 * pfun[ p ] * pfun[ yCati ] + 
+                  ( p == yCati ) * ( 2 * pfun[ p ] + semElaCat[ p ] ) ) * 
+              xVal^2
           }
         }
       }
