@@ -148,40 +148,25 @@ urbinElaInt <- function( allCoef, allXVal, xPos, xBound, model,
     derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
       for( yCati in yCat ) {
-        if( p == yCati ){
-          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
-            sum( ( pFunMat[ -1, p ] - pFunMat[ -1, p ]^2 -
-                pFunMat[ -nInt, p ] + pFunMat[ -nInt, p ]^2 ) *
-                shareNextInt ) * allXVal[ -xPos ]
-          derivCoef[ xPos[1], p ] <- derivCoef[ xPos[1], p ] + 
-            ( - pFunMat[ 1, p ] + pFunMat[ 1, p ]^2 ) * 
-            shareNextInt[1]
-          derivCoef[ xPos[nInt], p ] <- derivCoef[ xPos[nInt], p ] +
-            ( pFunMat[ nInt, p ] - pFunMat[ nInt, p ]^2 ) * 
-            shareNextInt[nInt-1]
-          if( nInt > 2 ) {
-            for( n in 2:( nInt-1 ) ) {
-              derivCoef[ xPos[n], p ] <- derivCoef[ xPos[n], p ] +
-                ( pFunMat[ n, p ] - pFunMat[ n, p ]^2 ) * 
-                ( shareNextInt[n-1] - shareNextInt[n] )
-            }
-          }
-        } else {  
-          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
-            sum( ( pFunMat[ -nInt, yCati ] * pFunMat[ -nInt, p ] -
-                pFunMat[ -1, yCati ] * pFunMat[ -1, p ] ) *
-                shareNextInt ) * allXVal[ -xPos ]
-          derivCoef[ xPos[1], p ] <- derivCoef[ xPos[1], p ] +
-            ( pFunMat[ 1, yCati ] * pFunMat[ 1, p ] ) * shareNextInt[1]
-          derivCoef[ xPos[nInt], p ] <- derivCoef[ xPos[nInt], p ] -
-            ( pFunMat[ nInt, yCati ] * pFunMat[ nInt, p ] ) * 
-            shareNextInt[nInt-1]
-          if( nInt > 2 ) {
-            for( n in 2:( nInt-1 ) ) {
-              derivCoef[ xPos[n], p ] <- derivCoef[ xPos[n], p ] +
-                ( pFunMat[ n, yCati ] * pFunMat[ n, p ] ) * 
-                ( shareNextInt[n] - shareNextInt[n-1] )
-            }
+        derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] +
+          sum( ( pFunMat[ -nInt, yCati ] * pFunMat[ -nInt, p ] -
+              pFunMat[ -1, yCati ] * pFunMat[ -1, p ] -
+              ( p == yCati ) * 
+                ( pFunMat[ -nInt, yCati ] - pFunMat[ -1, yCati ] ) ) *
+              shareNextInt ) * allXVal[ -xPos ]
+        derivCoef[ xPos[1], p ] <- derivCoef[ xPos[1], p ] +
+          ( pFunMat[ 1, yCati ] * pFunMat[ 1, p ] -
+              ( p == yCati ) * pFunMat[ 1, yCati ] ) * shareNextInt[1]
+        derivCoef[ xPos[nInt], p ] <- derivCoef[ xPos[nInt], p ] -
+          ( pFunMat[ nInt, yCati ] * pFunMat[ nInt, p ] -
+              ( p == yCati ) * pFunMat[ nInt, yCati ] ) * 
+          shareNextInt[nInt-1]
+        if( nInt > 2 ) {
+          for( n in 2:( nInt-1 ) ) {
+            derivCoef[ xPos[n], p ] <- derivCoef[ xPos[n], p ] +
+              ( pFunMat[ n, yCati ] * pFunMat[ n, p ] -
+                  ( p == yCati ) * pFunMat[ n, yCati ] ) * 
+              ( shareNextInt[n] - shareNextInt[n-1] )
           }
         }
       }     
