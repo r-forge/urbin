@@ -130,21 +130,15 @@ urbinEffInt <- function( allCoef, allXVal = NULL, xPos, refBound, intBound, mode
     derivCoef <- matrix( 0, nrow = nXVal, ncol = nYCat )
     for( p in 1:nYCat ){
       for( yCati in yCat ) {
-        if( p == yCati ){
-          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] + 
-            ( pFunInt[ p ] - pFunInt[ p ]^2 - pFunRef[ p ] + pFunRef[ p ]^2 ) *
-            allXVal[ - xPos ]
-          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] + 
-            ( pFunInt[ p ] - pFunInt[ p ]^2 ) * intX -
-            ( pFunRef[ p ] - pFunRef[ p ]^2 ) * refX
-        } else{  
-          derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] + 
-            ( pFunRef[ yCati ] * pFunRef[ p ] - pFunInt[ yCati ] * pFunInt[ p ] ) *
-            allXVal[ - xPos ]
-          derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] + 
-            pFunRef[ yCati ] * pFunRef[ p ] * refX -
-            pFunInt[ yCati ] * pFunInt[ p ] * intX
-        }
+        derivCoef[ -xPos, p ] <- derivCoef[ -xPos, p ] + 
+          ( pFunRef[ yCati ] * pFunRef[ p ] - pFunInt[ yCati ] * pFunInt[ p ] 
+            - ( p == yCati ) * ( pFunRef[ yCati ] - pFunInt[ yCati ] ) ) *
+          allXVal[ - xPos ]
+        derivCoef[ xPos, p ] <- derivCoef[ xPos, p ] + 
+          ( pFunRef[ yCati ] * pFunRef[ p ] - 
+              ( p == yCati ) * pFunRef[ yCati ] ) * refX -
+          ( pFunInt[ yCati ] * pFunInt[ p ] -
+              ( p == yCati ) * pFunInt[ yCati ] ) * intX
       }
     }
     derivCoef <- c( derivCoef )
