@@ -1,6 +1,6 @@
 Package: urbin
-Version: 0.1-1
-Date: 2018-09-25
+Version: 0.1-2
+Date: 2018-10-25
 Title: Unifying Estimation Results with Binary Dependent Variables
 Author: Arne Henningsen, Geraldine Henningsen
 Maintainer: Arne Henningsen <arne.henningsen@gmail.com>
@@ -13,6 +13,6 @@ Description: This R package provides functions for unifying estimation results
   with different models/estimators 
   (e.g., linear probability model, logit, probit, ...) 
   and/or with different transformations of the explanatory variable of interest 
-  (e.g., linear, quadratic, logarithmic, interval-coded, ...).
+  (e.g., linear, quadratic, interval-coded, ...).
 License: GPL (>= 2)
 URL: http://r-forge.r-project.org/projects/urbin/
