@@ -1,6 +1,7 @@
 library( "urbin" )
 library( "maxLik" )
 library( "mvProbit" )
+options( digits = 3 )
 
 # load data set
 data( "Mroz87", package = "sampleSelection" )
