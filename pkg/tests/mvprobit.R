@@ -14,7 +14,9 @@ Mroz87$kids <- as.numeric( Mroz87$kids5 > 0 | Mroz87$kids618 > 0 )
 
 ### linear in age
 estMvProbitLin <- mvProbit( cbind( lfp, husMoonlight ) ~ kids + age + educ, 
-  data = Mroz87, nGHK = 300 )
+  data = Mroz87, nGHK = 300, iterlim = 0,
+  start = c( -0.07332, -0.31572, -0.01915, 0.10475, 
+    -0.70550, 0.09776, -0.00889, 0.03258, -0.10837 ) )
 summary( estMvProbitLin )
 # mean values of the explanatory variables
 xMeanLin <- c( 1, colMeans( Mroz87[ , c( "kids", "age", "educ" ) ] ) )
@@ -62,7 +64,9 @@ urbinEla( unlist( estMvProbitLinME[ c( 1, 3, 5 ) ] ), xMeanLin[-1], 2, iPos = 0,
 ### quadratic in age
 estMvProbitQuad <- mvProbit( 
   cbind( lfp, husMoonlight ) ~ kids + age + I(age^2) + educ, 
-  data = Mroz87, nGHK = 300 )
+  data = Mroz87, nGHK = 300, iterlim = 0,
+  start = c( -4.336110, -0.438580, 0.192469, -0.002497, 0.107107, 
+    0.547970, 0.134075, -0.071620, 0.000741, 0.032548, -0.103104 ) )
 summary( estMvProbitQuad )
 # mean values of the explanatory variables
 xMeanQuad <- c( xMeanLin[ 1:3], xMeanLin[3]^2, xMeanLin[4] )
@@ -141,7 +145,9 @@ all.equal(
 # estimation
 estMvProbitInt <- mvProbit( 
   cbind( lfp, husMoonlight ) ~ kids + age30.37 + age38.44 + age53.60 + educ, 
-  data = Mroz87, nGHK = 300 )
+  data = Mroz87, nGHK = 300, iterlim = 0,
+  start = c( -0.8929, -0.3775, 0.1346, 0.1219, -0.5144, 0.1082, 
+    -1.3155, 0.0883, 0.3853, 0.2785, 0.2929, 0.0326, -0.1018 ) )
 summary( estMvProbitInt )
 # mean values of the explanatory variables
 xMeanInt <- c( xMeanLin[1:2], mean( Mroz87$age30.37 ), 
