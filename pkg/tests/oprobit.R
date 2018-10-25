@@ -1,6 +1,7 @@
 library( "urbin" )
 library( "maxLik" )
 library( "MASS" )
+options( digits = 4 )
 
 # load data set
 data( "Mroz87", package = "sampleSelection" )
