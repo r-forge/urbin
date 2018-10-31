@@ -7,7 +7,7 @@ Maintainer: Arne Henningsen <arne.henningsen@gmail.com>
 Depends: R (>= 2.14.0)
 Suggests: sampleSelection (>= 0.7-0), maxLik (>= 1.1-2), mfx (>= 1.1), 
   mlogit (>= 0.3-0), MASS (>= 7.3-50), mvProbit (>= 0.1-8)
-Description: Calculating unified measures 
+Description: Calculate unified measures 
   that quantify the effect of a covariate on a binary dependent variable
   (e.g., for meta-analyses). 
   This can be particularly important 
