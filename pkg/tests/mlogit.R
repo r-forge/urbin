@@ -828,8 +828,7 @@ all.equal( c( 0, NA ), unlist(
     xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ), model = "mlogit", yCat = 0:2 )[
       c( "effect", "stdEr" ) ] ), check.attributes = FALSE )
 # effects calculated based on predicted values
-names( xMeanInt ) <-
-  gsub( "TRUE|full:", "", names( coef( estMLogitInt )[ seq( 1, 11, 2 ) ] ) )
+names( xMeanInt )[3:5] <- c( "age30.37", "age38.44", "age53.60" )
 df30.37 <- df38.44 <- df45.52 <- df53.60 <- as.data.frame( t( xMeanInt ) )
 df30.37[ , 3:5 ] <- c( TRUE, FALSE, FALSE )
 df38.44[ , 3:5 ] <- c( FALSE, TRUE, FALSE )
