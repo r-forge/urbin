@@ -311,6 +311,12 @@ that contains the following components:
 }
 
 \examples{
+\dontshow{
+# check if the package that contains the data set for the examples is available
+if( !require( "sampleSelection" ) ) {
+  q( save = "no" )
+}
+}
 # load data set
 data( "Mroz87", package = "sampleSelection" )
 
