@@ -1,6 +1,11 @@
 library( "urbin" )
-library( "maxLik" )
-library( "mlogit" )
+maxLikLoaded <- require( "maxLik" )
+if( !require( "mlogit" ) ) {
+  q( save = "no" )
+}
+if( !require( "sampleSelection" ) ) {
+  q( save = "no" )
+}
 options( digits = 4 )
 
 # load data set
@@ -66,25 +71,37 @@ all.equal( rep( 0, 8 ),
   urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
     seSimplify = FALSE, model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 8 ), c(
-  numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
     t0 = coef( estMLogitLin )[ coefPermuteLin ],
-    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0:2 ) ) )
+    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 8 ), c(
+    numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+      t0 = coef( estMLogitLin )[ coefPermuteLin ],
+      allXVal = xMeanLin, xPos = 3, model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estMLogitLin )[ coefPermuteLin ], xMeanLin, 3,
   model = "mlogit", seSimplify = TRUE, yCat = 0 )$derivCoef
@@ -202,25 +219,37 @@ all.equal( rep( 0, 10 ),
   urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
     model = "mlogit", seSimplify = FALSE, yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 10 ), c(
-  numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
     t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0:2 ) ) )
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 10 ), c(
+    numericGradient( function( x, ... ){ urbinEla( x, ... )$semEla },
+      t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+      allXVal = xMeanQuad, xPos = c( 3, 4 ), model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # simplified partial derivatives of the semi-elasticity wrt the coefficients
 urbinEla( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuad, c( 3, 4 ),
   model = "mlogit", seSimplify = TRUE, yCat = 0 )$derivCoef
@@ -436,31 +465,43 @@ all.equal( rep( 0, 12 ),
   urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
     c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-  xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 12 ), c(
-  numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
     t0 = coef( estMLogitInt )[ coefPermuteInt ],
     allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
-    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0:2 ) ) )
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
+    xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 12 ), c(
+    numericGradient( function( x, ... ){ urbinElaInt( x, ... )$semEla },
+      t0 = coef( estMLogitInt )[ coefPermuteInt ],
+      allXVal = xMeanInt, xPos = c( 3, 4, 0, 5 ),
+      xBound = c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # semi-elasticity of age with standard errors (full covariance matrix)
 urbinElaInt( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
   c( 3, 4, 0, 5 ), c( 30, 37.5, 44.5, 52.5, 60 ), model = "mlogit",
@@ -567,31 +608,43 @@ all.equal( rep( 0, 8 ),
   urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
     c( 30, 40 ), c( 50, 60 ), model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the semi-elasticity wrt the coefficients
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitLin )[ coefPermuteLin ],
-  allXVal = xMeanLinInt, xPos = 3,
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 8 ), c(
-  numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
     t0 = coef( estMLogitLin )[ coefPermuteLin ],
     allXVal = xMeanLinInt, xPos = 3,
-    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:2 ) ) )
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLinInt, xPos = 3,
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLinInt, xPos = 3,
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLinInt, xPos = 3,
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitLin )[ coefPermuteLin ],
+    allXVal = xMeanLinInt, xPos = 3,
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 8 ), c(
+    numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+      t0 = coef( estMLogitLin )[ coefPermuteLin ],
+      allXVal = xMeanLinInt, xPos = 3,
+      refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix)
 urbinEffInt( coef( estMLogitLin )[ coefPermuteLin ], xMeanLinInt, 3,
@@ -701,31 +754,43 @@ all.equal( rep( 0, 10 ),
   urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt,
     c( 3, 4 ), c( 30, 40 ), c( 50, 60 ), model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
-  t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
-  allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-  refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 10 ), c(
-  numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
     t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
     allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
-    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:2 ) ) )
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+    t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+    allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+    refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 10 ), c(
+    numericGradient( function( x, ... ){ urbinEffInt( x, ... )$effect },
+      t0 = coef( estMLogitQuad )[ coefPermuteQuad ],
+      allXVal = xMeanQuadInt, xPos = c( 3, 4 ),
+      refBound = c( 30, 40 ), intBound = c( 50, 60 ), model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # effects of age changing from the 30-40 interval to the 50-60 interval
 # (full covariance matrix)
 urbinEffInt( coef( estMLogitQuad )[ coefPermuteQuad ], xMeanQuadInt,
@@ -860,31 +925,43 @@ all.equal( rep( 0, 12 ),
   urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
     c( 3:5 ), c( -1, -1, 1, 0 ), model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-  model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-  model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-  model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-  model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-  model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 12 ), c(
-  numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
     t0 = coef( estMLogitInt )[ coefPermuteInt ],
     allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
-    model = "mlogit", yCat = 0:2 ) ) )
+    model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
+    model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
+    model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
+    model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
+    model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 12 ), c(
+    numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+      t0 = coef( estMLogitInt )[ coefPermuteInt ],
+      allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( -1, -1, 1, 0 ),
+      model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # with full covariance matrix
 urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ),
   c( -1, -1, 1, 0 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
@@ -964,31 +1041,43 @@ all.equal( rep( 0, 12 ),
   urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt,
     c( 3:5 ), c( 0, 1, -1, 1 ), model = "mlogit", yCat = 0:2 )$derivCoef )
 # numerically computed partial derivatives of the effect wrt the coefficients
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-  model = "mlogit", yCat = 0 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-  model = "mlogit", yCat = 1 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-  model = "mlogit", yCat = 2 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-  model = "mlogit", yCat = 0:1 )
-numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
-  t0 = coef( estMLogitInt )[ coefPermuteInt ],
-  allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-  model = "mlogit", yCat = 1:2 )
-all.equal( rep( 0, 12 ), c(
-  numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
     t0 = coef( estMLogitInt )[ coefPermuteInt ],
     allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
-    model = "mlogit", yCat = 0:2 ) ) )
+    model = "mlogit", yCat = 0 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
+    model = "mlogit", yCat = 1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
+    model = "mlogit", yCat = 2 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
+    model = "mlogit", yCat = 0:1 ) )
+}
+if( maxLikLoaded ) {
+  print( numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+    t0 = coef( estMLogitInt )[ coefPermuteInt ],
+    allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
+    model = "mlogit", yCat = 1:2 ) )
+}
+if( maxLikLoaded ) {
+  print( all.equal( rep( 0, 12 ), c(
+    numericGradient( function( x, ... ){ urbinEffCat( x, ... )$effect },
+      t0 = coef( estMLogitInt )[ coefPermuteInt ],
+      allXVal = xMeanInt, xPos = c( 3:5 ), xGroups = c( 0, 1, -1, 1 ),
+      model = "mlogit", yCat = 0:2 ) ) ) )
+}
 # with full covariance matrix
 urbinEffCat( coef( estMLogitInt )[ coefPermuteInt ], xMeanInt, c( 3:5 ),
   c( 0, 1, -1, 1 ), vcov( estMLogitInt )[ coefPermuteInt, coefPermuteInt ],
